@@ -1,0 +1,62 @@
+{
+  "name": "tmb_libraries",
+  "version": "0.1.0",
+  "description": "cre's external libraries",
+  "main": "index.js",
+  "dependencies": {
+    "zone.js":"^0.8.4",     
+    "es6-shim":"^0.35.0",
+    "bootstrap": "^3.3.5",
+    "clipboard": "^1.5.16",    
+    "colorbrewer":"^1.0.0",
+    "crossfilter":"^1.3.12",    
+    "crossfilter2":"^1.4.0-alpha.2", 
+    "d3": "^3.5.6",
+    "dc": "^2.0.0-beta.27", 
+    "highlight.js": "^9.11.0",
+    "intro.js": "^1.1.1",
+    "jquery": "^2.1.4",
+    "jquery-ui": "^1.10.5",
+    "jquery.fancytree": "^2.11.0",
+    "jspdf":"^1.2.61",
+    "jspdf-autotable":"^2.0.24",
+    "leaflet": "^1.0.0-beta.1",
+    "lockr": "^0.8.4",
+    "lodash": "^3.10.0",
+    "openlayers": "^3.15.1",
+    "pdfjs":"^1.0.0-alpha.5",
+    "pdfjs-dist":"^1.5.207",
+    "react":"^15.0.1",
+    "three": "^0.71.0",
+    "tween": "^0.9.0",
+    "ui-contextmenu": "^1.10.0"
+  },
+  "missingDependencies": {
+    "d3.layout.cloud": "*"
+  },
+  "devDependencies": {
+    "request": "^2.83.0",      
+    "less": "^2.7.2",
+    "less-plugin-clean-css": "^1.5.1",
+    "typescript": "latest",
+    "onchange": "latest"
+  },
+  "scripts": {
+    "watch": "npm run bootstrap",
+    "bootstrap": "npm run watch-bootstrap-tmb & npm run watch-bootstrap-less",
+    "watch-bootstrap-tmb": "onchange 'cre/bootstrap/less/*.less' -- npm run bootstrap-tmb",
+    "watch-bootstrap-less": "onchange 'node_modules/bootstrap/less/*.less' -- npm run bootstrap-less",
+    "bootstrap-tmb": "npm run bootstrap-copy & npm run bootstrap-less",
+    "bootstrap-copy": "cp cre/bootstrap/less/*.less node_modules/bootstrap/less",
+    "bootstrap-less": "npm run bootstrap-less-full & npm run bootstrap-less-min",
+    "bootstrap-less-full": "lessc --insecure node_modules/bootstrap/less/bootstrap.less assets/bootstrap/css/bootstrap.css",
+    "bootstrap-less-min": "lessc --insecure node_modules/bootstrap/less/bootstrap.less assets/bootstrap/css/bootstrap.min.css",
+    "bootstrap-less-min-clean": "lessc --clean-css node_modules/bootstrap/less/bootstrap.less assets/bootstrap/css/bootstrap.min.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clim-ability/libCRE"
+  },
+  "author": "Michael Kahle",
+  "license": "ISC"
+}
