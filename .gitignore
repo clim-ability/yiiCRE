@@ -1,6 +1,6 @@
 assets/*
 !assets/.gitignore
-#config/local.php
+config/local.php
 protected/runtime/*
 !protected/runtime/.gitignore
 protected/data/*.db
