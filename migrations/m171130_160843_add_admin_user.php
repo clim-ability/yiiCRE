@@ -9,7 +9,7 @@ class m171130_160843_add_admin_user extends Migration
         $this->insert('user', [
             'username' => LOCAL_CONFIG_DB_USER,
             'email' => CRE_ADMIN_EMAIL,
-            'password_hash' => LOCAL_CONFIG_DB_PASSWORD   
+            'password_hash' => Yii::$app->security->generatePasswordHash(LOCAL_CONFIG_DB_PASSWORD)   
         ]);
     }
 
