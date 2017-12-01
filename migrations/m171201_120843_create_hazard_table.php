@@ -3,15 +3,13 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m171201_100843_create_epoch_table extends Migration {
+class m171201_120843_create_hazard_table extends Migration {
 
     public function safeUp() {
-        $this->createTable('epoch', [
+        $this->createTable('hazard', [
             'id' => Schema::TYPE_PK,
             'name' => Schema::TYPE_STRING . '(255) NOT NULL',
             'description' => Schema::TYPE_STRING . '(4095)',
-            'year_begin' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'year_end' => Schema::TYPE_INTEGER . ' NOT NULL',
             'visible' => Schema::TYPE_BOOLEAN . ' DEFAULT FALSE',
             'created_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
             'updated_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
@@ -19,7 +17,7 @@ class m171201_100843_create_epoch_table extends Migration {
     }
 
     public function safeDown() {
-        $this->dropTable('epoch');
+        $this->dropTable('hazard');
     }
 
 }
