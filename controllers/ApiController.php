@@ -8,16 +8,16 @@
 namespace app\controllers;
 
 use Yii;
-
+use yii\web\Controller;
 //use app\models\UserSearch;
 //use yii\web\NotFoundHttpException;
 //use yii\data\ActiveDataProvider;
 //use app\components\RssFormater;
 
 /**
- * Class ResultController
+ * Class ApiController
  * @package app\controllers
- * @author Michael Kahle <michael,kahle@ub.uni-freiburg.de>
+ * @author Michael Kahle <michael.kahle@geography.uni-freiburg.de>
  * @since 2.0
  */
 class ApiController extends Controller
