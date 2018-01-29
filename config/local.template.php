@@ -32,6 +32,10 @@ define('LOCAL_CONFIG_DB_USER', 'creUser');
 define('LOCAL_CONFIG_DB_PASSWORD', 'crePassword');
 define('LOCAL_CONFIG_DB_CONNECTION', 'pgsql:host=localhost;port=5432;dbname=cre');
 
+define('LOCAL_CONFIG_DB2_USER', 'creUser');
+define('LOCAL_CONFIG_DB2_PASSWORD', 'crePassword');
+define('LOCAL_CONFIG_DB2_CONNECTION', 'pgsql:host=localhost;port=5432;dbname=cre2');
+
 // Test Database: Will be used for Unittests
 define('LOCAL_CONFIG_DB_TEST_USER', 'creUser');
 define('LOCAL_CONFIG_DB_TEST_PASSWORD', 'crePassword');
