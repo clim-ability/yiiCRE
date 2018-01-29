@@ -29,6 +29,7 @@ class ApiController extends Controller
     public function actionEpochs($mode='visible-only') {
        // returns list of all Epochs.
        $result = ['value'=>14.5, 'std'=>0.22];
+	   $result = Epoch::inqAllEpochs(); 
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }     
