@@ -33,7 +33,7 @@ class Epoch extends ActiveRecord
 	
 	public function inqAllEpochs() {
 	    $epochs = Epoch::find()
-            ->orderBy([['year_begin'=>SORT_DESC, 'year_end'=>SORT_DESC])
+            ->orderBy(['year_begin'=>SORT_DESC, 'year_end'=>SORT_DESC])
             ->all();
         return $epochs;
 	}
