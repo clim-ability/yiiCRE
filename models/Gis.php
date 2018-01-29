@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 
-class Epoch extends ActiveRecord 
+class Gis extends ActiveRecord 
 {
 //    public $id;
 //    public $value;
