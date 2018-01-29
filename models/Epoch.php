@@ -33,7 +33,7 @@ class Epoch extends ActiveRecord
 	
 	public function inqAllEpochs( $inclInvisible = false ) {
 	    $epochs = Epoch::find();
-		if(!inclInvisible) {
+		if(!$inclInvisible) {
 		   $epochs = $epochs->where(['visible' => true]);	
 		}
         $epochs = $epochs->orderBy(['year_begin'=>SORT_ASC, 'year_end'=>SORT_ASC]);
