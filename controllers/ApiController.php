@@ -8,6 +8,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use app\models\Epoch;
+use app\models\Gis;
 //use yii\web\NotFoundHttpException;
 //use yii\data\ActiveDataProvider;
 //use app\components\RssFormater;
@@ -45,6 +46,7 @@ class ApiController extends Controller
    public function actionHazardValue($latitude, $longitude, $hazard='', $epoch='', $scenario='', $resolution=0.1) {
        
        $result = ['value'=>14.5, 'std'=>0.22];
+	   $result = Gis::getValue();
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
        
