@@ -23,10 +23,10 @@ class Epoch extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'year_begin', , 'year_end'], 'required'],
+            [['name', 'year_begin', 'year_end'], 'required'],
             [['visible'], 'boolean'],
             [['name', 'description'], 'string'],
-            [['year_begin', , 'year_end'], 'integer']
+            [['year_begin', 'year_end'], 'integer']
 
         ];
     }
