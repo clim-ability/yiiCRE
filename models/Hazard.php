@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 
-class Epoch extends ActiveRecord 
+class Hazard extends ActiveRecord 
 {
 //    public $id;
 //    public $name;
@@ -17,58 +17,56 @@ class Epoch extends ActiveRecord
 
     public static function tableName()
     {
-        return 'epoch';
+        return 'hazard';
     }
 
     public function rules()
     {
         return [
-            [['name', 'year_begin', 'year_end'], 'required'],
+            [['name'], 'required'],
             [['visible'], 'boolean'],
-            [['name', 'description'], 'string'],
-            [['year_begin', 'year_end'], 'integer']
-
+            [['name', 'description'], 'string']
         ];
     }
 	
-	public function inqAllEpochs( $inclInvisible = false ) {
-	    $epochs = Epoch::find();
+	public function inqAllHazards( $inclInvisible = false ) {
+	    $hazards = Hazard::find();
 		if(!$inclInvisible) {
-		   $epochs = $epochs->where(['visible' => true]);	
+		   $hazards = $hazards->where(['visible' => true]);	
 		}
-        $epochs = $epochs->orderBy(['year_begin'=>SORT_ASC, 'year_end'=>SORT_ASC]);
-        return $epochs->all();
+        $hazards = $hazards->orderBy(['name'=>SORT_ASC]);
+        return $hazards->all();
 	}
 	
 	public static function findById($id)
     {
-        $epoch = Epoch::find()
+        $hazard = Hazard::find()
             ->where(['id' => $id])
             ->one();
-        return $epoch;
+        return $hazard;
     }
 	
 	public static function findByName($name)
     {
-        $epoch = Epoch::find()
+        $hazard = Hazard::find()
             ->where(['name' => $name])
 			->orderBy(['id'=>SORT_DESC])
             ->one();
-        return $epoch;
+        return $hazard;
     }
 	
 	public static function findBy($idOrName)
 	{
-		$epoch = NULL;
+		$hazard = NULL;
 		if(is_numeric($idOrName))
 		{
-		   $epoch = Epoch::findById((int)$idOrName);	
+		   $hazard = Hazard::findById((int)$idOrName);	
 		} 
 		elseif(is_string($idOrName)) 
 		{
-		   $epoch = Epoch::findByName($idOrName);
+		   $hazard = Hazard::findByName($idOrName);
 		}
-		return $epoch;
+		return $hazard;
 	}	
    
 }

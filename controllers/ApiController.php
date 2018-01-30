@@ -8,6 +8,8 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use app\models\Epoch;
+use app\models\Hazard;
+use app\models\Scenario;
 use app\models\Gis;
 //use yii\web\NotFoundHttpException;
 //use yii\data\ActiveDataProvider;
@@ -24,12 +26,12 @@ class ApiController extends Controller
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
        $result = ['value'=>14.5, 'std'=>0.22];
+	   $result = Hazard::inqAllHazards();
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
     public function actionEpochs($mode='visible-only') {
        // returns list of all Epochs.
-       $result = ['value'=>14.5, 'std'=>0.22];
 	   $result = Epoch::inqAllEpochs(); 
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
@@ -37,14 +39,17 @@ class ApiController extends Controller
     public function actionScenarios($mode='visible-only') {
        // returns list of all Scenarios.
        $result = ['value'=>14.5, 'std'=>0.22];
+	   $result = Scenario::inqAllScenarios();
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
    
    
    
-   public function actionHazardValue($latitude, $longitude, $hazard='', $epoch='', $scenario='', $resolution=0.1) {
-       
+   public function actionHazardValue($latitude, $longitude, $hazard='', $epoch='', $scenario='', $resolution=0.1) 
+   {
+       $epoch = Epoch::findBy($epoch);
+	   
        $result = ['value'=>14.5, 'std'=>0.22];
 	   $result = Gis::getValue();
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

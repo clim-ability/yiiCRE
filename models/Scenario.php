@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 
-class Epoch extends ActiveRecord 
+class Scenario extends ActiveRecord 
 {
 //    public $id;
 //    public $name;
@@ -17,58 +17,56 @@ class Epoch extends ActiveRecord
 
     public static function tableName()
     {
-        return 'epoch';
+        return 'scenario';
     }
 
     public function rules()
     {
         return [
-            [['name', 'year_begin', 'year_end'], 'required'],
+            [['name'], 'required'],
             [['visible'], 'boolean'],
-            [['name', 'description'], 'string'],
-            [['year_begin', 'year_end'], 'integer']
-
+            [['name', 'description'], 'string']
         ];
     }
 	
-	public function inqAllEpochs( $inclInvisible = false ) {
-	    $epochs = Epoch::find();
+	public function inqAllScenarios( $inclInvisible = false ) {
+	    $scenarios = Scenario::find();
 		if(!$inclInvisible) {
-		   $epochs = $epochs->where(['visible' => true]);	
+		   $scenarios = $scenarios->where(['visible' => true]);	
 		}
-        $epochs = $epochs->orderBy(['year_begin'=>SORT_ASC, 'year_end'=>SORT_ASC]);
-        return $epochs->all();
+        $scenarios = $scenarios->orderBy(['name'=>SORT_ASC]);
+        return $scenarios->all();
 	}
 	
 	public static function findById($id)
     {
-        $epoch = Epoch::find()
+        $scenario = Scenario::find()
             ->where(['id' => $id])
             ->one();
-        return $epoch;
+        return $scenario;
     }
 	
 	public static function findByName($name)
     {
-        $epoch = Epoch::find()
+        $scenario = Scenario::find()
             ->where(['name' => $name])
 			->orderBy(['id'=>SORT_DESC])
             ->one();
-        return $epoch;
+        return $scenario;
     }
 	
 	public static function findBy($idOrName)
 	{
-		$epoch = NULL;
+		$scenario = NULL;
 		if(is_numeric($idOrName))
 		{
-		   $epoch = Epoch::findById((int)$idOrName);	
+		   $scenario = Scenario::findById((int)$idOrName);	
 		} 
 		elseif(is_string($idOrName)) 
 		{
-		   $epoch = Epoch::findByName($idOrName);
+		   $scenario = Scenario::findByName($idOrName);
 		}
-		return $epoch;
+		return $scenario;
 	}	
    
 }
