@@ -9,6 +9,7 @@ class m171220_120843_create_layer_table extends Migration {
         $this->createTable('layer', [
             'id' => Schema::TYPE_PK,
             'hazard_id' => 'integer NOT NULL REFERENCES hazard(id) ON DELETE CASCADE',
+            'parameter_id' => 'integer NOT NULL REFERENCES parameter(id) ON DELETE CASCADE',
             'epoch_id' => 'integer NOT NULL REFERENCES epoch(id) ON DELETE CASCADE',
             'scenario_id' => 'integer NOT NULL REFERENCES scenario(id) ON DELETE CASCADE',
             'name' => Schema::TYPE_STRING . '(255) NOT NULL',

@@ -14,10 +14,10 @@ class m171220_130843_add_epoch_to_table extends Migration {
 
     public function safeDown() {
            $this->remEpoch(2021,2050);
-           $this->addEpoch(2041,2070);
-           $this->addEpoch(2071,2100);
-           $this->addEpoch(1970,2000);
-           $this->addEpoch(1980,2010);           
+           $this->remEpoch(2041,2070);
+           $this->remEpoch(2071,2100);
+           $this->remEpoch(1970,2000);
+           $this->remEpoch(1980,2010);
     }
     
     private function makeName($begin, $end) {
