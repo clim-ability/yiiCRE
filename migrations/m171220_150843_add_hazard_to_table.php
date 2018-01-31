@@ -5,8 +5,6 @@ use yii\db\Migration;
 class m171220_150843_add_hazard_to_table extends Migration {
 
 
-'cddp', 'fd', 'rr20', 'rr_summer', 'rr_winter', 'tr'
-
     public function safeUp() {
         $this->addHazard('cddp', 'consecutive dry days', true);
         $this->addHazard('hd', 'number of hot days', false);  // propably summer days 
