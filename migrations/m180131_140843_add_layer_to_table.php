@@ -84,7 +84,7 @@ class m180131_140843_add_layer_to_table extends Migration {
         $sql = "SELECT to_regclass('".$name."') AS tablename";
         $command = $connection->createCommand($sql);
         $table = $command->queryOne();
-        return strcmp($name, $table['tablename']);
+        return (0 == strcmp($name, $table['tablename']));
 	} 
  
 	private function findHazard($name)
