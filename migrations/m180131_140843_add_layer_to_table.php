@@ -81,10 +81,10 @@ class m180131_140843_add_layer_to_table extends Migration {
 	private function checkTableExists($name)
 	{
 		$connection = \Yii::$app->db2;
-        $sql = "SELECT to_regclass('".$name."')";
+        $sql = "SELECT to_regclass('".$name."') AS tablename";
         $command = $connection->createCommand($sql);
         $table = $command->queryOne();
-        return strcmp($name, $table);
+        return strcmp($name, $table['tablename']);
 	} 
  
 	private function findHazard($name)
