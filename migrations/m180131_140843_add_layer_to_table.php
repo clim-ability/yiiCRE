@@ -27,20 +27,23 @@ class m180131_140843_add_layer_to_table extends Migration {
     
 	private function handleCombinations($add = true)
 	{
-	  foreach($this::usedParameter() as $param)
+	  foreach($this::usedParameter() as $paramName)
 	  {
+		$paramItem = $this->findParam($paramName);  
         foreach($this::usedHazards() as $hazardName)
 		{
 		  $hazardItem = $this->findHazard($hazardName);
-          foreach($this::usedScenarios() as $scenario)
+          foreach($this::usedScenarios() as $scenarioName)
 		  {		
-            foreach($this::usedEpochs() as $epoch)
+		    $scenarioItem = $this->findScenario($scenarioName); 
+            foreach($this::usedEpochs() as $epochName)
 		    {	
+			   $epochItem = $this->findEpoch($epochName);
                if ($add) 
 			   {				   
-                 $this->addLayer('$hazard', '$param' ,'$epoch', '$scenario', '$visible');
+                 $this->addLayer($hazardItem, $paramItem , $epochItem, $scenarioItem);
 			   } else {
-			     $this->remLayer('$hazard', '$param' ,'$epoch', '$scenario');
+			     $this->remLayer($hazardName, $paramName , $epochName, $scenarioName);
 			   }
 		    }
 	      }
@@ -48,12 +51,12 @@ class m180131_140843_add_layer_to_table extends Migration {
 	  }		
 	}
 	
-    private function makeName($begin, $end) {
-       return "{$begin}-{$end}"; 
+    private function makeName($hazard, $param, $epoch, $scenario) {
+       return $hazard."_".$param."_".$scenario."_".$epoch."_minus_knp"; 
     }
     
     private function addLayer($hazard, $param, $epoch, $scenario, $visible=true) {
-        $name = $this->makeName($hazard, $param, $epoch, $scenario);
+        $name = $this->makeName($hazard['name'], $param['name'], $epoch['name'], $scenario['name']);
   /*    
  	  return $this->insert('layer', [
             'name' => $name,
@@ -63,14 +66,14 @@ class m180131_140843_add_layer_to_table extends Migration {
             'visible' => $visible   
         ]);
 */
-return true;        
+      return true;        
     }
     
     private function remLayer($hazard, $param, $epoch, $scenario) {
         $name = $this->makeName($hazard, $param, $epoch, $scenario);
-		/*
-        return $this->delete('layer', ['layer' => $layer]);     
-		*/
+		if($this->checkTableExists($name)) {
+           return $this->delete('layer', ['name' => $name]);   
+		}		
 		return true;
     }
  
@@ -92,7 +95,30 @@ return true;
         $result = $command->queryOne();
         return $result;
 	} 
- 
+	private function findParam($name)
+	{
+		$connection = \Yii::$app->db;
+        $sql = "SELECT * FROM parameter WHERE name = '".$name."' ORDER BY id DESC";
+        $command = $connection->createCommand($sql);
+        $result = $command->queryOne();
+        return $result;
+	}  
+	private function findScenario($name)
+	{
+		$connection = \Yii::$app->db;
+        $sql = "SELECT * FROM scenario WHERE name = '".$name."' ORDER BY id DESC";
+        $command = $connection->createCommand($sql);
+        $result = $command->queryOne();
+        return $result;
+	}  
+ 	private function findEpoch($name)
+	{
+		$connection = \Yii::$app->db;
+        $sql = "SELECT * FROM epoch WHERE name = '".$name."' ORDER BY id DESC";
+        $command = $connection->createCommand($sql);
+        $result = $command->queryOne();
+        return $result;
+	} 
 }
 
 
