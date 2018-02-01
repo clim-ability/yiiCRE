@@ -87,7 +87,7 @@ class m180131_140843_add_layer_to_table extends Migration {
         $command = $connection->createCommand($sql);
         $table = $command->queryOne();
 		echo $name."\n";
-		vardump($table);
+		var_dump($table);
 		echo " --- \n";
         return ($name === $table['tablename']);
 	} 
