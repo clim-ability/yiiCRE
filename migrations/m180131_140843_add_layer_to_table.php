@@ -72,9 +72,10 @@ class m180131_140843_add_layer_to_table extends Migration {
     private function remLayer($hazard, $param, $epoch, $scenario) {
         $name = $this->makeName($hazard, $param, $epoch, $scenario);
 		if($this->checkTableExists($name)) {
-		    echo " Y \n";	
+		   echo " Y \n";	
            return $this->delete('layer', ['name' => $name]);   
 		}	
+		echo $name;
         echo " N \n";		
 		return true;
     }
@@ -86,11 +87,6 @@ class m180131_140843_add_layer_to_table extends Migration {
         $sql = "SELECT to_regclass('".$name."') AS tablename";
         $command = $connection->createCommand($sql);
         $table = $command->queryOne();
-		echo $name."\n";
-		var_dump($table);
-        echo " * ";
-		var_dump($table['tablename']);
-		echo " --- \n";
         return ('"'.$name.'"' === $table['tablename']);
 	} 
  
