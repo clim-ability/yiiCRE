@@ -5,7 +5,7 @@ use yii\db\Migration;
 class m180131_140843_add_layer_to_table extends Migration {
 
     private static function usedParameter()
-	{ return ['mean', 'pctl15', 'pctl85']; }
+	{ return ['meXan', 'pctl15', 'pctl85']; }
 
     private static function usedHazards()
 	{  return ['cddp', 'fd', 'rr20', 'rr_summer', 'rr_winter', 'tr']; }
