@@ -87,7 +87,9 @@ class m180131_140843_add_layer_to_table extends Migration {
         $command = $connection->createCommand($sql);
         $table = $command->queryOne();
 		echo $name."\n";
-        return ($name === $table[0]['tablename']);
+		vardump($table);
+		echo " --- \n";
+        return ($name === $table['tablename']);
 	} 
  
 	private function findHazard($name)
