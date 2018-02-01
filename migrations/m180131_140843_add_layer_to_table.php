@@ -87,7 +87,7 @@ return true;
 	private function findHazard($name)
 	{
 		$connection = \Yii::$app->db;
-        $sql = "SELECT hazard WHERE name = '".$name."' ORDER BY id DESC";
+        $sql = "SELECT * FROM hazard WHERE name = '".$name."' ORDER BY id DESC";
         $command = $connection->createCommand($sql);
         $result = $command->queryOne();
         return $result;
