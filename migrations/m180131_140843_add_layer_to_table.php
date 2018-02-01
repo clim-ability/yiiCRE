@@ -88,8 +88,10 @@ class m180131_140843_add_layer_to_table extends Migration {
         $table = $command->queryOne();
 		echo $name."\n";
 		var_dump($table);
+		var_dump($table[0]);
+		var_dump($table[0]['tablename']);
 		echo " --- \n";
-        return ($name === $table['tablename']);
+        return ($name === $table[0]['tablename']);
 	} 
  
 	private function findHazard($name)
