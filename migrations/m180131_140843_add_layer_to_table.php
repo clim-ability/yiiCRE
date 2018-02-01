@@ -32,9 +32,9 @@ class m180131_140843_add_layer_to_table extends Migration {
         foreach(this::usedHazards() as $hazardName)
 		{
 		  $hazardItem = $this->findHazard($hazardName);
-          foreach(this::usedScenarios() as $scenario)
+          foreach($this::usedScenarios() as $scenario)
 		  {		
-            foreach(this::usedEpochs() as $epoch)
+            foreach($this::usedEpochs() as $epoch)
 		    {	
                if ($add) 
 			   {				   
