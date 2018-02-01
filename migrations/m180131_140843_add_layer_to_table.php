@@ -91,7 +91,7 @@ class m180131_140843_add_layer_to_table extends Migration {
         echo " * ";
 		var_dump($table['tablename']);
 		echo " --- \n";
-        return ($name === $table['tablename']);
+        return ('"'.$name.'"' === $table['tablename']);
 	} 
  
 	private function findHazard($name)
