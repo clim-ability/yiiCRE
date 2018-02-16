@@ -64,7 +64,8 @@ class m180131_140843_add_layer_to_table extends Migration {
 		   $visible = false;
 		} else {
 		   $meanItem = $this->findParam('mean'); 
-		   $relativeName = $this->makeName($hazard, $meanItem, $epoch, null);
+		   $epochItem = $this->findEpoch('1970-2000');
+		   $relativeName = $this->makeName($hazard, $meanItem, $epochItem, null);
 		   $layerItem = $this->findLayer($relativeName);
 		   var_dump($layerItem);
 		   echo " relative Layer ".$relativeName." \n";
