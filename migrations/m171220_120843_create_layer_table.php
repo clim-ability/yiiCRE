@@ -24,7 +24,7 @@ class m171220_120843_create_layer_table extends Migration {
             'created_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
             'updated_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
         ]);
-        $this->execute('ALTER TABLE layer ADD UNIQUE ("hazard_id" ,"epoch_id", "scenario_id")');
+        $this->execute('ALTER TABLE layer ADD UNIQUE ("hazard_id" , "parameter_id", "epoch_id", "scenario_id")');
     }
 
     public function safeDown() {
