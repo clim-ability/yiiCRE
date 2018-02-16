@@ -11,10 +11,10 @@ class m180131_140843_add_layer_to_table extends Migration {
 	{  return ['cddp', 'fd', 'rr20', 'rr_summer', 'rr_winter', 'tr']; }
 
     private static function usedEpochs()
-	{ return ['2021-2050', '2041-2070', '2071-2100']; }	
+	{ return ['1970-2000', '2021-2050', '2041-2070', '2071-2100']; }	
 	
     private static function usedScenarios()
-	{ return ['rcp45', 'rcp85']; }
+	{ return ['', 'rcp45', 'rcp85']; }
 
 	
     public function safeUp() {
@@ -43,7 +43,7 @@ class m180131_140843_add_layer_to_table extends Migration {
 			   {				   
                  $this->addLayer($hazardItem, $paramItem , $epochItem, $scenarioItem);
 			   } else {
-			     $this->remLayer($hazardName, $paramName , $epochName, $scenarioName);
+			     $this->remLayer($hazardItem, $paramItem , $epochItem, $scenarioItem);
 			   }
 		    }
 	      }
@@ -52,32 +52,48 @@ class m180131_140843_add_layer_to_table extends Migration {
 	}
 	
     private function makeName($hazard, $param, $epoch, $scenario) {
-       return $hazard."_".$param."_".$scenario."_".$epoch."_minus_knp"; 
+		if (is_null($scenario)) {
+		   return $hazard['name']."_".$param['name']."_".$epoch['name']."_knp";	
+		}
+       return $hazard['name']."_".$param['name']."_".$scenario['name']."_".$epoch['name']."_minus_knp"; 
     }
     
     private function addLayer($hazard, $param, $epoch, $scenario, $visible=true) {
-        $name = $this->makeName($hazard['name'], $param['name'], $epoch['name'], $scenario['name']);
-  /*    
- 	  return $this->insert('layer', [
+		$relativeTo = null;
+		if is_null($scenario) {
+		   $visible = false;
+		} else {
+		   $meanItem = $this->findParam('mean'); 
+		   $relativeName = $this->makeName($hazard, $meanItem, $epoch, null);
+		   $layerItem = $this->findLayer($relativeName);
+		   if (!is_null()) {
+		      $relativeTo = $layerItem['id'];
+		   }
+		}
+        $name = $this->makeName($hazard, $param, $epoch, $scenario);
+		$srid = 25832;
+		if($this->checkTableExists($name)) {
+   	      return $this->insert('layer', [
             'name' => $name,
             'description' => $name,
-            'year_begin' => $begin,
-            'year_end' => $end,
+            'hazard_id' => $hazard['id'],
+            'parameter_id' => $parameter['id'],
+            'epoch_id' => $epoch['id'],
+            'scenario_id' => $scenario['id'],
+            'variable' => $hazard['name'],
+            'layer' => $name,
+            'SRID' => $srid,
+            'relative' => $realtiveTo,
+			'rastered' => true,
             'visible' => $visible   
-        ]);
-*/
+            ]);
+        }
       return true;        
     }
     
     private function remLayer($hazard, $param, $epoch, $scenario) {
         $name = $this->makeName($hazard, $param, $epoch, $scenario);
-		if($this->checkTableExists($name)) {
-		   echo " Y \n";	
-           return $this->delete('layer', ['name' => $name]);   
-		}	
-		echo $name;
-        echo " N \n";		
-		return true;
+        return $this->delete('layer', ['name' => $name]);   
     }
  
 	
@@ -122,20 +138,16 @@ class m180131_140843_add_layer_to_table extends Migration {
         $result = $command->queryOne();
         return $result;
 	} 
+	private function findLayer($name)
+	{
+		$connection = \Yii::$app->db;
+        $sql = "SELECT * FROM layer WHERE name = '".$name."' ORDER BY id DESC";
+        $command = $connection->createCommand($sql);
+        $result = $command->queryOne();
+        return $result;
+	} 
+	
 }
 
 
-    /*
-            'hazard_id' => 'integer NOT NULL REFERENCES hazard(id) ON DELETE CASCADE',
-            'epoch_id' => 'integer NOT NULL REFERENCES epoch(id) ON DELETE CASCADE',
-            'scenario_id' => 'integer NOT NULL REFERENCES scenario(id) ON DELETE CASCADE',
-            'name' => Schema::TYPE_STRING . '(255) NOT NULL',
-            'description' => Schema::TYPE_STRING . '(4095)',
-            'visible' => Schema::TYPE_BOOLEAN . ' DEFAULT FALSE',
-            'variable' => Schema::TYPE_STRING . '(255) NOT NULL',
-            'layer' => Schema::TYPE_STRING . '(255) NOT NULL',
-            'srid' => Schema::TYPE_INTEGER . ' DEFAULT 4326',
-            'relative' => 'integer REFERENCES layer(id)',
-            'rastered' => Schema::TYPE_BOOLEAN . ' DEFAULT TRUE',
-            'resolution' => Schema::TYPE_DOUBLE. ' DEFAULT 4326',
-     */     
+    

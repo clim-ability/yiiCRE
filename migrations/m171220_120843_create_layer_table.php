@@ -20,7 +20,7 @@ class m171220_120843_create_layer_table extends Migration {
             'srid' => Schema::TYPE_INTEGER . ' DEFAULT 4326',
             'relative' => 'integer REFERENCES layer(id)',
             'rastered' => Schema::TYPE_BOOLEAN . ' DEFAULT TRUE',
-            'resolution' => Schema::TYPE_DOUBLE. ' DEFAULT 4326',
+            'resolution' => Schema::TYPE_DOUBLE. ' DEFAULT 0.1',
             'created_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
             'updated_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
         ]);
