@@ -9,6 +9,7 @@ use Yii;
 use yii\web\Controller;
 use app\models\Epoch;
 use app\models\Hazard;
+use app\models\Parameter;
 use app\models\Scenario;
 use app\models\Gis;
 //use yii\web\NotFoundHttpException;
@@ -25,39 +26,55 @@ class ApiController extends Controller
 {
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
-       $result = ['value'=>14.5, 'std'=>0.22];
 	   $result = Hazard::inqAllHazards();
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
+   
+    public function actionParameters($mode='visible-only') {
+       // returns list of all Parameters.
+	   $result = Parameter::inqAllParameters();
+       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+       return $result;
+   }    
+   
     public function actionEpochs($mode='visible-only') {
        // returns list of all Epochs.
 	   $result = Epoch::inqAllEpochs(); 
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }     
-    public function actionScenarios($mode='visible-only') {
+    
+	public function actionScenarios($mode='visible-only') {
        // returns list of all Scenarios.
-       $result = ['value'=>14.5, 'std'=>0.22];
 	   $result = Scenario::inqAllScenarios();
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
    
    
-   
-   public function actionHazardValue($latitude, $longitude, $hazard='', $epoch='', $scenario='', $resolution=0.1) 
+   public function actionHazardValue($latitude, $longitude, $hazard='', $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
+	   $hazard = Hazard::findBy($hazard);
        $epoch = Epoch::findBy($epoch);
-	   
-       $result = ['value'=>14.5, 'std'=>0.22];
-	   $result = Gis::getValue();
+	   $scenario = Scenario::findBy($scenario);
+	   $parameter = Parameter::findBy($parameter);
+	   $table = 'cddp_mean_rcp45_2021-2050_minus_knp';
+       $result = Gis::getRasterValue($table, 47.99, 7.85);
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
        
    }
    
-    
+   public function actionHazardValues($latitude, $longitude, $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
+   {
+	   $hazards = $result = Hazard::inqAllHazards();
+       $epoch = Epoch::findBy($epoch);
+       $result = Gis::getRasterValue('cddp_mean_rcp45_2021-2050_minus_knp', 47.99, 7.85);
+       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+       return $result;
+       
+   }    
    
 
 }

@@ -43,32 +43,20 @@ class Gis extends ActiveRecord
         return $epoch;
     }
 	
-	public static function getValue()
+	public static function getRasterValue($table, $latitude, $longitude)
 	{
-		$connection = Yii::$app->db2;
-/**
-        $command = $connection->createCommand("
-    SELECT SUM(bets.balance_return) AS total_win
-     , bets.user_id
-     , users.user_name
-     , users.user_status
-    FROM bets INNER JOIN users ON bets.user_id = users.id
-    WHERE users.user_status = 'verified'
-    AND bets.date_time > :start_date
-    GROUP BY bets.user_id
-    ORDER BY total_win DESC", [':start_date' => '1970-01-01']);
-**/
-	
+	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
+	$connection = Yii::$app->db2;
 	$sql =  "SELECT value/area as value, std , dlongitude, dlatitude "
 	. " FROM (SELECT SUM(ST_Area(ST_Intersection(geom, ellipse))) as area, "
 	. " SUM(cddp*ST_Area(ST_Intersection(geom, ellipse))) AS value, "
 	. " STDDEV(cddp) as std, "
 	. " regr_slope(cddp, ST_X(ST_Centroid(ST_Transform(geom, 4326)))) as dlongitude, "
 	. " regr_slope(cddp, ST_Y(ST_Centroid(ST_Transform(geom, 4326)))) as dlatitude "
-	. " FROM public.cddp_mean_rcp45_2021_2050_minus_knp, "
-	. " (SELECT ST_Buffer(ST_Transform(ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),7.85,47.983333), 900915), "
-	. " AVG(sqrt(1.2*ST_Area(ST_SetSRID(geom, 900915))))) AS ellipse "
-	. " FROM public.cddp_mean_rcp45_2021_2050_minus_knp) AS foo "
+	. " FROM public.\"cddp_mean_rcp45_2021-2050_minus_knp\", "
+	. " (SELECT ST_Buffer(ST_Transform(ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."), 25832), "
+	. " AVG(sqrt(1.2*ST_Area(ST_SetSRID(geom, 25832))))) AS ellipse "
+	. " FROM public.\"".$table."\") AS foo "
 	. " WHERE ST_Intersects(geom, ellipse)) AS sum";
 	
 	 $command = $connection->createCommand($sql);
@@ -76,5 +64,16 @@ class Gis extends ActiveRecord
 	 return $result;
 	}	
 	
+	
+	/** get elevation at point
+	 SELECT MAX(elev) AS elev FROM "asterglobaldemv2_polygons_cliped" WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),7.7,47.8))
+	
+	/**
+	get minimal distance to nearest river
+	
+	SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(7.85,47.983333),4326), 25832)) as dist
+     FROM public.clipped_georhena_rivers ORDER BY dist LIMIT 1;
+	
+	**/
    
 }
