@@ -60,7 +60,7 @@ class m180131_140843_add_layer_to_table extends Migration {
     
     private function addLayer($hazard, $param, $epoch, $scenario, $visible=true) {
 		$relativeTo = null;
-		if is_null($scenario) {
+		if (is_null($scenario)) {
 		   $visible = false;
 		} else {
 		   $meanItem = $this->findParam('mean'); 
