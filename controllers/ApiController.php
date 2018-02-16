@@ -26,28 +26,28 @@ class ApiController extends Controller
 {
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
-	   $result = Hazard::inqAllHazards();
+	   $result = Hazard::inqAllHazards('invisible'==$mode);
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
    
     public function actionParameters($mode='visible-only') {
        // returns list of all Parameters.
-	   $result = Parameter::inqAllParameters();
+	   $result = Parameter::inqAllParameters('invisible'==$mode);
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }    
    
     public function actionEpochs($mode='visible-only') {
        // returns list of all Epochs.
-	   $result = Epoch::inqAllEpochs(); 
+	   $result = Epoch::inqAllEpochs('invisible'==$mode); 
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }     
     
 	public function actionScenarios($mode='visible-only') {
        // returns list of all Scenarios.
-	   $result = Scenario::inqAllScenarios();
+	   $result = Scenario::inqAllScenarios('invisible'==$mode);
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
