@@ -62,6 +62,8 @@ class ApiController extends Controller
 	   $parameter = Parameter::findBy($parameter);
 	   $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
 	   if(is_string($table)) {
+		  $result['layer'] = $table;
+		  $result['layer_'.$hazard['name']] = $table;
 		  $relHazard = $hazard['name'].'_'.$epoch['name'].'_delta';
           $result[$relHazard.'_calculated'] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 		  $result[$relHazard.'_raster'] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
@@ -94,6 +96,7 @@ class ApiController extends Controller
 	   {
 		 $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
 	     if(is_string($table)) {
+		  $result['layer_'.$hazard['name']] = $table;
 		  $relHazard = $hazard['name'].'_'.$epoch['name'].'_delta';
           $result[$relHazard.'_calculated'] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 		  $result[$relHazard.'_raster'] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
