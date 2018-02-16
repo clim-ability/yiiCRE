@@ -68,7 +68,7 @@ class Gis extends ActiveRecord
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	$connection = Yii::$app->db2;
-	$sql =  "SELECT MAX(elev) AS elevation FROM "asterglobaldemv2_polygons_cliped" WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."))";
+	$sql =  "SELECT MAX(elev) AS elevation FROM \"asterglobaldemv2_polygons_cliped\" WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."))";
 	
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
