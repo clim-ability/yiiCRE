@@ -27,7 +27,7 @@ class m171220_140843_add_scenario_to_table extends Migration {
     }
     
     private function remScenario($name) {
-        return $this->delete('scenario', ['name' => $name]);     
+        return $this->delete('scenario', ['name' => str_replace($name,'.','')]);     
     }
     
     
