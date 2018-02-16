@@ -43,16 +43,16 @@ class Gis extends ActiveRecord
         return $epoch;
     }
 	
-	public static function getRasterValue($table, $latitude, $longitude)
+	public static function getRasterValue($table, $variable, $latitude, $longitude)
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	$connection = Yii::$app->db2;
 	$sql =  "SELECT value/area as value, std , dlongitude, dlatitude "
 	. " FROM (SELECT SUM(ST_Area(ST_Intersection(geom, ellipse))) as area, "
-	. " SUM(cddp*ST_Area(ST_Intersection(geom, ellipse))) AS value, "
-	. " STDDEV(cddp) as std, "
-	. " regr_slope(cddp, ST_X(ST_Centroid(ST_Transform(geom, 4326)))) as dlongitude, "
-	. " regr_slope(cddp, ST_Y(ST_Centroid(ST_Transform(geom, 4326)))) as dlatitude "
+	. " SUM(".$variable."*ST_Area(ST_Intersection(geom, ellipse))) AS value, "
+	. " STDDEV(".$variable.") as std, "
+	. " regr_slope(".$variable.", ST_X(ST_Centroid(ST_Transform(geom, 4326)))) as dlongitude, "
+	. " regr_slope(".$variable.", ST_Y(ST_Centroid(ST_Transform(geom, 4326)))) as dlatitude "
 	. " FROM public.\"".$table."\", "
 	. " (SELECT ST_Buffer(ST_Transform(ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."), 25832), "
 	. " AVG(sqrt(1.2*ST_Area(ST_SetSRID(geom, 25832))))) AS ellipse "
@@ -63,6 +63,17 @@ class Gis extends ActiveRecord
      $result = $command->queryOne();
 	 return $result;
 	}	
+	
+	public static function getIsoElevation($latitude, $longitude)
+	{
+	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
+	$connection = Yii::$app->db2;
+	$sql =  "SELECT MAX(elev) AS elevation FROM "asterglobaldemv2_polygons_cliped" WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."))";
+	
+	 $command = $connection->createCommand($sql);
+     $result = $command->queryOne();
+	 return $result;		
+	}
 	
 	public static function getRasterTable($hazard, $parameter, $epoch, $scenario)
 	{

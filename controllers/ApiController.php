@@ -55,13 +55,21 @@ class ApiController extends Controller
    
    public function actionHazardValue($latitude, $longitude, $hazard='', $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
+	   $result = [];
 	   $hazard = Hazard::findBy($hazard);
        $epoch = Epoch::findBy($epoch);
 	   $scenario = Scenario::findBy($scenario);
 	   $parameter = Parameter::findBy($parameter);
 	   //$table = 'cddp_mean_rcp45_2021-2050_minus_knp';
 	   $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
-       $result = Gis::getRasterValue($table, $latitude, $longitude);
+	   if(is_string($table)) {
+		  $relHazard = $hazard['name'].'_'.$epoch['name'].'_delta';
+          $result[$relHazard] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
+		  
+	   }
+	   $result['elevation_raster'] = Gis::getRasterValue('elevation_mean', 'elev', $latitude, $longitude);
+	   $result['elevation_iso'] = Gis::getIsoElevation($latitude, $longitude);
+	   //$result['table'] = $table;
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
        
