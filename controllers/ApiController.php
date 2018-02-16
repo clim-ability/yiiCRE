@@ -67,7 +67,7 @@ class ApiController extends Controller
 		  $result[$relHazard.'_raster'] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
 	      $refEpoch = Epoch::findBy('1970-2000');
 	      $refParameter = Parameter::findBy('mean');
-	      $table = Gis::getCalculatedValue($hazard, $refParameter, $refEpoch, null);
+	      $table = Gis::getRasterTable($hazard, $refParameter, $refEpoch, null);
 		   if(is_string($table)) {
 		      $refHazard = $hazard['name'].'_'.$refEpoch['name'].'_absolute';
               $result[$refHazard] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
