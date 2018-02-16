@@ -79,7 +79,7 @@ class Gis extends ActiveRecord
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	$connection = Yii::$app->db2;
-	$sql =  "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as dist "
+	$sql =  "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as distance, length, catchment_ as catchment "
      ." FROM public.clipped_georhena_rivers ORDER BY dist LIMIT 1;";
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
@@ -91,7 +91,7 @@ class Gis extends ActiveRecord
 	{
 	  $coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	  $connection = Yii::$app->db2;
-	  $sql = "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as dist, name, population"
+	  $sql = "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as distance, name, population"
            . " FROM public.georhena_main_cities_25832_shp ORDER BY dist LIMIT 1;";
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
