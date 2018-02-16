@@ -89,7 +89,8 @@ class m180131_140843_add_layer_to_table extends Migration {
             'visible' => $visible   
             ]);
         } else {
-		   echo "Name missing ".$name." \n";	
+		   echo "Name missing ".$name." \n";
+           var_dump($scenario);		   
 		}
       return true;        
     }
