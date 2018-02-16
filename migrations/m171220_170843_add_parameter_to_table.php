@@ -24,7 +24,7 @@ class m171220_170843_add_parameter_to_table extends Migration {
         ]);        
     }
     
-    private function remScenario($name) {
+    private function remParameter($name) {
         return $this->delete('parameter', ['name' => $name]);     
     }
     
