@@ -52,7 +52,7 @@ class m180131_140843_add_layer_to_table extends Migration {
 	}
 	
     private function makeName($hazard, $param, $epoch, $scenario) {
-		if (is_empty($scenario)) {
+		if (empty($scenario)) {
 		   return $hazard['name']."_".$param['name']."_".$epoch['name']."_knp";	
 		}
        return $hazard['name']."_".$param['name']."_".$scenario['name']."_".$epoch['name']."_minus_knp"; 
