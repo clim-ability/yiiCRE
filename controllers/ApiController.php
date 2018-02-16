@@ -60,15 +60,23 @@ class ApiController extends Controller
        $epoch = Epoch::findBy($epoch);
 	   $scenario = Scenario::findBy($scenario);
 	   $parameter = Parameter::findBy($parameter);
-	   //$table = 'cddp_mean_rcp45_2021-2050_minus_knp';
 	   $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
 	   if(is_string($table)) {
 		  $relHazard = $hazard['name'].'_'.$epoch['name'].'_delta';
           $result[$relHazard] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
 		  
+	      $refEpoch = Epoch::findBy('1970-2000');
+	      $refParameter = Parameter::findBy('mean');
+	      $table = Gis::getRasterTable($hazard, $refParameter, $refEpoch, null);
+		   if(is_string($table)) {
+		      $refHazard = $hazard['name'].'_'.$refEpoch['name'].'_absolute';
+              $result[$refHazard] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
+		   }
 	   }
 	   $result['elevation_raster'] = Gis::getRasterValue('elevation_mean', 'elev', $latitude, $longitude);
 	   $result['elevation_iso'] = Gis::getIsoElevation($latitude, $longitude);
+	   $result['distance_river'] = Gis::getDistanceToRiver($latitude, $longitude);
+	   $result['distance_city'] = Gis::getDistanceToCity($latitude, $longitude);
 	   //$result['table'] = $table;
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
@@ -91,21 +99,3 @@ class ApiController extends Controller
 }
 
 
-/**
- 
-  SELECT value/area as value, std , dlongitude, dlatitude FROM
-(SELECT SUM(ST_Area(ST_Intersection(geom, ellipse))) as area, SUM(cddp*ST_Area(ST_Intersection(geom, ellipse))) AS value, STDDEV(cddp) as std,  
-        regr_slope(cddp, ST_X(ST_Centroid(ST_Transform(geom, 4326)))) as dlongitude, regr_slope(cddp, ST_Y(ST_Centroid(ST_Transform(geom, 4326)))) as dlatitude
-  FROM public.cddp_mean_rcp45_2021_2050_minus_knp,
-(SELECT ST_Buffer(ST_Transform(ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326)
-       ,7.85,47.983333), 900915), AVG(sqrt(1.2*ST_Area(ST_SetSRID(geom, 900915))))) AS ellipse
-      FROM public.cddp_mean_rcp45_2021_2050_minus_knp) AS foo 
-  WHERE ST_Intersects(geom, ellipse)) AS sum
-  
-  
-  
-  8:X:Longitude
-  48:Y:Latitude
-  
- 
- */

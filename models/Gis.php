@@ -68,12 +68,35 @@ class Gis extends ActiveRecord
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	$connection = Yii::$app->db2;
-	$sql =  "SELECT MAX(elev) AS elevation FROM \"asterglobaldemv2_polygons_cliped\" WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."))";
-	
+	$sql =  "SELECT MAX(elev) AS elevation FROM \"asterglobaldemv2_polygons_cliped\" "
+	   ." WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."))";
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
 	 return $result;		
 	}
+	
+	public static function getDistanceToRiver($latitude, $longitude)
+	{
+	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
+	$connection = Yii::$app->db2;
+	$sql =  "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as dist "
+     ." FROM public.clipped_georhena_rivers ORDER BY dist LIMIT 1;";
+	 $command = $connection->createCommand($sql);
+     $result = $command->queryOne();
+	 return $result;		
+	}	
+	
+	
+	public static function getDistanceToCity($latitude, $longitude)
+	{
+	  $coordinate = ''.(float)$longitude.','.(float)$latitude.'';
+	  $connection = Yii::$app->db2;
+	  $sql = "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as dist, name, population"
+           . " FROM public.georhena_main_cities_25832_shp ORDER BY dist LIMIT 1;";
+	 $command = $connection->createCommand($sql);
+     $result = $command->queryOne();
+	 return $result;		
+	}	
 	
 	public static function getRasterTable($hazard, $parameter, $epoch, $scenario)
 	{
@@ -86,9 +109,7 @@ class Gis extends ActiveRecord
        return $hazard['name']."_".$parameter['name']."_".$scenario['name']."_".$epoch['name']."_minus_knp"; 
 	}		
 	
-	/** get elevation at point
-	 SELECT MAX(elev) AS elev FROM "asterglobaldemv2_polygons_cliped" WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),7.7,47.8))
-	
+
 	/**
 	get minimal distance to nearest river
 	
