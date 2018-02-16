@@ -30,15 +30,16 @@ class m180131_140843_add_layer_to_table extends Migration {
     
 	private function handleCombinations($add = true)
 	{
+          foreach($this::usedScenarios($add) as $scenarioName)
+		  {		
+		    $scenarioItem = $this->findScenario($scenarioName); 		
 	  foreach($this::usedParameter() as $paramName)
 	  {
 		$paramItem = $this->findParam($paramName);  
         foreach($this::usedHazards() as $hazardName)
 		{
 		  $hazardItem = $this->findHazard($hazardName);
-          foreach($this::usedScenarios($add) as $scenarioName)
-		  {		
-		    $scenarioItem = $this->findScenario($scenarioName); 
+
             foreach($this::usedEpochs() as $epochName)
 		    {	
 			   $epochItem = $this->findEpoch($epochName);
