@@ -66,7 +66,7 @@ class m180131_140843_add_layer_to_table extends Migration {
 		   $meanItem = $this->findParam('mean'); 
 		   $relativeName = $this->makeName($hazard, $meanItem, $epoch, null);
 		   $layerItem = $this->findLayer($relativeName);
-		   if (!is_null()) {
+		   if (!is_null($layerItem)) {
 		      $relativeTo = $layerItem['id'];
 		   }
 		}
