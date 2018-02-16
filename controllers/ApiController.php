@@ -63,7 +63,7 @@ class ApiController extends Controller
 	   $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
 	   if(is_string($table)) {
 		  $relHazard = $hazard['name'].'_'.$epoch['name'].'_delta';
-          $result[$relHazard.'_calc'] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
+          $result[$relHazard.'_calculated'] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 		  $result[$relHazard.'_raster'] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
 	      $refEpoch = Epoch::findBy('1970-2000');
 	      $refParameter = Parameter::findBy('mean');
@@ -73,11 +73,11 @@ class ApiController extends Controller
               $result[$refHazard] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 		   }
 	   }
-	   $result['elevation_raster'] = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
-	   $result['elevation_iso'] = Gis::getIsoElevation($latitude, $longitude);
-	   $result['distance_river'] = Gis::getDistanceToRiver($latitude, $longitude);
-	   $result['distance_city'] = Gis::getDistanceToCity($latitude, $longitude);
-	   //$result['table'] = $table;
+	   $result['elevation_calculated'] = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
+	   $result['elevation_iso_raster'] = Gis::getIsoElevation($latitude, $longitude);
+	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
+	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);
+
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
        
@@ -85,11 +85,31 @@ class ApiController extends Controller
    
    public function actionHazardValues($latitude, $longitude, $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
+	   $result = [];
 	   $hazards = Hazard::inqAllHazards();
        $epoch = Epoch::findBy($epoch);
 	   $scenario = Scenario::findBy($scenario);
 	   $parameter = Parameter::findBy($parameter);
-       $result = Gis::getCalculatedValue('cddp_mean_rcp45_2021-2050_minus_knp', 47.99, 7.85);
+	   foreach($hazards as $hazard)
+	   {
+		 $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
+	     if(is_string($table)) {
+		  $relHazard = $hazard['name'].'_'.$epoch['name'].'_delta';
+          $result[$relHazard.'_calculated'] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
+		  $result[$relHazard.'_raster'] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
+	      $refEpoch = Epoch::findBy('1970-2000');
+	      $refParameter = Parameter::findBy('mean');
+	      $table = Gis::getRasterTable($hazard, $refParameter, $refEpoch, null);
+		   if(is_string($table)) {
+		      $refHazard = $hazard['name'].'_'.$refEpoch['name'].'_absolute';
+              $result[$refHazard] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
+		   }
+	     } 
+	   }
+	   $result['elevation_calculated'] = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
+	   $result['elevation_iso_raster'] = Gis::getIsoElevation($latitude, $longitude);
+	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
+	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
        

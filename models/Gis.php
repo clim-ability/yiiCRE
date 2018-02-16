@@ -69,7 +69,7 @@ class Gis extends ActiveRecord
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	$connection = Yii::$app->db2;
-	$sql =  "SELECT ".$variable." "
+	$sql =  "SELECT ".$variable." AS value "
 	 . " FROM public.\"".$table."\" "
 	 . " WHERE ST_Contains(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832))";
 	 $command = $connection->createCommand($sql);
