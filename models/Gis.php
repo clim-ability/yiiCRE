@@ -53,7 +53,7 @@ class Gis extends ActiveRecord
 	. " STDDEV(cddp) as std, "
 	. " regr_slope(cddp, ST_X(ST_Centroid(ST_Transform(geom, 4326)))) as dlongitude, "
 	. " regr_slope(cddp, ST_Y(ST_Centroid(ST_Transform(geom, 4326)))) as dlatitude "
-	. " FROM public.\"cddp_mean_rcp45_2021-2050_minus_knp\", "
+	. " FROM public.\"".$table."\", "
 	. " (SELECT ST_Buffer(ST_Transform(ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."), 25832), "
 	. " AVG(sqrt(1.2*ST_Area(ST_SetSRID(geom, 25832))))) AS ellipse "
 	. " FROM public.\"".$table."\") AS foo "
@@ -64,6 +64,16 @@ class Gis extends ActiveRecord
 	 return $result;
 	}	
 	
+	public static function getRasterTable($hazard, $parameter, $epoch, $scenario)
+	{
+		if (empty($hazard) or empty($parameter) or empty($epoch)) {
+		   return null;
+		}
+		if (empty($scenario)) {
+		   return $hazard['name']."_".$parameter['name']."_".$epoch['name']."_knp";	
+		}
+       return $hazard['name']."_".$parameter['name']."_".$scenario['name']."_".$epoch['name']."_minus_knp"; 
+	}		
 	
 	/** get elevation at point
 	 SELECT MAX(elev) AS elev FROM "asterglobaldemv2_polygons_cliped" WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),7.7,47.8))

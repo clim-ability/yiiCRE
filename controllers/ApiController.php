@@ -59,8 +59,9 @@ class ApiController extends Controller
        $epoch = Epoch::findBy($epoch);
 	   $scenario = Scenario::findBy($scenario);
 	   $parameter = Parameter::findBy($parameter);
-	   $table = 'cddp_mean_rcp45_2021-2050_minus_knp';
-       $result = Gis::getRasterValue($table, 47.99, 7.85);
+	   //$table = 'cddp_mean_rcp45_2021-2050_minus_knp';
+	   $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
+       $result = Gis::getRasterValue($table, $latitude, $longitude);
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
        
@@ -68,8 +69,10 @@ class ApiController extends Controller
    
    public function actionHazardValues($latitude, $longitude, $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
-	   $hazards = $result = Hazard::inqAllHazards();
+	   $hazards = Hazard::inqAllHazards();
        $epoch = Epoch::findBy($epoch);
+	   $scenario = Scenario::findBy($scenario);
+	   $parameter = Parameter::findBy($parameter);
        $result = Gis::getRasterValue('cddp_mean_rcp45_2021-2050_minus_knp', 47.99, 7.85);
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
