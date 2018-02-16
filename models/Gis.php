@@ -43,7 +43,7 @@ class Gis extends ActiveRecord
         return $epoch;
     }
 	
-	public static function getRasterValue($table, $variable, $latitude, $longitude)
+	public static function getCalculatedValue($table, $variable, $latitude, $longitude)
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	$connection = Yii::$app->db2;
@@ -63,6 +63,19 @@ class Gis extends ActiveRecord
      $result = $command->queryOne();
 	 return $result;
 	}	
+	
+	
+	public static function getRasterValue($table, $variable, $latitude, $longitude)
+	{
+	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
+	$connection = Yii::$app->db2;
+	$sql =  "SELECT ".$variable." "
+	 . " FROM public.\"".$table."\") AS foo "
+	 . " WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."))";
+	 $command = $connection->createCommand($sql);
+     $result = $command->queryOne();
+	 return $result;
+	}
 	
 	public static function getIsoElevation($latitude, $longitude)
 	{
