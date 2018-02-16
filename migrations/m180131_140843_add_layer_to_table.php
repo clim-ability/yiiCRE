@@ -13,9 +13,12 @@ class m180131_140843_add_layer_to_table extends Migration {
     private static function usedEpochs()
 	{ return ['1970-2000', '2021-2050', '2041-2070', '2071-2100']; }	
 	
-    private static function usedScenarios()
-	{ return ['', 'rcp45', 'rcp85']; }
-
+    private static function usedScenarios($add)
+	{ if ($add)
+		{ return ['', 'rcp45', 'rcp85']; } 
+	  else
+		{ return ['rcp45', 'rcp85', '']; }   
+	}
 	
     public function safeUp() {
        $this->handleCombinations(true);
@@ -33,7 +36,7 @@ class m180131_140843_add_layer_to_table extends Migration {
         foreach($this::usedHazards() as $hazardName)
 		{
 		  $hazardItem = $this->findHazard($hazardName);
-          foreach($this::usedScenarios() as $scenarioName)
+          foreach($this::usedScenarios($add) as $scenarioName)
 		  {		
 		    $scenarioItem = $this->findScenario($scenarioName); 
             foreach($this::usedEpochs() as $epochName)
