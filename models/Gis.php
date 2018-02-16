@@ -81,7 +81,7 @@ class Gis extends ActiveRecord
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	$connection = Yii::$app->db2;
-	$sql =  "SELECT MAX(elev) AS elevation FROM \"asterglobaldemv2_polygons_cliped\" "
+	$sql =  "SELECT MAX(elev) AS value FROM \"asterglobaldemv2_polygons_cliped\" "
 	   ." WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."))";
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
@@ -92,8 +92,8 @@ class Gis extends ActiveRecord
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	$connection = Yii::$app->db2;
-	$sql =  "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as distance, length, catchment_ as catchment "
-     ." FROM public.clipped_georhena_rivers ORDER BY distance LIMIT 1;";
+	$sql =  "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as distance, cum_len as length, catchment_ as catchment "
+     ." FROM public.clipped_georhena_rivers WHERE catchment_ > 1.0 ORDER BY distance LIMIT 1;";
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
 	 return $result;		
