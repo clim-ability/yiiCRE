@@ -73,6 +73,7 @@ class m180131_140843_add_layer_to_table extends Migration {
         $name = $this->makeName($hazard, $param, $epoch, $scenario);
 		$srid = 25832;
 		if($this->checkTableExists($name)) {
+		  echo "Name exists ".$name." \n";
    	      return $this->insert('layer', [
             'name' => $name,
             'description' => $name,
@@ -84,10 +85,12 @@ class m180131_140843_add_layer_to_table extends Migration {
             'layer' => $name,
             'SRID' => $srid,
             'relative' => $realtiveTo,
-			'rastered' => true,
+            'rastered' => true,
             'visible' => $visible   
             ]);
-        }
+        } else {
+		   echo "Name missing ".$name." \n";	
+		}
       return true;        
     }
     
