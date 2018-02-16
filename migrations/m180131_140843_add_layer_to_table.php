@@ -78,7 +78,7 @@ class m180131_140843_add_layer_to_table extends Migration {
             'name' => $name,
             'description' => $name,
             'hazard_id' => $hazard['id'],
-            'parameter_id' => $parameter['id'],
+            'parameter_id' => $param['id'],
             'epoch_id' => $epoch['id'],
             'scenario_id' => $scenario['id'],
             'variable' => $hazard['name'],

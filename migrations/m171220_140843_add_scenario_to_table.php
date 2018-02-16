@@ -20,7 +20,7 @@ class m171220_140843_add_scenario_to_table extends Migration {
 
     private function addScenario($name, $visible=true) {
         return $this->insert('scenario', [
-            'name' => $name,
+            'name' => str_replace($name,'.',''),
             'description' => $name,
             'visible' => $visible   
         ]);        
