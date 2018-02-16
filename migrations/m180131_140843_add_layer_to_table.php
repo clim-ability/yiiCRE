@@ -84,7 +84,7 @@ class m180131_140843_add_layer_to_table extends Migration {
             'variable' => $hazard['name'],
             'layer' => $name,
             'SRID' => $srid,
-            'relative' => $realtiveTo,
+            'relative' => $relativeTo,
             'rastered' => true,
             'visible' => $visible   
             ]);
