@@ -88,6 +88,17 @@ class Gis extends ActiveRecord
 	 return $result;		
 	}
 	
+	public static function getCountry($latitude, $longitude)
+	{
+	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
+	$connection = Yii::$app->db2;
+	$sql = "SELECT nuts0 AS country FROM \"borders_dissolved_adminboundaries\" "
+	     . " WHERE ST_Contains(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) LIMIT 1";
+	 $command = $connection->createCommand($sql);
+     $result = $command->queryOne();
+	 return $result;		
+	}	
+	
 	public static function getDistanceToRiver($latitude, $longitude)
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';

@@ -79,6 +79,7 @@ class ApiController extends Controller
 	   $result['elevation_iso_raster'] = Gis::getIsoElevation($latitude, $longitude);
 	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
 	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);
+	   $result['country'] = Gis::getCountry($latitude, $longitude);
 
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
@@ -112,7 +113,8 @@ class ApiController extends Controller
 	   $result['elevation_calculated'] = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
 	   $result['elevation_iso_raster'] = Gis::getIsoElevation($latitude, $longitude);
 	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
-	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);	   
+	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);
+       $result['country'] = Gis::getCountry($latitude, $longitude);	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
        
