@@ -31,7 +31,6 @@ abstract class BaseMigrateController extends Controller
      */
     const BASE_MIGRATION = 'm000000_000000_base';
 
-
     /**
      * @var string the default command action.
      */
@@ -84,7 +83,6 @@ abstract class BaseMigrateController extends Controller
      * or a file path.
      */
     public $templateFile;
-
     /**
      * @var bool indicates whether the console output should be compacted.
      * If this is set to true, the individual commands ran within the migration will not be output to the console.
@@ -93,8 +91,9 @@ abstract class BaseMigrateController extends Controller
      */
     public $compact = false;
 
+
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function options($actionID)
     {
@@ -644,7 +643,7 @@ abstract class BaseMigrateController extends Controller
                 'namespace' => $namespace,
             ]);
             FileHelper::createDirectory($migrationPath);
-            file_put_contents($file, $content);
+            file_put_contents($file, $content, LOCK_EX);
             $this->stdout("New migration created successfully.\n", Console::FG_GREEN);
         }
     }

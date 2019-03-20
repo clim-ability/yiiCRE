@@ -10,6 +10,7 @@ namespace yii\db\mssql;
 use yii\db\CheckConstraint;
 use yii\db\ColumnSchema;
 use yii\db\Constraint;
+use yii\db\ConstraintFinderInterface;
 use yii\db\ConstraintFinderTrait;
 use yii\db\DefaultValueConstraint;
 use yii\db\ForeignKeyConstraint;
@@ -23,7 +24,7 @@ use yii\helpers\ArrayHelper;
  * @author Timur Ruziev <resurtm@gmail.com>
  * @since 2.0
  */
-class Schema extends \yii\db\Schema
+class Schema extends \yii\db\Schema implements ConstraintFinderInterface
 {
     use ViewFinderTrait;
     use ConstraintFinderTrait;
@@ -44,7 +45,7 @@ class Schema extends \yii\db\Schema
         'decimal' => self::TYPE_DECIMAL,
         'smallmoney' => self::TYPE_MONEY,
         'int' => self::TYPE_INTEGER,
-        'tinyint' => self::TYPE_SMALLINT,
+        'tinyint' => self::TYPE_TINYINT,
         'money' => self::TYPE_MONEY,
         // approximate numbers
         'float' => self::TYPE_FLOAT,
@@ -78,6 +79,15 @@ class Schema extends \yii\db\Schema
         'xml' => self::TYPE_STRING,
         'table' => self::TYPE_STRING,
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $tableQuoteCharacter = ['[', ']'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $columnQuoteCharacter = ['[', ']'];
 
 
     /**
@@ -117,21 +127,24 @@ class Schema extends \yii\db\Schema
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
+     * @see https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-database-principals-transact-sql
      */
     protected function findSchemaNames()
     {
-        $sql = <<<'SQL'
-SELECT ns.nspname AS schema_name
-FROM pg_namespace ns
-WHERE ns.nspname != 'information_schema' AND ns.nspname NOT LIKE 'pg_%'
-ORDER BY ns.nspname
+        static $sql = <<<'SQL'
+SELECT [s].[name]
+FROM [sys].[schemas] AS [s]
+INNER JOIN [sys].[database_principals] AS [p] ON [p].[principal_id] = [s].[principal_id]
+WHERE [p].[is_fixed_role] = 0 AND [p].[sid] IS NOT NULL
+ORDER BY [s].[name] ASC
 SQL;
+
         return $this->db->createCommand($sql)->queryColumn();
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function findTableNames($schema = '')
     {
@@ -150,7 +163,7 @@ SQL;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function loadTableSchema($name)
     {
@@ -166,7 +179,7 @@ SQL;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function loadTablePrimaryKey($tableName)
     {
@@ -174,7 +187,7 @@ SQL;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function loadTableForeignKeys($tableName)
     {
@@ -182,7 +195,7 @@ SQL;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function loadTableIndexes($tableName)
     {
@@ -221,7 +234,7 @@ SQL;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function loadTableUniques($tableName)
     {
@@ -229,7 +242,7 @@ SQL;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function loadTableChecks($tableName)
     {
@@ -237,7 +250,7 @@ SQL;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function loadTableDefaultValues($tableName)
     {
@@ -245,7 +258,7 @@ SQL;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createSavepoint($name)
     {
@@ -253,7 +266,7 @@ SQL;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function releaseSavepoint($name)
     {
@@ -261,33 +274,11 @@ SQL;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rollBackSavepoint($name)
     {
         $this->db->createCommand("ROLLBACK TRANSACTION $name")->execute();
-    }
-
-    /**
-     * Quotes a table name for use in a query.
-     * A simple table name has no schema prefix.
-     * @param string $name table name.
-     * @return string the properly quoted table name.
-     */
-    public function quoteSimpleTableName($name)
-    {
-        return strpos($name, '[') === false ? "[{$name}]" : $name;
-    }
-
-    /**
-     * Quotes a column name for use in a query.
-     * A simple column name has no prefix.
-     * @param string $name column name.
-     * @return string the properly quoted column name.
-     */
-    public function quoteSimpleColumnName($name)
-    {
-        return strpos($name, '[') === false && $name !== '*' ? "[{$name}]" : $name;
     }
 
     /**
@@ -552,7 +543,7 @@ SQL;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function findViewNames($schema = '')
     {
