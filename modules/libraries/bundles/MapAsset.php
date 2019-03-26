@@ -18,30 +18,22 @@ use yii\web\AssetBundle;
  */
 class MapAsset extends AssetBundle
 {
-    public $sourcePath = '@app/modules/libraries/assets/eonet';
+    public $sourcePath = '@app/modules/libraries/assets/map';
     //public $basePath = '@webroot';
     //public $baseUrl = '@web';
     // List of css-files can also be defined in config/assets.php!
     public $css = [
-        'css/spaceapp.css',
+        'css/map.css',
     ];
     // List of js-files can also be defined in config/assets.php!
     public $js = [
-        'js/globe.js',
-        'js/maps.js',
-        'js/charts.js',
-        'js/tambora.js',
-        'js/eonet.js',
-        'js/spaceapp.js',
+        'js/map.js',
     ];
     public $depends = [
-        'app\modules\libraries\bundles\OpenlayersAsset',
+        //'app\modules\libraries\bundles\OpenlayersAsset',
+	    'app\modules\libraries\bundles\LeafletAsset',
         'yii\web\JqueryAsset', //'app\modules\libraries\bundles\JqueryAsset',
         'yii\bootstrap\BootstrapAsset',
-        'app\modules\libraries\bundles\LockrAsset',        
-        'app\modules\libraries\bundles\D3Asset',
-        'app\modules\libraries\bundles\DynaTableAsset',        
-        'app\modules\libraries\bundles\ThreeAsset',     
         'app\modules\libraries\bundles\TweenAsset',  
     ];
    
