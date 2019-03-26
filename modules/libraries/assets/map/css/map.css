@@ -2,7 +2,7 @@ html body {
  font-family: "Merriweather Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
-#map{ width: 760px; height: 750px; }
+#map{ width: 95%; height: 750px; }
 
 .legend {
 	line-height: 18px;

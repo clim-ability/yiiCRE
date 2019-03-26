@@ -14,7 +14,6 @@
 // create image layer indicator pies
 var imageUrl = mapBaseUrl + '/img/pie_indicator.png',
     imageBounds = [[49.772, 6.66], [46.66, 9.12]];
-
 L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
  var tmo_region = L.tileLayer.wms("http://climability.uni-landau.de/cgi-bin/qgis_mapserv.fcgi?map=/var/www/html/climability/cgi-bin/climability_TMO.qgs", {
@@ -26,16 +25,76 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 //locate by click
 var popup = L.popup();
-
 function onMapClick(e) {
     popup
         .setLatLng(e.latlng)
         .setContent("I am here: " + e.latlng.toString())
         .openOn(map);
 }
-
 map.on('click', onMapClick);
 
+
+// Create Leaflet Control Object for Legend
+var legend = L.control({position: 'bottomright'});
+
+// Function that runs when legend is added to map
+legend.onAdd = function (map) {
+
+	// Create Div Element and Populate it with HTML
+	var div = L.DomUtil.create('div', 'legend');		    
+			div.innerHTML += '<b>Climate Indicators</b><br />';
+			div.innerHTML += 'near future<br />';
+			div.innerHTML += '<small></small><br />';  
+			div.innerHTML += '<i style="background: #FF0000"></i><p>tropical nights</p>';
+			div.innerHTML += '<i style="background: #CC6600"></i><p>dry days</p>';
+			div.innerHTML += '<i style="background: #33FFFF"></i><p>annual rainfall</p>';
+			div.innerHTML += '<i style="background: #33FF66"></i><p>rain summer</p>';
+			div.innerHTML += '<i style="background: #9999CC"></i><p>rain winter</p>';
+      div.innerHTML += '<i style="background: #3333FF"></i><p>frost days</p>';
+
+	// Return the Legend div containing the HTML content
+	return div;
+};
+
+legend.addTo(map);
+
+var geojsonLayerWells = new L.GeoJSON();
+
+function loadGeoJson(data) {
+    console.log(data);
+    geojsonLayerWells.addData(data);
+    map.addLayer(geojsonLayerWells);
+};
+
+$hazard='', $epoch='', $scenario=''
+
+map.on('moveend', function(){
+ if(map.getZoom() > wellmaxzoom){
+    var geoJsonUrl ='https://gis.clim-ability.eu/api/hazard-geom'; 
+    var defaultParameters = {
+        hazard: 'WFS',
+        epoch: '1.0.0',
+        scenario: 'getFeature',
+        };
+
+    var customParams = {
+        bbox: map.getBounds().toBBoxString(),
+        };
+    var parameters = L.Util.extend(defaultParameters, customParams);
+    //console.log(geoJsonUrl + L.Util.getParamString(parameters));
+
+  $.ajax({
+        url: geoJsonUrl + L.Util.getParamString(parameters),
+        datatype: 'json',
+        jsonCallback: 'getJson',
+        success: loadGeoJson
+        });
+    }else{
+    map.removeLayer(geojsonLayerWells);
+    };
+});
+
+/*
 
 // Null variable that will hold our data
   var clim_ex = null;
@@ -184,29 +243,8 @@ $( "#addWinterRain" ).click(function() {
     });
 });
 
-// Create Leaflet Control Object for Legend
-var legend = L.control({position: 'bottomright'});
+*/
 
-// Function that runs when legend is added to map
-legend.onAdd = function (map) {
-
-	// Create Div Element and Populate it with HTML
-	var div = L.DomUtil.create('div', 'legend');		    
-			div.innerHTML += '<b>Climate Indicators</b><br />';
-			div.innerHTML += 'near future<br />';
-			div.innerHTML += '<small></small><br />';  
-			div.innerHTML += '<i style="background: #FF0000"></i><p>tropical nights</p>';
-			div.innerHTML += '<i style="background: #CC6600"></i><p>dry days</p>';
-			div.innerHTML += '<i style="background: #33FFFF"></i><p>annual rainfall</p>';
-			div.innerHTML += '<i style="background: #33FF66"></i><p>rain summer</p>';
-			div.innerHTML += '<i style="background: #9999CC"></i><p>rain winter</p>';
-      div.innerHTML += '<i style="background: #3333FF"></i><p>frost days</p>';
-
-	// Return the Legend div containing the HTML content
-	return div;
-};
-
-legend.addTo(map);
 
 
   var baseMaps = {};    

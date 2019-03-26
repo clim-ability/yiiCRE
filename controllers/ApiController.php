@@ -120,6 +120,26 @@ class ApiController extends Controller
        
    }    
    
+   public function actionHazardGeom($hazard='', $epoch='', $scenario='', $parameter='mean', $resolution=0.1, $bbox='') 
+   {
+	   $hazard = Hazard::findBy($hazard);
+       $epoch = Epoch::findBy($epoch);
+	   $scenario = Scenario::findBy($scenario);
+	   $parameter = Parameter::findBy($parameter);
+	   $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
+	   $features = [];
+	   if(is_string($table)) {
+		  $rows = Gis::getHazardGeometry($table, $hazard['name'], $bbox);
+          foreach($row in $rows) {
+		     $feature = ['type' => 'Feature', 'geometry' => json_decode($row['geojson'], true), 'properties' => ['value' => $row['value']]];
+             $features[] = $feature;
+		  }
+	   }
+       $result = ['type' => 'FeatureCollection', 'features'  => $features];
+       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+       return $result;
+   }   
+   
 
 }
 

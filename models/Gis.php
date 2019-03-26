@@ -76,6 +76,24 @@ class Gis extends ActiveRecord
      $result = $command->queryOne();
 	 return $result;
 	}
+
+	
+	public static function getHazardGeometry($table, $variable, $bbox)
+	{
+	 $sql =  "SELECT ".$variable." AS value "
+	  . "ST_AsGeoJSON(ST_Transform((geom),4326),6) AS geojson "
+      . " FROM public.\"".$table."\" ";
+
+     if (is_string($bbox) && (strlen($bbox) > 6)) {
+       $bbox = explode(',', $bbox);
+	   if (4 == sizeof($bbox)) {
+         $sql = $sql . " WHERE ST_Transform(geom, 4326) && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].", ".$bbox[1]."), ST_Point(".$bbox[2].", ".$bbox[3].")),4326);";
+       }
+     }		
+	 $command = $connection->createCommand($sql);
+     $result = $command->queryAll();
+	 return $result;
+	}
 	
 	public static function getIsoElevation($latitude, $longitude)
 	{
@@ -109,7 +127,6 @@ class Gis extends ActiveRecord
      $result = $command->queryOne();
 	 return $result;		
 	}	
-	
 	
 	public static function getDistanceToCity($latitude, $longitude)
 	{
