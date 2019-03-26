@@ -12,7 +12,7 @@
     }).addTo(map);
 
 // create image layer indicator pies
-var imageUrl = './img/pie_indicator.png',
+var imageUrl = mapBaseUrl + '/img/pie_indicator.png',
     imageBounds = [[49.772, 6.66], [46.66, 9.12]];
 
 L.imageOverlay(imageUrl, imageBounds).addTo(map);
