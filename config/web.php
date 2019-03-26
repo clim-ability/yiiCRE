@@ -48,6 +48,7 @@ $config = [
                 ],
             ],
         ],
+        'assetManager' => require __DIR__.'/assets.php',
         'db' => $db,
         'db2' => $db2,
         /*
@@ -60,6 +61,15 @@ $config = [
         */
     ],
     'params' => $params,
+    'modules' => [
+        'gii' => [
+            'class' => 'yii\gii\Module',
+        ],
+        'libraries' => [
+            'class' => 'app\modules\libraries\Module',
+        ],
+    ],
+
 ];
 
 if (YII_ENV_DEV) {
