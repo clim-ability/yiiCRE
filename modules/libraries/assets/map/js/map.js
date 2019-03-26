@@ -12,7 +12,7 @@
     }).addTo(map);
 
 // create image layer indicator pies
-var imageUrl = mapBaseUrl + '/img/pie_indicator.png',
+var imageUrl = mapBaseUrl + '/images/pie_indicator.png',
     imageBounds = [[49.772, 6.66], [46.66, 9.12]];
 L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
@@ -70,7 +70,7 @@ $hazard='', $epoch='', $scenario=''
 
 map.on('moveend', function(){
  if(map.getZoom() > wellmaxzoom){
-    var geoJsonUrl ='https://gis.clim-ability.eu/api/hazard-geom'; 
+    var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
     var defaultParameters = {
         hazard: 'WFS',
         epoch: '1.0.0',
