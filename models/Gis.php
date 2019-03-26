@@ -89,7 +89,8 @@ class Gis extends ActiveRecord
 	   if (4 == sizeof($bbox)) {
          $sql = $sql . " WHERE ST_Transform(geom, 4326) && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].", ".$bbox[1]."), ST_Point(".$bbox[2].", ".$bbox[3].")),4326);";
        }
-     }		
+     }	
+     $connection = Yii::$app->db2;	 
 	 $command = $connection->createCommand($sql);
      $result = $command->queryAll();
 	 return $result;

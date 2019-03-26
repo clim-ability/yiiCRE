@@ -130,7 +130,7 @@ class ApiController extends Controller
 	   $features = [];
 	   if(is_string($table)) {
 		  $rows = Gis::getHazardGeometry($table, $hazard['name'], $bbox);
-          foreach($row in $rows) {
+          foreach($rows as $row) {
 		     $feature = ['type' => 'Feature', 'geometry' => json_decode($row['geojson'], true), 'properties' => ['value' => $row['value']]];
              $features[] = $feature;
 		  }
