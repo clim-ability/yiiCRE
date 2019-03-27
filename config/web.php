@@ -76,7 +76,7 @@ $config = [
 var_dump(inqDbConnections());
 
 foreach(inqDbConnections() as $dbkey=>$dbdata) {
- var_dump(str_replace(':','_',$dbkey));
+ //var_dump(str_replace(':','_',$dbkey));
 	$config['components'][str_replace($dbkey,':','_')] = [
      'class' => 'yii\db\Connection',
      'dsn' => $dbdata['pdo'],
@@ -89,7 +89,7 @@ foreach(inqDbConnections() as $dbkey=>$dbdata) {
      //'schemaCache' => 'cache',
     ];
 }
-var_dump($config['components']);
+//var_dump($config['components']);
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
