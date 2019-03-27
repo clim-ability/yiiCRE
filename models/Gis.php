@@ -91,6 +91,7 @@ class Gis extends ActiveRecord
        }
      }	
      $connection = Yii::$app->db2;	 
+	 $connection = Yii::$app->dbs['pgsql:gisdata'];
 	 $command = $connection->createCommand($sql);
      $result = $command->queryAll();
 	 return $result;

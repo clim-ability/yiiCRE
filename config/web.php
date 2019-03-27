@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/local.php';
+require_once __DIR__ . '/../../db-config.php';
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $db2 = require __DIR__ . '/db2.php';
@@ -49,6 +50,7 @@ $config = [
             ],
         ],
         'assetManager' => require __DIR__.'/assets.php',
+		'dbs' => inqDbConnections(),
         'db' => $db,
         'db2' => $db2,
         /*
