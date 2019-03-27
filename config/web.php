@@ -92,7 +92,7 @@ var_dump('hghg');
      //'schemaCache' => 'cache',
     ];
 }
-//var_dump($config['components']);
+var_dump($config['components']);
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
