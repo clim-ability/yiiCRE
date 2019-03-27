@@ -72,9 +72,9 @@ $config = [
     ],
 
 ];
-
-//var_dump(inqDbConnections());
-
+var_dump('  mkmkmk ');
+var_dump(inqDbConnections());
+var_dump('  mkmkmk ');
 foreach(inqDbConnections() as $dbkey=>$dbdata) {
 // var_dump(str_replace($dbkey,':','_'));
 var_dump($dbkey);
