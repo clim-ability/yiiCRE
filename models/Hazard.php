@@ -16,7 +16,7 @@ class Hazard extends ActiveRecord
 	
     public static function getDb() 
 	{
-        return Yii::$app->dbgisdata;
+        return Yii::$app->db_gisdata;
     }
 
     public static function tableName()
