@@ -14,6 +14,10 @@ class Hazard extends ActiveRecord
 //    public $year_end;
 //	  public $visible;
 	
+    public static function getDb() 
+	{
+        return Yii::$app->pgsql_gisdata;
+    }
 
     public static function tableName()
     {

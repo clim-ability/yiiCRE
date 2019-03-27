@@ -46,7 +46,8 @@ class Gis extends ActiveRecord
 	public static function getCalculatedValue($table, $variable, $latitude, $longitude)
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
-	$connection = Yii::$app->db2;
+	//$connection = Yii::$app->db2;
+	$connection = Yii::$app->pgsql_gisdata;
 	$sql =  "SELECT value/area as value, std , dlongitude, dlatitude "
 	. " FROM (SELECT SUM(ST_Area(ST_Intersection(geom, ellipse))) as area, "
 	. " SUM(".$variable."*ST_Area(ST_Intersection(geom, ellipse))) AS value, "
@@ -68,7 +69,8 @@ class Gis extends ActiveRecord
 	public static function getRasterValue($table, $variable, $latitude, $longitude)
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
-	$connection = Yii::$app->db2;
+	//$connection = Yii::$app->db2;
+	$connection = Yii::$app->pgsql_gisdata;
 	$sql =  "SELECT ".$variable." AS value "
 	 . " FROM public.\"".$table."\" "
 	 . " WHERE ST_Contains(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832))";
@@ -90,8 +92,8 @@ class Gis extends ActiveRecord
          $sql = $sql . " WHERE ST_Transform(geom, 4326) && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].", ".$bbox[1]."), ST_Point(".$bbox[2].", ".$bbox[3].")),4326);";
        }
      }	
-     $connection = Yii::$app->db2;	 
-	 $connection = Yii::$app->dbs['pgsql:gisdata'];
+     //$connection = Yii::$app->db2;
+	 $connection = Yii::$app->pgsql_gisdata;
 	 $command = $connection->createCommand($sql);
      $result = $command->queryAll();
 	 return $result;
@@ -100,7 +102,8 @@ class Gis extends ActiveRecord
 	public static function getIsoElevation($latitude, $longitude)
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
-	$connection = Yii::$app->db2;
+	//$connection = Yii::$app->db2;
+	$connection = Yii::$app->pgsql_gisdata;
 	$sql =  "SELECT MAX(elev) AS value FROM \"asterglobaldemv2_polygons_cliped\" "
 	   ." WHERE ST_Contains(geom, ST_Translate(ST_SetSRID(ST_MakePoint(0, 0),4326),".$coordinate."))";
 	 $command = $connection->createCommand($sql);
@@ -111,7 +114,8 @@ class Gis extends ActiveRecord
 	public static function getCountry($latitude, $longitude)
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
-	$connection = Yii::$app->db2;
+	//$connection = Yii::$app->db2;
+	$connection = Yii::$app->pgsql_gisdata;
 	$sql = "SELECT nuts0 AS country FROM \"borders_dissolved_adminboundaries\" "
 	     . " WHERE ST_Contains(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) LIMIT 1";
 	 $command = $connection->createCommand($sql);
@@ -122,7 +126,8 @@ class Gis extends ActiveRecord
 	public static function getDistanceToRiver($latitude, $longitude)
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
-	$connection = Yii::$app->db2;
+	//$connection = Yii::$app->db2;
+	$connection = Yii::$app->pgsql_gisdata;
 	$sql =  "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as distance, cum_len as length, catchment_ as catchment "
      ." FROM public.clipped_georhena_rivers WHERE catchment_ > 1.0 ORDER BY distance LIMIT 1;";
 	 $command = $connection->createCommand($sql);
@@ -133,7 +138,8 @@ class Gis extends ActiveRecord
 	public static function getDistanceToCity($latitude, $longitude)
 	{
 	  $coordinate = ''.(float)$longitude.','.(float)$latitude.'';
-	  $connection = Yii::$app->db2;
+	  //$connection = Yii::$app->db2;
+      $connection = Yii::$app->pgsql_gisdata;
 	  $sql = "SELECT st_distance(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) as distance, name, population"
            . " FROM public.georhena_main_cities_25832_shp ORDER BY distance LIMIT 1;";
 	 $command = $connection->createCommand($sql);

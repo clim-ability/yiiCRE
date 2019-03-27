@@ -12,6 +12,10 @@ class Parameter extends ActiveRecord
 //    public $description;
 //	  public $visible;
 	
+    public static function getDb() 
+	{
+        return Yii::$app->pgsql_gisdata;
+    }
 
     public static function tableName()
     {
