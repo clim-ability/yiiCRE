@@ -86,6 +86,7 @@ foreach(inqDbConnections() as $dbkey=>$dbdata) {
      //'schemaCache' => 'cache',
     ];
 }
+var_dump($config['components']);
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
