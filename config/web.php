@@ -78,7 +78,7 @@ $config = [
 foreach(inqDbConnections() as $dbkey=>$dbdata) {
 // var_dump(str_replace($dbkey,':','_'));
 
-	$config['components'][str_replace($dbkey,':','_')] = [
+	$config['components'][str_replace($dbkey,':','')] = [
      'class' => 'yii\db\Connection',
      'dsn' => $dbdata['pdo'],
      'username' => $dbdata['user'],
