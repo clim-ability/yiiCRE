@@ -50,7 +50,6 @@ $config = [
             ],
         ],
         'assetManager' => require __DIR__.'/assets.php',
-		'dbs' => inqDbConnections(),
         'db' => $db,
         'db2' => $db2,
         /*
@@ -73,6 +72,20 @@ $config = [
     ],
 
 ];
+
+foreach(inqDbConnections() as $dbkey=>$dbdata) {
+	$config['components'][str_replace($dbkey,':','_')] = [
+     'class' => 'yii\db\Connection',
+     'dsn' => $dbdata['pdo'],
+     'username' => $dbdata['user'],
+     'password' => $dbdata['password'],
+     'charset' => 'utf8',
+     // Schema cache options (for production environment)
+     //'enableSchemaCache' => true,
+     //'schemaCacheDuration' => 60,
+     //'schemaCache' => 'cache',
+    ];
+}
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
