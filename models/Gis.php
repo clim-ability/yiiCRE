@@ -82,7 +82,7 @@ class Gis extends ActiveRecord
 	
 	public static function getHazardGeometry($table, $variable, $bbox)
 	{
-	 $sql =  "SELECT ".$variable." AS value "
+	 $sql =  "SELECT ".$variable." AS value, "
 	  . "ST_AsGeoJSON(ST_Transform((geom),4326),6) AS geojson "
       . " FROM public.\"".$table."\" ";
 
