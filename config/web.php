@@ -50,8 +50,8 @@ $config = [
             ],
         ],
         'assetManager' => require __DIR__.'/assets.php',
-        'db' => $db,
-        'db2' => $db2,
+//        'db' => $db,
+//        'db2' => $db2,
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -72,14 +72,8 @@ $config = [
     ],
 
 ];
-//var_dump('  mkmkmk ');
-//var_dump(inqDbConnections());
-//var_dump('  mkmkmk ');
+
 foreach(inqDbConnections() as $dbkey=>$dbdata) {
-// var_dump(str_replace($dbkey,':','_'));
-//var_dump($dbkey);
-//var_dump($dbdata);
-//var_dump('hghg ');
 	$config['components'][str_replace(':','_',$dbkey)] = [
      'class' => 'yii\db\Connection',
      'dsn' => $dbdata['pdo'],
@@ -92,7 +86,6 @@ foreach(inqDbConnections() as $dbkey=>$dbdata) {
      //'schemaCache' => 'cache',
     ];
 }
-//var_dump($config['components']);
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment

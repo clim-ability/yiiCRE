@@ -14,7 +14,7 @@ class Parameter extends ActiveRecord
 	
     public static function getDb() 
 	{
-        return Yii::$app->pgsql_gisdata;
+        return Yii::$app->pgsql_cre;
     }
 
     public static function tableName()
