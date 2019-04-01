@@ -74,10 +74,10 @@ function setStyleColor(d) {
 function LayerStyle(feature) {
   return {
   fillColor: setStyleColor(feature.properties.value),
-  weight: 2,
+  weight: 0.5,
   opacity: 0.7,
-  color: 'white',
-  dashArray: '3',
+  color: 'black',
+  dashArray: '0',
   fillOpacity: 0.5 };
 }		
 
