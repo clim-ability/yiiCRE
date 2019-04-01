@@ -62,13 +62,13 @@ var geojsonLayerWells = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
 
 function setStyleColor(d) {
-        return d > 20  ? '#FC4E2A'  :
-               d > 15  ? '#FD8D3C' :
-			   d > 15  ? '#FD8D3C' :
-               d > 5   ? '#FEB24C'  :
-			   d > 0   ? '#FEB24C'  : 
-               d > -5  ? '#FED976' :
-                         '#FFEDA0' ;
+        return d > 20  ? '#FF4E2A'  :
+               d > 15  ? '#EE8D3C' :
+			   d > 15  ? '#DD8D3C' :
+               d > 5   ? '#BBB24C'  :
+			   d > 0   ? '#AAB24C'  : 
+               d > -5  ? '#99D976' :
+                         '#88EDA0' ;
         }
 		
 function LayerStyle(feature) {
