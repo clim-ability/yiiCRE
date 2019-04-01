@@ -59,13 +59,14 @@ legend.onAdd = function (map) {
 legend.addTo(map);
 
 var geojsonLayerWells = new L.GeoJSON();
+map.addLayer(geojsonLayerWells);
 
 function loadGeoJson(data) {
-    console.log(data);
+    //console.log(data);
 	geojsonLayerWells.clearLayers();
     geojsonLayerWells.addData(data);
-	map.removeLayer(geojsonLayerWells);
-    map.addLayer(geojsonLayerWells);
+	//map.removeLayer(geojsonLayerWells);
+    //map.addLayer(geojsonLayerWells);
 };
 
 //$hazard='cddp', $epoch='2041-2070', $scenario='rcp45'
