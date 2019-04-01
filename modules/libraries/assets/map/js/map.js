@@ -61,10 +61,29 @@ legend.addTo(map);
 var geojsonLayerWells = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
 
+function setStyleColor(d) {
+        return d > 100  ? '#FC4E2A' :
+               d > 50   ? '#FD8D3C' :
+               d > 20   ? '#FEB24C' :
+               d > 10   ? '#FED976' :
+                          '#FFEDA0';
+        }
+		
+function LayerStyle(feature) {
+  return {
+  fillColor: setStyleColor(feature.properties.value),
+  weight: 2,
+  opacity: 0.7,
+  color: 'white',
+  dashArray: '3',
+  fillOpacity: 0.5 };
+}		
+
 function loadGeoJson(data) {
     //console.log(data);
 	geojsonLayerWells.clearLayers();
     geojsonLayerWells.addData(data);
+	mylayer.setStyle(LayerStyle);
 	//map.removeLayer(geojsonLayerWells);
     //map.addLayer(geojsonLayerWells);
 };
