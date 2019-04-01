@@ -66,15 +66,15 @@ function loadGeoJson(data) {
     map.addLayer(geojsonLayerWells);
 };
 
-$hazard='', $epoch='', $scenario=''
+//$hazard='cddp', $epoch='2041-2070', $scenario='rcp45'
 
 map.on('moveend', function(){
  if(map.getZoom() > wellmaxzoom){
     var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
     var defaultParameters = {
-        hazard: 'WFS',
-        epoch: '1.0.0',
-        scenario: 'getFeature',
+        hazard: 'cddp',
+        epoch: '2041-2070',
+        scenario: 'rcp45',
         };
 
     var customParams = {
