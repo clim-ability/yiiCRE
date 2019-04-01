@@ -83,7 +83,7 @@ function loadGeoJson(data) {
     //console.log(data);
 	geojsonLayerWells.clearLayers();
     geojsonLayerWells.addData(data);
-	mylayer.setStyle(LayerStyle);
+	geojsonLayerWells.setStyle(LayerStyle);
 	//map.removeLayer(geojsonLayerWells);
     //map.addLayer(geojsonLayerWells);
 };
