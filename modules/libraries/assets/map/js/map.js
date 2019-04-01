@@ -62,6 +62,7 @@ var geojsonLayerWells = new L.GeoJSON();
 
 function loadGeoJson(data) {
     console.log(data);
+	geojsonLayerWells.clearLayers();
     geojsonLayerWells.addData(data);
 	map.removeLayer(geojsonLayerWells);
     map.addLayer(geojsonLayerWells);
