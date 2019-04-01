@@ -69,7 +69,7 @@ function loadGeoJson(data) {
 //$hazard='cddp', $epoch='2041-2070', $scenario='rcp45'
 
 map.on('moveend', function(){
- if(map.getZoom() > wellmaxzoom){
+ if(map.getZoom() > -200){
     var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
     var defaultParameters = {
         hazard: 'cddp',
