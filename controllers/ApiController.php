@@ -44,7 +44,7 @@ class ApiController extends Controller
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);
-	   $result = array_map(function($e) { $e['label'] = $e['name']; return $e; },$result); 
+	   $result = array_map(function($e) { $e->label = $e->name; return $e; },$result); 
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
