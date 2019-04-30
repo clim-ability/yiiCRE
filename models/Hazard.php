@@ -27,9 +27,8 @@ class Hazard extends ActiveRecord
 
     public function fields()
     {
-        $fields = array_keys(Yii::getObjectVars($this));
-        $fields = array_combine($fields, $fields);
-		$fields['label'] = 'label';
+        $fields = parent::fields();
+		$fields[] = 'label';
 		return $fields;
     }
 
