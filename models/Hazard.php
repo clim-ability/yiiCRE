@@ -32,10 +32,15 @@ class Hazard extends ActiveRecord
             [['name', 'description'], 'string']
         ];
     }
+
+    private $_label;
 	
-	public function getLabel($lang = 'en') {
-	    return this.name;	
+	public function getLabel() {
+	    return this._label;	
 	}	 
+	public function setLabel($l) {
+	    return this._label = $l;	
+	}
 	
 	public function inqAllHazards( $inclInvisible = false ) {
 	    $hazards = Hazard::find();
