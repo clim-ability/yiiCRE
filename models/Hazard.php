@@ -29,8 +29,8 @@ class Hazard extends ActiveRecord
     {
         $fields = array_keys(Yii::getObjectVars($this));
         $field2 = array_combine($fields, $fields);
-		$field2['label'] = 'label';
-		$return $field2;
+		//$field2['label'] = 'label';
+		$return $fields;
     }
 
     public function afterFind()
