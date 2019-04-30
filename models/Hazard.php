@@ -36,10 +36,10 @@ class Hazard extends ActiveRecord
     private $_label;
 	
 	public function getLabel() {
-	    return this->_label;	
+	    return $this->_label;	
 	}	 
 	public function setLabel($l) {
-	    this->_label = $l;	
+	    $this->_label = $l;	
 	}
 	
 	public function inqAllHazards( $inclInvisible = false ) {
