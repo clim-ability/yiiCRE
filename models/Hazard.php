@@ -45,7 +45,7 @@ class Hazard extends ActiveRecord
 	public function setLabel($l) {
 	    $this->_label = $l;	
 	}
-/*
+*/
 	
 	public function inqAllHazards( $inclInvisible = false ) {
 	    $hazards = Hazard::find();
