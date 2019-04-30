@@ -33,6 +33,10 @@ class Hazard extends ActiveRecord
         ];
     }
 	
+	public function getLabel($lang = 'en') {
+	    return this.name;	
+	}	 
+	
 	public function inqAllHazards( $inclInvisible = false ) {
 	    $hazards = Hazard::find();
 		if(!$inclInvisible) {

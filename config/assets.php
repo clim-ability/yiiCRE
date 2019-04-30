@@ -159,6 +159,7 @@ return [
             //'sourcePath' => null, // do not publish the bundle
             'js' => [
                 YII_ENV_DEV ? 'vue.js' : 'vue.min.js',
+				YII_ENV_DEV ? 'axios.js' : 'axios.min.js',
             ],
         ], 		
     ],
@@ -290,6 +291,8 @@ return [
 		// vue - http://threejs.org/
         'vue.js' => '//cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js',
         'vue.min.js' => '//cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.min.js', 
+		'axios.js' => '//unpkg.com/axios/dist/axios.js',
+        'axios.min.js' => '//unpkg.com/axios/dist/axios.min.js', 
     /*
       //maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css
       //maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js

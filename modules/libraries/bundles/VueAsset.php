@@ -26,6 +26,7 @@ class JqueryAsset extends AssetBundle
     // List of js-files can also be defined in config/assets.php!
     public $js = [
          'js/vue.min.js',
+		 'js/axios.min.js',
          //'js/jquery.cookie.min.js',
     ];
     public $depends = [];
