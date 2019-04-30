@@ -24,6 +24,7 @@ use app\models\Gis;
  */
 class ApiController extends Controller
 {
+	/*
 	public function behaviors()
     {
     $behaviors = parent::behaviors();
@@ -38,7 +39,7 @@ class ApiController extends Controller
     ];
     return $behaviors;
     }
-	
+	*/
 	
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
@@ -152,6 +153,7 @@ class ApiController extends Controller
 		  }
 	   }
        $result = ['type' => 'FeatureCollection', 'features'  => $features];
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }   
