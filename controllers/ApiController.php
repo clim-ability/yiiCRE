@@ -24,6 +24,22 @@ use app\models\Gis;
  */
 class ApiController extends Controller
 {
+	public function behaviors()
+    {
+    $behaviors = parent::behaviors();
+    $behaviors['corsFilter'] = [
+        'class' => \yii\filters\Cors::className(),
+        'cors' => [
+            'Origin'                           => ["*"],
+            'Access-Control-Request-Method'    => ['POST', 'GET'],
+            'Access-Control-Allow-Credentials' => true,
+            'Access-Control-Max-Age'           => 3600,
+        ],
+    ];
+    return $behaviors;
+    }
+	
+	
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);

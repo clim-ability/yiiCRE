@@ -154,7 +154,13 @@ return [
                 YII_ENV_DEV ? 'jspdf.plugin.autotable.js' : 'jspdf.plugin.autotable.min.js',
                 //'pdfjs.js',
             ],
-        ],  
+        ], 
+        'app\modules\libraries\bundles\VueAsset' => [
+            //'sourcePath' => null, // do not publish the bundle
+            'js' => [
+                YII_ENV_DEV ? 'vue.js' : 'vue.min.js',
+            ],
+        ], 		
     ],
     'assetMap' => [
         // https://developers.google.com/speed/libraries/
@@ -281,6 +287,9 @@ return [
         'jspdf.min.js' => '//cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js', 
         'jspdf.plugin.autotable.js' => '//cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.0.24/jspdf.plugin.autotable.src.js',
         'jspdf.plugin.autotable.min.js' => '//cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.0.24/jspdf.plugin.autotable.js', 
+		// vue - http://threejs.org/
+        'vue.js' => '//cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js',
+        'vue.min.js' => '//cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.min.js', 
     /*
       //maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css
       //maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js
