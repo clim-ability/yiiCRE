@@ -44,6 +44,7 @@ class ApiController extends Controller
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
@@ -51,6 +52,7 @@ class ApiController extends Controller
     public function actionParameters($mode='visible-only') {
        // returns list of all Parameters.
 	   $result = Parameter::inqAllParameters('invisible'==$mode);
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }    
@@ -58,6 +60,7 @@ class ApiController extends Controller
     public function actionEpochs($mode='visible-only') {
        // returns list of all Epochs.
 	   $result = Epoch::inqAllEpochs('invisible'==$mode); 
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }     
@@ -65,6 +68,7 @@ class ApiController extends Controller
 	public function actionScenarios($mode='visible-only') {
        // returns list of all Scenarios.
 	   $result = Scenario::inqAllScenarios('invisible'==$mode);
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
