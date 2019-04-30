@@ -25,13 +25,19 @@ class Hazard extends ActiveRecord
         return 'hazard';
     }
 
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->label = $this->name;
+    }
+
     public function rules()
     {
         return [
             [['name'], 'required'],
             [['visible'], 'boolean'],
             [['name', 'description'], 'string'],
-			[['label'], 'string']
+			[['label'], 'safe']
 			
         ];
     }
