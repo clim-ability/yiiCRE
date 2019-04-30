@@ -13,6 +13,7 @@ class Hazard extends ActiveRecord
 //    public $year_begin;
 //    public $year_end;
 //	  public $visible;
+      public $label;
 	
     public static function getDb() 
 	{
@@ -35,6 +36,7 @@ class Hazard extends ActiveRecord
         ];
     }
 
+/*
     private $_label;
 	
 	public function getLabel() {
@@ -43,6 +45,7 @@ class Hazard extends ActiveRecord
 	public function setLabel($l) {
 	    $this->_label = $l;	
 	}
+/*
 	
 	public function inqAllHazards( $inclInvisible = false ) {
 	    $hazards = Hazard::find();
