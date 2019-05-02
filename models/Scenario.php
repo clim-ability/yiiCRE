@@ -13,6 +13,7 @@ class Scenario extends ActiveRecord
 //    public $year_begin;
 //    public $year_end;
 //	  public $visible;
+      public $label;
 	
     public static function getDb() 
 	{
