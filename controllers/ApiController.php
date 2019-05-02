@@ -41,6 +41,19 @@ class ApiController extends Controller
     }
 	*/
 	
+    public function actionLanguages($mode='visible-only') {
+       // returns list of all Languages.
+	   //$result = Hazard::inqAllHazards('invisible'==$mode);
+	   //$result = array_map(function($e) { $e->label = $e->name; return $e; },$result);
+       $result = [['name' => 'en', 'label' => 'english', 'description'=>'english/englisch/anglaise'],
+                  ['name' => 'de', 'label' => 'deutsch', 'description'=>'german/deutsch/alemagne'], 
+                  ['name' => 'fr', 'label' => 'fraincaise', 'description'=>'french/französisch/francaise'], 	   
+	             ];	   
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+       return $result;
+   } 	
+	
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);
@@ -102,7 +115,7 @@ class ApiController extends Controller
 	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
 	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);
 	   $result['country'] = Gis::getCountry($latitude, $longitude);
-
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
        
@@ -136,7 +149,8 @@ class ApiController extends Controller
 	   $result['elevation_iso_raster'] = Gis::getIsoElevation($latitude, $longitude);
 	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
 	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);
-       $result['country'] = Gis::getCountry($latitude, $longitude);	   
+       $result['country'] = Gis::getCountry($latitude, $longitude);	 
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
        
