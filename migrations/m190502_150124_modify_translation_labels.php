@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m190502_120124_add_translation_labels_to_tables extends Migration
+class m190502_150124_modify_translation_labels extends Migration
 {
 
     public function init()
