@@ -72,12 +72,12 @@ class ControllerBase extends Controller
             [
                 'allow' => true,
                 'actions' => ['create', 'update'],
-                'roles' => ['@']
+                'roles' => ['@']  // 'sysadmin'
             ],
             [
                 'allow' => true,
                 'actions' => ['delete'],
-                'roles' => ['@']
+                'roles' => ['@']  // 'sysadmin'
             ],
         ];
 

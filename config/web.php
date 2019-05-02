@@ -52,6 +52,7 @@ $config = [
             ],
         ],
         'assetManager' => require __DIR__.'/assets.php',
+        'i18n' => require __DIR__.'/messages.php',
         'db' => $db,
 //        'db2' => $db2,
         /*

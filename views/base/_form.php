@@ -49,7 +49,7 @@ use yii\widgets\ActiveForm;
     <?php addInputFields($model, $form, $columns); ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('p:day', 'Create') : Yii::t('p:day', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('p:base', 'Create') : Yii::t('p:base', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

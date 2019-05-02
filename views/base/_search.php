@@ -26,8 +26,8 @@ use yii\widgets\ActiveForm;
     ]); ?>
     <?php addSearchFields($model, $form, $columns); ?>
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('p:common', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('p:common', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('p:base', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('p:base', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 

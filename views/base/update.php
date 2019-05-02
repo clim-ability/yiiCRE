@@ -4,12 +4,12 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 
-$this->title = Yii::t('p:common', 'Update {modelClass}: ', [
+$this->title = Yii::t('p:base', 'Update {modelClass}: ', [
     'modelClass' => $messages['item'],
 ]) . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => $messages['title'], 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('p:common', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('p:base', 'Update');
 
 ?>
 <div class="item-update">
