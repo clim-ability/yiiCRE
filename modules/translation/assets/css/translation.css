@@ -1,0 +1,18 @@
+#translate {
+    background-image: url(../icons/translate_grey.png);  
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 18px;
+    margin: 10px 0px;
+}
+
+#translate.active{
+    background-image: url(../icons/translate_orange.png);  
+}
+
+#translate:hover, #translate.active:hover{
+    background-image: url(../icons/translate_white.png);  
+  }
+
+
+
