@@ -48,45 +48,43 @@
   </div>
 </div>
 
+<div id="climateinspector">
+
       <h1 class="my-4">Changing of climate
         <small>at the Upper Rhine</small>
       </h1>
 
  <div class="container-fluid">
 
-    <div class="row">
-     <div id="selection">
+    <div class="row" id="selectionrow">
  	  <div class="col-md-3">
        <select v-model="hazard" class="form-control">
         <option v-for="hazard in hazards" v-bind:value="hazard.name">
          {{ hazard.label }} 
         </option>
        </select>
-	 </div>	
-     <div id="selection">
+	  </div>	
  	  <div class="col-md-3">
        <select v-model="epoch" class="form-control">
         <option v-for="epoch in epochs" v-bind:value="epoch.name">
          {{ epoch.label }} 
         </option>
        </select>
-	 </div>	
-     <div id="selection">
+	  </div>	
  	  <div class="col-md-3">
        <select v-model="scenario" class="form-control">
         <option v-for="scenario in scenarios" v-bind:value="scenario.name">
          {{ scenario.label }} 
         </option>
        </select>
-	 </div>		 
-	 <div class="col-md-3 ">	   
+	  </div>		 
+	  <div class="col-md-3 ">	   
 	   <select v-model="language" class="form-control">
         <option v-for="language in languages" v-bind:value="language.name">
          {{ language.label }}
         </option>
        </select>
 	  </div>
-	 </div>	  
 	</div> 
 
  
@@ -109,7 +107,8 @@
 
    </div> <!-- end md-6 -->
 
-   <div class="col-md-6"> <!-- Tabbed Upper-Right Corner -->
+   <div class="col-md-6" id="informationfield"> <!-- Tabbed Upper-Right Corner -->
+     {{ info }}
    </div> <!-- end md-6 -->
 
   </div> <!-- end row -->
@@ -129,12 +128,10 @@
   </div> <!-- end LOWER row -->	
 
  </div> <!-- end container-fluid -->
-	 
-
-
 
     </div>
 </div>
+
 
 <footer class="footer">
     <div class="container">
@@ -156,8 +153,8 @@
 <script src="../../../modules/libraries/assets/bootstrap/js/bootstrap.js"></script>
 
 <script>
-new Vue({
-  el: '#selection',
+var vueSelect = new Vue({
+  el: '#selectionrow',
   data: {
     hazard: 'none',
     hazards: [ { label: '', name: 'none' } ],
@@ -185,6 +182,29 @@ new Vue({
       //.get('mapBaseUrl'+'/api/languages')
 	  .get('https://gis.clim-ability.eu/index.php/api/languages')
       .then(response => ( this.languages = response.data ));	  
+  }
+})
+</script>
+
+<script>
+var vueInfo = new Vue({
+  el: '#informationfield',
+  data: {
+    info: 'none',
+  },
+  methods: { 
+    clickOnMap(latitude,longitude) {
+	var url = 'mapBaseUrl'+'/api/hazard-values';
+	    url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
+	url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch=2041-2070&scenario=rcp45';
+    axios
+      //.get('mapBaseUrl'+'/api/hazard-values')   HazardValues
+	  .get(url)
+      .then(response => ( this.info = response.data ));	   
+	},
+  },
+  mounted () {
+  
   }
 })
 </script>
