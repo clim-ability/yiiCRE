@@ -99,5 +99,54 @@ class Hazard extends ActiveRecord
 		}
 		return $hazard;
 	}	
-   
+  
+public function search($params)
+    {
+        $query = Hazard::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+/*
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'source_id' => $this->source_id,
+            'project_id' => $this->project_id,
+            'doi' => $this->doi,
+            'created_by' => $this->created_by,
+            'modified_by' => $this->modified_by,
+            'public' => $this->public,
+            'modified_at' => $this->modified_at,
+            //'verified' => $this->verified,
+        ]);
+
+        if ($source_id) {
+            $query->andFilterWhere([
+                'source_id' => $source_id,
+            ]);
+        }
+        if ($project_id) {
+            $query->andFilterWhere([
+                'project_id' => $project_id,
+            ]);
+        }
+
+        $query->andFilterWhere(['like', 'text', $this->text])
+            ->andFilterWhere(['like', 'page', $this->page])
+            ->andFilterWhere(['like', 'file', $this->file])
+            ->andFilterWhere(['like', 'text_vector', $this->text_vector])
+            ->andFilterWhere(['like', 'comment', $this->comment]);
+*/
+        return $dataProvider;
+    }
+
+  
 }
