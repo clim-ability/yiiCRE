@@ -14,7 +14,7 @@ class m190502_120124_add_translation_labels_to_tables extends Migration
 
     public function safeUp()
     {
-        $this->addColumn("hazard", "label_en", "varchar(255)");
+        $this->addColumn("hazard", "label_en", "varchar(255)"); 
 		$this->renameColumn("hazard", "description", "description_en"); 
         $this->addColumn("hazard", "label_de", "varchar(255)");
 		$this->addColumn("hazard", "description_de", "varchar(4095)");
