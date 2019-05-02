@@ -67,7 +67,7 @@ class ControllerBase extends Controller
             [
                 'allow' => true,
                 'actions' => ['index', 'view'],
-                'roles' => ['?']
+                'roles' => ['*']
             ],
             [
                 'allow' => true,
