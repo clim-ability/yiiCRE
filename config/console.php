@@ -23,7 +23,7 @@ $config = [
                 ],
             ],
         ],
-//        'db' => $db,
+        'db' => $db,
     ],
     'params' => $params,
     /*
