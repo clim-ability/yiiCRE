@@ -47,17 +47,17 @@ class HazardController extends ControllerBase
 
     protected function findOneModel($id)
     {
-        return Quote::findOne($id);
+        return Hazard::findOne($id);
     }
 
     protected function newModel()
     {
-        return new Quote();
+        return new Hazard();
     }
 
     protected function newSearchModel()
     {
-        return new QuoteSearch();
+        return new HazardSearch();
     }
 
     protected function getColumns()
