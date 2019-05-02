@@ -25,11 +25,18 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 //locate by click
 var popup = L.popup();
-function onMapClick(e) {
+function onMapClickOld(e) {
     popup
         .setLatLng(e.latlng)
         .setContent("I am here: " + e.latlng.toString())
         .openOn(map);
+}
+function onMapClick(e) {
+	var latlong = e.latlng.split(",");
+	var latitude = latlong[0];
+	var longitude = latlong[1]; 
+	window.vueInfo.clickOnMap(latitude, longitude);
+    // set marker
 }
 map.on('click', onMapClick);
 

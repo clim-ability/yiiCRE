@@ -77,7 +77,7 @@ class ControllerBase extends Controller
             [
                 'allow' => true,
                 'actions' => ['delete'],
-                'roles' => ['@']  // 'sysadmin'
+                'roles' => ['sysadmin']  // 'sysadmin'
             ],
         ];
 
