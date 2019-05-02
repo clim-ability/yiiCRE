@@ -57,7 +57,7 @@ class HazardController extends ControllerBase
 
     protected function newSearchModel()
     {
-        return new HazardSearch();
+        return new HazardSearch(); 
     }
 
     protected function getColumns()
