@@ -32,9 +32,9 @@ function onMapClickOld(e) {
         .openOn(map);
 }
 function onMapClick(e) {
-	var latlong = e.latlng.split(",");
-	var latitude = latlong[0];
-	var longitude = latlong[1]; 
+	//var latlong = e.latlng.split(",");
+	var latitude = e.latlng.lat;
+	var longitude = e.latlng.lng;
 	window.vueInfo.clickOnMap(latitude, longitude);
     // set marker
 }
