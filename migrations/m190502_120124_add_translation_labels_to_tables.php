@@ -6,6 +6,12 @@ use yii\db\Migration;
 class m190502_120124_add_translation_labels_to_tables extends Migration
 {
 
+    public function init()
+    {
+        $this->db = 'pgsql_cre';
+        parent::init();
+    }
+
     public function safeUp()
     {
         $this->addColumn("label_en", "hazard", "varchar(255)");

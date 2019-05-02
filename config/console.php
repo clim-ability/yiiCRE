@@ -1,8 +1,10 @@
 <?php
 
 require_once __DIR__ . '/local.php';
+require_once __DIR__ . '/../../db-config.php';
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$db2 = require __DIR__ . '/db2.php';
 
 $config = [
     'id' => 'basic-console',
@@ -21,7 +23,7 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db,
+//        'db' => $db,
     ],
     'params' => $params,
     /*
@@ -32,6 +34,20 @@ $config = [
     ],
     */
 ];
+
+foreach(inqDbConnections() as $dbkey=>$dbdata) {
+	$config['components'][str_replace(':','_',$dbkey)] = [
+     'class' => 'yii\db\Connection',
+     'dsn' => $dbdata['pdo'],
+     'username' => $dbdata['user'],
+     'password' => $dbdata['password'],
+     'charset' => 'utf8',
+     // Schema cache options (for production environment)
+     //'enableSchemaCache' => true,
+     //'schemaCacheDuration' => 60,
+     //'schemaCache' => 'cache',
+    ];
+}
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
