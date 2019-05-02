@@ -22,6 +22,12 @@ use app\components\utils\CurlHandler;
  */
 class Language extends \yii\db\ActiveRecord
 {
+	/*
+	public static function getDb() 
+	{
+        return Yii::$app->pgsql_cre;
+    }
+	*/
     /**
      * @inheritdoc
      */

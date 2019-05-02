@@ -52,7 +52,7 @@ $config = [
             ],
         ],
         'assetManager' => require __DIR__.'/assets.php',
-//        'db' => $db,
+        'db' => $db,
 //        'db2' => $db2,
         /*
         'urlManager' => [
