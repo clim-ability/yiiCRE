@@ -24,7 +24,14 @@ class Scenario extends ActiveRecord
     {
         return 'scenario';
     }
-
+    
+	public function fields()
+    {
+        $fields = parent::fields();
+		$fields[] = 'label';
+		return $fields;
+    }
+	
     public function rules()
     {
         return [

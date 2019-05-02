@@ -24,7 +24,14 @@ class Epoch extends ActiveRecord
     {
         return 'epoch';
     }
-
+    
+	public function fields()
+    {
+        $fields = parent::fields();
+		$fields[] = 'label';
+		return $fields;
+    }
+	
     public function rules()
     {
         return [
