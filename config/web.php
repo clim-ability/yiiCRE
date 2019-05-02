@@ -8,6 +8,8 @@ $db2 = require __DIR__ . '/db2.php';
 
 $config = [
     'id' => 'basic',
+    'sourceLanguage' => 'tlh',
+    'language' => 'en',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -69,6 +71,10 @@ $config = [
         'libraries' => [
             'class' => 'app\modules\libraries\Module',
         ],
+		'translation' => [
+            'class' => 'app\modules\translation\Module',
+        ],
+
     ],
 
 ];
