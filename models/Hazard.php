@@ -45,7 +45,7 @@ class Hazard extends ActiveRecord
         return [
             [['name'], 'required'],
             [['visible'], 'boolean'],
-            [['name', 'description'], 'string'],
+            [['name', 'description_en'], 'string'],
 			[['label'], 'safe']
 			
         ];
