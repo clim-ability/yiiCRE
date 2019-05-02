@@ -47,7 +47,7 @@ class m190502_130124_create_translation_tables extends Migration
 			'created_by'           => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
 			'modified'             => 'timestamp with time zone DEFAULT now()',
         ]);
-        $this->createIndex('table_suggestion_id_lang_translation_user', 'table_message_target',
+        $this->createIndex('table_translation_id_lang', 'table_message_target',
                             ['id', 'language'], true);	
 							
     }
