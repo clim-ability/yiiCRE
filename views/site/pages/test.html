@@ -62,7 +62,23 @@
          {{ hazard.label }} 
         </option>
        </select>
-	 </div>		   
+	 </div>	
+     <div id="selection">
+ 	  <div class="col-md-3">
+       <select v-model="epoch" class="form-control">
+        <option v-for="epoch in epochs" v-bind:value="epoch.name">
+         {{ epoch.label }} 
+        </option>
+       </select>
+	 </div>	
+     <div id="selection">
+ 	  <div class="col-md-3">
+       <select v-model="scenario" class="form-control">
+        <option v-for="scenario in scenarios" v-bind:value="scenario.name">
+         {{ scenario.label }} 
+        </option>
+       </select>
+	 </div>		 
 	 <div class="col-md-3 ">	   
 	   <select v-model="language" class="form-control">
         <option v-for="language in languages" v-bind:value="language.name">
@@ -150,7 +166,7 @@ new Vue({
     scenario: 'none',
     scenarios: [ { label: '', name: 'none' } ],
     language: 'none',
-    languages: [ { label: '', name: 'none' } ],	
+    languages: [ { label: '', name: 'none' } ]	
   },
   mounted () {
     axios
