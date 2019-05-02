@@ -1,8 +1,6 @@
 <?php
 /**
- * @copyright 2015 University Library of Freiburg
- * @copyright 2015 Leibniz Institute for Regional Geography
- * @copyright 2015 Geographie University of Freiburg
+ * @copyright 2019 Geographie University of Freiburg
  * @licence http://creativecommons.org/licenses/by/4.0/
  */
 namespace app\controllers;
@@ -14,11 +12,11 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
 /**
- * Class QuoteController
+ * Class HazardController
  * @package app\modules\grouping\controllers
  * @since 2.0
  */
-class QuoteController extends ControllerBase
+class HazardController extends ControllerBase
 {
 
 
