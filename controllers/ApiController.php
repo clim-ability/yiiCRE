@@ -47,7 +47,7 @@ class ApiController extends Controller
 	   //$result = array_map(function($e) { $e->label = $e->name; return $e; },$result);
        $result = [['name' => 'en', 'label' => 'english', 'description'=>'english/englisch/anglaise'],
                   ['name' => 'de', 'label' => 'deutsch', 'description'=>'german/deutsch/alemagne'], 
-                  ['name' => 'fr', 'label' => 'fraincaise', 'description'=>'french/französisch/francaise'], 	   
+                  ['name' => 'fr', 'label' => 'francaise', 'description'=>'french/französisch/francaise'], 	   
 	             ];	   
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -135,16 +135,18 @@ class ApiController extends Controller
 		 $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
 	     if(is_string($table)) {
 		  $result['layer_'.$hazard['name']] = $table;
-		  $relHazard = $hazard['name'].'_'.$epoch['name'].'_delta';
-		  $relHazard = str_replace('-', '_', $relHazard);
+		  //$relHazard = $hazard['name'].'_'.$epoch['name'].'_delta';
+		  //$relHazard = str_replace('-', '_', $relHazard);
+		  $relHazard = $hazard['name'].'_delta';
           $result[$relHazard.'_calculated'] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 		  $result[$relHazard.'_raster'] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
 	      $refEpoch = Epoch::findBy('1970-2000');
 	      $refParameter = Parameter::findBy('mean');
 	      $table = Gis::getRasterTable($hazard, $refParameter, $refEpoch, null);
 		   if(is_string($table)) {
-		      $refHazard = $hazard['name'].'_'.$refEpoch['name'].'_absolute';
-			  $refHazard = str_replace('-', '_', $refHazard);
+		      //$refHazard = $hazard['name'].'_'.$refEpoch['name'].'_absolute';
+			  //$refHazard = str_replace('-', '_', $refHazard);
+			  $refHazard = $hazard['name'].'_absolute';
               $result[$refHazard] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 		   }
 	     } 

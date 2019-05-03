@@ -108,15 +108,33 @@ function onMapClickOld(e) {
         .setContent("I am here: " + e.latlng.toString())
         .openOn(map);
 }
+{
+
+var marker = new L.marker([0,0], {id:'uni', draggable:'true'});
+function getCurrentLatitude() { return marker.getLatLng().lat; }
+function getCurrentLongitude() { return marker.getLatLng().lng; }
+
 function onMapClick(e) {
 	//var latlong = e.latlng.split(",");
+	map.removeLayer(marker);
+	marker = new L.marker(e.latlng, {id:'uni', draggable:'true'});
+    marker.on('dragend', function(event){
+            var marker = event.target;
+            var position = marker.getLatLng();
+	        var latitude = position.lat;
+	        var longitude = position.lng;
+	        window.vueInfo.clickOnMap(latitude, longitude);
+            marker.setLatLng(position,{id:'uni',draggable:'true'}).bindPopup(position).update();
+    });
+    map.addLayer(marker);
+	
 	var latitude = e.latlng.lat;
 	var longitude = e.latlng.lng;
 	window.vueInfo.clickOnMap(latitude, longitude);
     // set marker
 }
 map.on('click', onMapClick);
-
+}
 
 // Create Leaflet Control Object for Legend
 var legend = L.control({position: 'bottomright'});
@@ -188,7 +206,7 @@ function loadGeoJson(data) {
         bbox: map.getBounds().toBBoxString(),
         };		
 		
-    function setParameters(hazard, epoch, scenario) {
+    function setParametersOnMap(hazard, epoch, scenario) {
       defaultParameters = {
         hazard: hazard,
         epoch: epoch,
@@ -384,7 +402,7 @@ $( "#addWinterRain" ).click(function() {
     /*  '<strong>upper Rhine region<strong/><br />': tmo_region,  */
 	  '<strong>climate indicators<strong/><br />':imageUrl}).addTo(map); 
 
-
+var vueEventBus = new Vue({ });
 	  
 var vueSelect = new Vue({
   el: '#selectionrow',
@@ -401,9 +419,13 @@ var vueSelect = new Vue({
   methods: {
     updateParameters() {
 	  if(this.hazard !== 'none' && this.epoch !== 'none' && this.scenario !== 'none' ) {	 
-        setParameters(this.hazard, this.epoch, this.scenario);
+        setParametersOnMap(this.hazard, this.epoch, this.scenario);
+		//window.viewInfo.clickOnMap();
+		vueEventBus.$emit('updatedParameters', this);
 	  }
-	}
+	},
+	getCurrentEpoch() {return this.epoch; },
+	getCurrentSzenario() {return this.scenario; },
   },
   mounted () {
     axios
@@ -445,40 +467,47 @@ var vueInfo = new Vue({
 	infoVisible: false
   },
   methods: { 
-    clickOnMap(latitude,longitude) {
+    clickOnMap() {
+		var latitude = getCurrentLatitude();
+		var longitude = getCurrentLongitude();
+		var epoch = vueSelect.getCurrentEpoch();
+		var szenario = vueSelect.getCurrentSzenario();
 	var url = 'mapBaseUrl'+'/api/hazard-values';
 	    url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
-	url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch=2041-2070&scenario=rcp45';
+	url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+epoch+'&scenario='+szenario;
     axios.get(url).then(response => ( this.info = response.data ));
 	},
 	roundedRange(para, digits) {
-	  var pot = Math.pow(10, digits);
-	  var minus = Math.round(10.0*(parseFloat(para.value) - parseFloat(para.std)))/10.0;
-	  var plus = Math.round(10.0*(parseFloat(para.value) + parseFloat(para.std)))/10.0;
-      return ''+minus+' - '+plus;	
+	  if(para) {	
+	    var pot = Math.pow(10, digits);
+	    var minus = Math.round(10.0*(parseFloat(para.value) - parseFloat(para.std)))/10.0;
+	    var plus = Math.round(10.0*(parseFloat(para.value) + parseFloat(para.std)))/10.0;
+        return ''+minus+' - '+plus;	
+	  }
+	  return '';
 	}
   },
   computed: {
     roundedCddp: function () {
-	  return this.roundedRange(this.info.cddp_2041_2070_delta_calculated, 1);
+	  return this.roundedRange(this.info.cddp_delta_calculated, 1);
     },
     roundedFd: function () {
-	  return this.roundedRange(this.info.fd_2041_2070_delta_calculated, 1);
+	  return this.roundedRange(this.info.fd_delta_calculated, 1);
     },	
 	roundedRr20: function () {
-	  return this.roundedRange(this.info.rr20_2041_2070_delta_calculated, 1);
+	  return this.roundedRange(this.info.rr20_delta_calculated, 1);
     },
 	roundedRs: function () {
-	  return this.roundedRange(this.info.rr_summer_2041_2070_delta_calculated, 1);
+	  return this.roundedRange(this.info.rr_summer_delta_calculated, 1);
     },
 	roundedRw: function () {
-	  return this.roundedRange(this.info.rr_winter_2041_2070_delta_calculated, 1);
+	  return this.roundedRange(this.info.rr_winter_delta_calculated, 1);
     },
 	roundedTr: function () {
-	  return this.roundedRange(this.info.tr_2041_2070_delta_calculated, 1);
+	  return this.roundedRange(this.info.tr_delta_calculated, 1);
     },
   },
   mounted () {
-  
+    vueEventBus.$on('updatedParameters', e => { this.clickOnMap();})
   }
 })
