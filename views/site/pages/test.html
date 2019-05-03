@@ -118,7 +118,7 @@
 	 Tropical Nights: {{ roundedTr }}<br/>
 	 Rain: {{ roundedRr20 }}<br/>
 	 Winter Rain: {{ roundedRw }}<br/>
-	 Summer Rain: {{ roundedRs }}
+	 Summer Rain: {{ roundedRs }}<br/>
 	 <br/>
 	 {{ info }}
     </template>	 
@@ -172,91 +172,6 @@
 <script src="../../../vendor/yiisoft/yii2/assets/yii.js"></script>
 <script src="../../../modules/libraries/assets/bootstrap/js/bootstrap.js"></script>
 
-<script>
 
-var vueSelect = new Vue({
-  el: '#selectionrow',
-  data: {
-    hazard: 'none',
-    hazards: [ { label: '', name: 'none' } ],
-    epoch: 'none',
-    epochs: [ { label: '', name: 'none' } ],
-    scenario: 'none',
-    scenarios: [ { label: '', name: 'none' } ],
-    language: 'none',
-    languages: [ { label: '', name: 'none' } ]	
-  },
-  methods: {
-    updateParameters() {
-      setParameters(this.hazard, this.epoch, this.scenario);
-	}
-  },
-  mounted () {
-    axios
-      //.get('mapBaseUrl'+'/api/hazards')
-	  .get('https://gis.clim-ability.eu/index.php/api/hazards')
-      .then(response => ( this.hazards = response.data ));
-    axios
-      //.get('mapBaseUrl'+'/api/epochs')
-	  .get('https://gis.clim-ability.eu/index.php/api/epochs')
-      .then(response => ( this.epochs = response.data ));
-    axios
-      //.get('mapBaseUrl'+'/api/scenarios')
-	  .get('https://gis.clim-ability.eu/index.php/api/scenarios')
-      .then(response => ( this.scenarios = response.data ));
-    axios
-      //.get('mapBaseUrl'+'/api/languages')
-	  .get('https://gis.clim-ability.eu/index.php/api/languages')
-      .then(response => ( this.languages = response.data ));	  
-  }
-})
-</script>
-
-<script>
-var vueInfo = new Vue({
-  el: '#informationfield',
-  data: {
-    info: 'none',
-	infoVisible: false
-  },
-  methods: { 
-    clickOnMap(latitude,longitude) {
-	var url = 'mapBaseUrl'+'/api/hazard-values';
-	    url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
-	url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch=2041-2070&scenario=rcp45';
-    axios.get(url).then(response => ( this.info = response.data ));
-	},
-	roundedRange(para, digits) {
-	  var pot = Math.pow(10, digits);
-	  var minus = Math.round(10.0*(parseFloat(para.value) - parseFloat(para.std)))/10.0;
-	  var plus = Math.round(10.0*(parseFloat(para.value) + parseFloat(para.std)))/10.0;
-      return ''+minus+' - '+plus;	
-	}
-  },
-  computed: {
-    roundedCddp: function () {
-	  return this.roundedRange(this.info.cddp_2041_2070_delta_calculated, 1);
-    },
-    roundedFd: function () {
-	  return this.roundedRange(this.info.fd_2041_2070_delta_calculated, 1);
-    },	
-	roundedRr20: function () {
-	  return this.roundedRange(this.info.rr20_2041_2070_delta_calculated, 1);
-    },
-	roundedRs: function () {
-	  return this.roundedRange(this.info.rr_summer_2041_2070_delta_calculated, 1);
-    },
-	roundedRw: function () {
-	  return this.roundedRange(this.info.rr_winter_2041_2070_delta_calculated, 1);
-    },
-	roundedTr: function () {
-	  return this.roundedRange(this.info.tr_2041_2070_delta_calculated, 1);
-    },
-  },
-  mounted () {
-  
-  }
-})
-</script>
 
 </body>

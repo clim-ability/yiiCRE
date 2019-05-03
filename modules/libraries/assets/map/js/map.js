@@ -144,6 +144,7 @@ legend.addTo(map);
 
 var geojsonLayerWells = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
+geojsonLayerWells.on('click', onMapClick);
 
 function setStyleColor(d) {
         return d > 20  ? '#FF9988'  :
@@ -204,7 +205,7 @@ function loadGeoJson(data) {
         datatype: 'json',
         jsonCallback: 'getJson',
         success: loadGeoJson
-        });	
+        });
 	}
 	
 map.on('moveend', function(){
@@ -399,26 +400,40 @@ var vueSelect = new Vue({
   },
   methods: {
     updateParameters() {
-      setParameters(this.hazard, this.epoch, this.scenario);
+	  if(this.hazard !== 'none' && this.epoch !== 'none' && this.scenario !== 'none' ) {	 
+        setParameters(this.hazard, this.epoch, this.scenario);
+	  }
 	}
   },
   mounted () {
     axios
       //.get('mapBaseUrl'+'/api/hazards')
 	  .get('https://gis.clim-ability.eu/index.php/api/hazards')
-      .then(response => ( this.hazards = response.data ));
+      .then(response => { 
+	    this.hazards = response.data; 
+		this.hazard = this.hazards[0].name;
+		this.updateParameters();
+		});
     axios
       //.get('mapBaseUrl'+'/api/epochs')
 	  .get('https://gis.clim-ability.eu/index.php/api/epochs')
-      .then(response => ( this.epochs = response.data ));
+      .then(response => { this.epochs = response.data; 
+		this.epoch = this.epochs[0].name;
+		this.updateParameters();
+		 });
     axios
       //.get('mapBaseUrl'+'/api/scenarios')
 	  .get('https://gis.clim-ability.eu/index.php/api/scenarios')
-      .then(response => ( this.scenarios = response.data ));
+      .then(response => { this.scenarios = response.data; 
+		this.scenario = this.scenarios[0].name;
+		this.updateParameters();
+		 });
     axios
       //.get('mapBaseUrl'+'/api/languages')
 	  .get('https://gis.clim-ability.eu/index.php/api/languages')
-      .then(response => ( this.languages = response.data ));	  
+      .then(response => { this.languages = response.data; 
+		this.language = this.languages[0].name;
+		 });	  
   }
 })
 

@@ -99,7 +99,7 @@ header('Access-Control-Allow-Origin: *');
 	 Tropical Nights: {{ roundedTr }}<br/>
 	 Rain: {{ roundedRr20 }}<br/>
 	 Winter Rain: {{ roundedRw }}<br/>
-	 Summer Rain: {{ roundedRs }}
+	 Summer Rain: {{ roundedRs }} <br/>
 	 <br/>
 	 {{ info }}
     </template>	 
