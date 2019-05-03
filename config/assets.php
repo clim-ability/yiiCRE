@@ -76,7 +76,10 @@ return [
                 'leaflet.css',
             ],
             'js' => [
-                YII_ENV_DEV ? 'leaflet.js' : 'leaflet.min.js'
+                YII_ENV_DEV ? 'leaflet.js' : 'leaflet.min.js',
+				'javascript.util.min.js',
+				'jsts.min.js',
+				'leaflet-dvf.js',
             ],
         ],
         'app\modules\libraries\bundles\OpenlayersAsset' => [
@@ -219,11 +222,14 @@ return [
         'dynatable.css' => '//cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.css',
         'dynatable.min.css' => '//cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.css',        
         //
-        // leaflet - http://leafletjs.com/
+        // leaflet - http://leafletjs.com/ && https://github.com/humangeo/leaflet-dvf
         'leaflet.min.js' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js',
         'leaflet.js' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet-src.js',
         'leaflet.css' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css',
-        //
+		'javascript.util.min.js' => '//cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js',
+		'jsts.min.js' => '//cdnjs.cloudflare.com/ajax/libs/jsts/2.0.4/jsts.min.js',
+		'leaflet-dvf.js' => '//cdnjs.cloudflare.com/ajax/libs/leaflet-dvf/0.2.6/leaflet-dvf.js',
+	    //
         // ol3 - http://openlayers.org/
         'ol3.min.js' => '//cdnjs.cloudflare.com/ajax/libs/ol3/3.15.1/ol.js',
         'ol3.js' => '//cdnjs.cloudflare.com/ajax/libs/ol3/3.15.1/ol-debug.js', 

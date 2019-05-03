@@ -1,6 +1,76 @@
 //var mapBaseUrl = '.';
 
 
+var statisticOptions = {
+	recordsField: null,
+	locationMode: L.LocationModes.LATLNG,
+	//codeField: 'state',
+	latitudeField: 'latitude',
+	longitudeField: 'longitude',
+	chartOptions: {
+		'estimates[choice=Romney].value': {
+			color: 'hsl(0,100%,25%)',
+			fillColor: 'hsl(0,70%,60%)',
+			maxValue: 1,
+			maxHeight: 20,
+			displayName: 'Romney',
+			displayText: function (value) {
+				return value.toFixed(2);
+			}
+		},
+		'estimates[choice=Obama].value': {
+			color: 'hsl(240,100%,25%)',
+			fillColor: 'hsl(240,70%,60%)',
+			maxValue: 1,
+			maxHeight: 20,
+			displayName: 'Obama',
+			displayText: function (value) {
+				return value.toFixed(2);
+			}
+		},
+		'estimates[choice=Other].value': {
+			color: 'hsl(240,5%,75%)',
+			fillColor: 'hsl(240,5%,75%)',
+			maxValue: 1,
+			maxHeight: 20,
+			displayName: 'Other',
+			displayText: function (value) {
+				return value.toFixed(2);
+			}
+		}
+	},
+	layerOptions: {
+		fillOpacity: 0.9,
+		opacity: 1,
+		weight: 0.5,
+		radius: 10,
+		width: 5,
+		barThickness: 5
+	},
+	// Use displayOptions to dynamically size the radius and barThickness according to the number of
+	// polling results
+	displayOptions: {
+		'poll_count': {
+			radius: new L.LinearFunction(new L.Point(0, 10), new L.Point(1000, 100)),
+			barThickness: new L.LinearFunction(new L.Point(0, 4), new L.Point(1000, 80))
+		}
+	}
+	/* ,
+	tooltipOptions: {
+		iconSize: new L.Point(80,55),
+		iconAnchor: new L.Point(-5,55)
+	},
+	onEachRecord: function (layer,record) {
+		var $html = $(L.HTMLUtils.buildTable(record));
+			layer.bindPopup($html.wrap('<div/>').parent().html(),{
+			minWidth: 400,
+			maxWidth: 400
+		});
+	} */
+};
+
+
+
     // initialize the map
   var map = L.map('map').setView([48.25, 8], 8);
 
@@ -16,12 +86,19 @@ var imageUrl = mapBaseUrl + '/images/pie_indicator.png',
     imageBounds = [[49.772, 6.66], [46.66, 9.12]];
 L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
+
+// add statistic here
+//var statisticLayer = new L.PieChartDataLayer(data,statisticOptions);
+//map.addLayer(statisticLayer);
+
+/*
  var tmo_region = L.tileLayer.wms("http://climability.uni-landau.de/cgi-bin/qgis_mapserv.fcgi?map=/var/www/html/climability/cgi-bin/climability_TMO.qgs", {
     layers: 'tmo_region',
     format: 'image/png',
     transparent: true,
     attribution: "climability"
   }).addTo(map);
+*/
 
 //locate by click
 var popup = L.popup();
@@ -99,32 +176,54 @@ function loadGeoJson(data) {
 
 //$hazard='cddp', $epoch='2041-2070', $scenario='rcp45'
 
-map.on('moveend', function(){
- if(map.getZoom() > -200){
-    var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
+{
     var defaultParameters = {
         hazard: 'cddp',
         epoch: '2041-2070',
         scenario: 'rcp45',
         };
-
+		
     var customParams = {
         bbox: map.getBounds().toBBoxString(),
+        };		
+		
+    function setParameters(hazard, epoch, scenario) {
+      defaultParameters = {
+        hazard: hazard,
+        epoch: epoch,
+        scenario: scenario,
         };
-    var parameters = L.Util.extend(defaultParameters, customParams);
-    //console.log(geoJsonUrl + L.Util.getParamString(parameters));
+	  redrawParameters();
+    }	
 
-  $.ajax({
+	function redrawParameters() {
+      var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
+      var parameters = L.Util.extend(defaultParameters, customParams);
+      $.ajax({
         url: geoJsonUrl + L.Util.getParamString(parameters),
         datatype: 'json',
         jsonCallback: 'getJson',
         success: loadGeoJson
-        });
-    }else{
+        });	
+	}
+	
+map.on('moveend', function(){
+ if(map.getZoom() > -200){
+    customParams = {
+        bbox: map.getBounds().toBBoxString(),
+        };
+  
+    //console.log(geoJsonUrl + L.Util.getParamString(parameters));
+    redrawParameters();
+
+ }else{
     map.removeLayer(geojsonLayerWells);
     };
 });
 
+}
+
+redrawParameters();
 /*
 
 // Null variable that will hold our data
@@ -279,4 +378,92 @@ $( "#addWinterRain" ).click(function() {
 
 
   var baseMaps = {};    
-   L.control.layers(baseMaps,{'<strong>openstreetmap<strong/><br />':OpenStreetMap_DE, '<strong>upper Rhine region<strong/><br />':tmo_region, '<strong>climate indicators<strong/><br />':imageUrl}).addTo(map);   
+   L.control.layers(baseMaps,{
+	   '<strong>openstreetmap<strong/><br />':OpenStreetMap_DE, 
+    /*  '<strong>upper Rhine region<strong/><br />': tmo_region,  */
+	  '<strong>climate indicators<strong/><br />':imageUrl}).addTo(map); 
+
+
+	  
+var vueSelect = new Vue({
+  el: '#selectionrow',
+  data: {
+    hazard: 'none',
+    hazards: [ { label: '', name: 'none' } ],
+    epoch: 'none',
+    epochs: [ { label: '', name: 'none' } ],
+    scenario: 'none',
+    scenarios: [ { label: '', name: 'none' } ],
+    language: 'none',
+    languages: [ { label: '', name: 'none' } ]	
+  },
+  methods: {
+    updateParameters() {
+      setParameters(this.hazard, this.epoch, this.scenario);
+	}
+  },
+  mounted () {
+    axios
+      //.get('mapBaseUrl'+'/api/hazards')
+	  .get('https://gis.clim-ability.eu/index.php/api/hazards')
+      .then(response => ( this.hazards = response.data ));
+    axios
+      //.get('mapBaseUrl'+'/api/epochs')
+	  .get('https://gis.clim-ability.eu/index.php/api/epochs')
+      .then(response => ( this.epochs = response.data ));
+    axios
+      //.get('mapBaseUrl'+'/api/scenarios')
+	  .get('https://gis.clim-ability.eu/index.php/api/scenarios')
+      .then(response => ( this.scenarios = response.data ));
+    axios
+      //.get('mapBaseUrl'+'/api/languages')
+	  .get('https://gis.clim-ability.eu/index.php/api/languages')
+      .then(response => ( this.languages = response.data ));	  
+  }
+})
+
+
+var vueInfo = new Vue({
+  el: '#informationfield',
+  data: {
+    info: 'none',
+	infoVisible: false
+  },
+  methods: { 
+    clickOnMap(latitude,longitude) {
+	var url = 'mapBaseUrl'+'/api/hazard-values';
+	    url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
+	url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch=2041-2070&scenario=rcp45';
+    axios.get(url).then(response => ( this.info = response.data ));
+	},
+	roundedRange(para, digits) {
+	  var pot = Math.pow(10, digits);
+	  var minus = Math.round(10.0*(parseFloat(para.value) - parseFloat(para.std)))/10.0;
+	  var plus = Math.round(10.0*(parseFloat(para.value) + parseFloat(para.std)))/10.0;
+      return ''+minus+' - '+plus;	
+	}
+  },
+  computed: {
+    roundedCddp: function () {
+	  return this.roundedRange(this.info.cddp_2041_2070_delta_calculated, 1);
+    },
+    roundedFd: function () {
+	  return this.roundedRange(this.info.fd_2041_2070_delta_calculated, 1);
+    },	
+	roundedRr20: function () {
+	  return this.roundedRange(this.info.rr20_2041_2070_delta_calculated, 1);
+    },
+	roundedRs: function () {
+	  return this.roundedRange(this.info.rr_summer_2041_2070_delta_calculated, 1);
+    },
+	roundedRw: function () {
+	  return this.roundedRange(this.info.rr_winter_2041_2070_delta_calculated, 1);
+    },
+	roundedTr: function () {
+	  return this.roundedRange(this.info.tr_2041_2070_delta_calculated, 1);
+    },
+  },
+  mounted () {
+  
+  }
+})

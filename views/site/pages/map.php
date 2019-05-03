@@ -30,13 +30,51 @@ header('Access-Control-Allow-Origin: *');
   </div>
 </div>
 
+<div id="climateinspector">
+
       <h1 class="my-4">Changing of climate
         <small>at the Upper Rhine</small>
       </h1>
 
  <div class="container-fluid">
+
+    <div class="row" id="selectionrow">
+ 	  <div class="col-md-3">
+       <select v-model="hazard" v-on:change="updateParameters" class="form-control">
+        <option v-for="hazard in hazards" v-bind:value="hazard.name">
+         {{ hazard.label }} 
+        </option>
+       </select>
+	  </div>	
+ 	  <div class="col-md-3">
+       <select v-model="epoch" v-on:change="updateParameters" class="form-control">
+        <option v-for="epoch in epochs" v-bind:value="epoch.name">
+         {{ epoch.label }} 
+        </option>
+       </select>
+	  </div>	
+ 	  <div class="col-md-3">
+       <select v-model="scenario" v-on:change="updateParameters" class="form-control">
+        <option v-for="scenario in scenarios" v-bind:value="scenario.name">
+         {{ scenario.label }} 
+        </option>
+       </select>
+	  </div>		 
+	  <div class="col-md-3 ">	   
+	   <select v-model="language" class="form-control">
+        <option v-for="language in languages" v-bind:value="language.name">
+         {{ language.label }}
+        </option>
+       </select>
+	  </div>
+	</div> 
+
+ 
   <div class="row" style="margin: 8px;">
    <div class="col-md-6 "> <!-- eoEvents Upper-Left Corner -->
+
+
+
 
     <div id="map"></div>
     <div id="controls">
@@ -51,7 +89,20 @@ header('Access-Control-Allow-Origin: *');
 
    </div> <!-- end md-6 -->
 
-   <div class="col-md-6"> <!-- Tabbed Upper-Right Corner -->
+   <div class="col-md-6" id="informationfield"> <!-- Tabbed Upper-Right Corner -->
+    <template v-if="info !== 'none'">
+     Nearest City: {{ info.nearest_city.name }} <br/>
+	 Elevation:  {{ info.elevation_calculated.value }} m <br/>
+	 <br/>
+	 Dry Days: {{ roundedCddp }} <br/>
+	 Frost Days: {{ roundedFd }}<br/>
+	 Tropical Nights: {{ roundedTr }}<br/>
+	 Rain: {{ roundedRr20 }}<br/>
+	 Winter Rain: {{ roundedRw }}<br/>
+	 Summer Rain: {{ roundedRs }}
+	 <br/>
+	 {{ info }}
+    </template>	 
    </div> <!-- end md-6 -->
 
   </div> <!-- end row -->
@@ -71,6 +122,9 @@ header('Access-Control-Allow-Origin: *');
   </div> <!-- end LOWER row -->	
 
  </div> <!-- end container-fluid -->
+
+    </div>
+</div>
 	 
 
 

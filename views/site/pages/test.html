@@ -9,6 +9,7 @@
     <title></title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" rel="stylesheet">
     <link href="../../../modules/libraries/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-dvf/0.3.1/css/dvf.min.css" rel="stylesheet">
     <link href="../../../modules/libraries/assets/map/css/map.css" rel="stylesheet">
     <link href="../../../web/css/site.css" rel="stylesheet"></head>
 <body>
@@ -58,21 +59,21 @@
 
     <div class="row" id="selectionrow">
  	  <div class="col-md-3">
-       <select v-model="hazard" class="form-control">
+       <select v-model="hazard" v-on:change="updateParameters" class="form-control">
         <option v-for="hazard in hazards" v-bind:value="hazard.name">
          {{ hazard.label }} 
         </option>
        </select>
 	  </div>	
  	  <div class="col-md-3">
-       <select v-model="epoch" class="form-control">
+       <select v-model="epoch" v-on:change="updateParameters" class="form-control">
         <option v-for="epoch in epochs" v-bind:value="epoch.name">
          {{ epoch.label }} 
         </option>
        </select>
 	  </div>	
  	  <div class="col-md-3">
-       <select v-model="scenario" class="form-control">
+       <select v-model="scenario" v-on:change="updateParameters" class="form-control">
         <option v-for="scenario in scenarios" v-bind:value="scenario.name">
          {{ scenario.label }} 
         </option>
@@ -108,7 +109,19 @@
    </div> <!-- end md-6 -->
 
    <div class="col-md-6" id="informationfield"> <!-- Tabbed Upper-Right Corner -->
-     {{ info }}
+    <template v-if="info !== 'none'">
+     Nearest City: {{ info.nearest_city.name }} <br/>
+	 Elevation:  {{ info.elevation_calculated.value }} m <br/>
+	 <br/>
+	 Dry Days: {{ roundedCddp }} <br/>
+	 Frost Days: {{ roundedFd }}<br/>
+	 Tropical Nights: {{ roundedTr }}<br/>
+	 Rain: {{ roundedRr20 }}<br/>
+	 Winter Rain: {{ roundedRw }}<br/>
+	 Summer Rain: {{ roundedRs }}
+	 <br/>
+	 {{ info }}
+    </template>	 
    </div> <!-- end md-6 -->
 
   </div> <!-- end row -->
@@ -143,9 +156,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet-src.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet-src.js"></script>
+	<!-- script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jsts/2.0.4/jsts.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-dvf/0.2.6/leaflet-dvf.js"></script>
+<!--script src="../../../modules/libraries/assets/leaflet/js/leaflet-dvf.js"></script-->
+<!-- script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-dvf/0.3.1/leaflet-dvf.markers.js"</script -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tweenjs/0.6.1/tweenjs.min.js"></script>
 <script src="../../../modules/libraries/assets/tween/js/tween.js"></script>
 <script src="../../../modules/libraries/assets/map/js/map.js"></script>
@@ -153,6 +173,7 @@
 <script src="../../../modules/libraries/assets/bootstrap/js/bootstrap.js"></script>
 
 <script>
+
 var vueSelect = new Vue({
   el: '#selectionrow',
   data: {
@@ -164,6 +185,11 @@ var vueSelect = new Vue({
     scenarios: [ { label: '', name: 'none' } ],
     language: 'none',
     languages: [ { label: '', name: 'none' } ]	
+  },
+  methods: {
+    updateParameters() {
+      setParameters(this.hazard, this.epoch, this.scenario);
+	}
   },
   mounted () {
     axios
@@ -191,17 +217,41 @@ var vueInfo = new Vue({
   el: '#informationfield',
   data: {
     info: 'none',
+	infoVisible: false
   },
   methods: { 
     clickOnMap(latitude,longitude) {
 	var url = 'mapBaseUrl'+'/api/hazard-values';
 	    url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
 	url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch=2041-2070&scenario=rcp45';
-    axios
-      //.get('mapBaseUrl'+'/api/hazard-values')   HazardValues
-	  .get(url)
-      .then(response => ( this.info = response.data ));	   
+    axios.get(url).then(response => ( this.info = response.data ));
 	},
+	roundedRange(para, digits) {
+	  var pot = Math.pow(10, digits);
+	  var minus = Math.round(10.0*(parseFloat(para.value) - parseFloat(para.std)))/10.0;
+	  var plus = Math.round(10.0*(parseFloat(para.value) + parseFloat(para.std)))/10.0;
+      return ''+minus+' - '+plus;	
+	}
+  },
+  computed: {
+    roundedCddp: function () {
+	  return this.roundedRange(this.info.cddp_2041_2070_delta_calculated, 1);
+    },
+    roundedFd: function () {
+	  return this.roundedRange(this.info.fd_2041_2070_delta_calculated, 1);
+    },	
+	roundedRr20: function () {
+	  return this.roundedRange(this.info.rr20_2041_2070_delta_calculated, 1);
+    },
+	roundedRs: function () {
+	  return this.roundedRange(this.info.rr_summer_2041_2070_delta_calculated, 1);
+    },
+	roundedRw: function () {
+	  return this.roundedRange(this.info.rr_winter_2041_2070_delta_calculated, 1);
+    },
+	roundedTr: function () {
+	  return this.roundedRange(this.info.tr_2041_2070_delta_calculated, 1);
+    },
   },
   mounted () {
   
