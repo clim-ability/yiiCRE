@@ -136,6 +136,7 @@ class ApiController extends Controller
 	     if(is_string($table)) {
 		  $result['layer_'.$hazard['name']] = $table;
 		  $relHazard = $hazard['name'].'_'.$epoch['name'].'_delta';
+		  $relHazard = str_replace('-', '_', $relHazard);
           $result[$relHazard.'_calculated'] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 		  $result[$relHazard.'_raster'] = Gis::getRasterValue($table, $hazard['name'], $latitude, $longitude);
 	      $refEpoch = Epoch::findBy('1970-2000');
@@ -143,6 +144,7 @@ class ApiController extends Controller
 	      $table = Gis::getRasterTable($hazard, $refParameter, $refEpoch, null);
 		   if(is_string($table)) {
 		      $refHazard = $hazard['name'].'_'.$refEpoch['name'].'_absolute';
+			  $refHazard = str_replace('-', '_', $refHazard);
               $result[$refHazard] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 		   }
 	     } 
@@ -178,6 +180,14 @@ class ApiController extends Controller
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }   
+   
+   
+   /*
+   SELECT id, geom, cddp, (cddp-avg)/std as norm
+ FROM public."cddp_mean_rcp45_2021-2050_minus_knp",
+   (SELECT AVG(cddp) as avg, STDDEV(cddp) as std FROM public."cddp_mean_rcp45_2021-2050_minus_knp") AS stat
+ WHERE (cddp-avg)/std > 1.0 OR (cddp-avg)/std < -1.0
+ */
    
 
 }
