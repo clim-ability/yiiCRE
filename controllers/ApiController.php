@@ -146,7 +146,7 @@ class ApiController extends Controller
 	    }
 	   }
 	  } 	   
-	  $result = getHazardExtremes($hazardsList);
+	  $result = Gis::getHazardExtremes($hazardsList);
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       return $result;	  
