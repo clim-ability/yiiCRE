@@ -93,6 +93,9 @@ class Gis extends ActiveRecord
 		  $first = false;				
 	   }	   
 	   $sql += ") as foo GROUP BY hazard";
+	   $command = $connection->createCommand($sql);
+       $result = $command->queryAll();
+	   return $result;	   
 	}
 
 	public static function getHazardGeometry($table, $variable, $bbox)
