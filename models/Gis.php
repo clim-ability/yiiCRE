@@ -88,7 +88,7 @@ class Gis extends ActiveRecord
 	   foreach($hazards as $table=>$hazard) {
 		  if(!$first) { $sql .= " UNION ";}
 		  //$sql .= "SELECT '".$hazard."' as hazard, MIN(".$hazard.") as min, MAX(".$hazard.") as max "
-		  $sql .= "SELECT '".$hazard."' as hazard, (AVG(".$hazard.") - 2.0*STDDEV(".$hazard.")) as min, (AVG(".$hazard.") + 2.0*STDDEV(".$hazard.")) as max "
+		  $sql .= "SELECT '".$hazard."' as hazard, (AVG(".$hazard.") - 1.0*STDDEV(".$hazard.")) as min, (AVG(".$hazard.") + 1.0*STDDEV(".$hazard.")) as max "
 		        . " FROM public.\"".$table."\" ";
 		  $first = false;
 		   //var_dump($sql);
