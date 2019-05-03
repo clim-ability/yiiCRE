@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m190503_120124_add_color_to_hazards extends Migration
+class m190503_120124_add_colors_to_hazards extends Migration
 {
 
     public function init()
