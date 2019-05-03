@@ -1,5 +1,6 @@
 <?php
 use app\modules\libraries\bundles\MapAsset;
+use yii\helpers\Url;
 $assets = MapAsset::register($this);
 
 header('Access-Control-Allow-Origin: *');
