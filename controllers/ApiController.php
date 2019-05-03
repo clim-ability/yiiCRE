@@ -133,6 +133,7 @@ class ApiController extends Controller
 	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
       foreach($parameters as $parameter)
 	  {	 
+	   $parameter = Parameter::findBy($parameter);
 	   foreach($hazards as $hazard)
 	   {
 	    foreach($epochs as $epoch)
