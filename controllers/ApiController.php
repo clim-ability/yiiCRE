@@ -123,7 +123,7 @@ class ApiController extends Controller
        
    }
    
-   public function actionHazardExtremes($hazard='')
+   public function actionHazardExtremes($hazard='', $epoch='', $scenario='')
    {
       $hazardsList = [];
 	  $inclInvisible = false;
@@ -134,7 +134,13 @@ class ApiController extends Controller
 	    $hazards = [Hazard::findBy($hazard)];
 	  }
 	  $epochs = Epoch::inqAllEpochs( $inclInvisible);
+	  if ('' != $epoch) {
+	    $epochs = [Epoch::findBy($epoch)];
+	  }
 	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
+	  if ('' != $scenario) {
+	    $scenarios = [Scenario::findBy($scenario)];
+	  }
       foreach($parameters as $parameter)
 	  {	 
 	   $parameter = Parameter::findBy($parameter);
