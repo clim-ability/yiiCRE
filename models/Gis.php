@@ -86,13 +86,14 @@ class Gis extends ActiveRecord
 	   $sql = "SELECT hazard, MIN(min) as min, MAX(max) as max FROM (";
 	   $first = true;
 	   foreach($hazards as $table=>$hazard) {
-		  if(!$first) { $sql += " UNION ";}
-		  $sql += "SELECT '".$hazard."' as hazard, MIN(".$hazard.") as min, MAX(".$hazard.") as max "
+		  if(!$first) { $sql .= " UNION ";}
+		  $sql .= "SELECT '".$hazard."' as hazard, MIN(".$hazard.") as min, MAX(".$hazard.") as max "
 		        . " FROM public.\"".$table."\" ";
-		  $first = false;				
+		  $first = false;
+		   //var_dump($sql);
 	   }	   
-	   $sql += " ) as foo GROUP BY hazard ";
-	   var_dump($sql);
+	   $sql .= " ) as foo GROUP BY hazard ";
+	   //var_dump($sql);
 	   $connection = Yii::$app->pgsql_gisdata;	   
 	   $command = $connection->createCommand($sql);
        $result = $command->queryAll();
