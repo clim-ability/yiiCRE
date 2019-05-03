@@ -146,6 +146,11 @@ class ApiController extends Controller
 	    }
 	   }
 	  } 
+	  foreach($hazardsList as $table=>$hazard) {
+		var_dump($table);
+		var_dump($hazard);
+		echo " ";
+	  }
       var_dump($hazardsList);	  
 	  $result = Gis::getHazardExtremes($hazardsList);
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
