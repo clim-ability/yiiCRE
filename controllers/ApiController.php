@@ -130,7 +130,7 @@ class ApiController extends Controller
 	  $parameters = ['pctl15', 'pctl85'];
 	  //$parameters = ['mean'];
 	  $parameters = ['pctl15', 'pctl85', 'mean'];
-	  $parameters = ['mean', 'mean'];
+	  $parameters = ['mean', 'pctl15', 'pctl85', 'mean'];
 	  $hazards = Hazard::inqAllHazards($inclInvisible);
 	  if ('' != $hazard) {
 	    $hazards = [Hazard::findBy($hazard)];
