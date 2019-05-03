@@ -482,17 +482,28 @@ var vueInfo = new Vue({
 	      });
 	    }
 	},
+	roundedValue(value, digits) {
+	   var pot = Math.pow(10.0, digits);
+	   return Math.round(pot*parseFloat(value))/pot;
+	},
 	roundedRange(para, digits) {
 	  if(para) {	
-	    var pot = Math.pow(10, digits);
-	    var minus = Math.round(10.0*(parseFloat(para.value) - parseFloat(para.std)))/10.0;
-	    var plus = Math.round(10.0*(parseFloat(para.value) + parseFloat(para.std)))/10.0;
-        return ''+minus+' - '+plus;	
+	   
+		var minus = this.roundedValue(parseFloat(para.value) - parseFloat(para.std), digits);
+		var plus = this.roundedValue(parseFloat(para.value) + parseFloat(para.std), digits);
+		if(parseFloat(para.value) < 0.0) {
+		   return 'Decrease by <b>'+(0.0-plus)+' - '+(0.0-minus)+'</b>';		   
+		} else {
+           return 'Increase by <b>'+minus+' bis '+plus+'</b>';
+		}
 	  }
 	  return '';
 	}
   },
   computed: {
+	roundedElevation: function() {
+      return this.roundedValue(this.info.elevation_calculated.value, 2);
+	},		
     roundedCddp: function () {
 	  return this.roundedRange(this.info.cddp_delta_calculated, 1);
     },

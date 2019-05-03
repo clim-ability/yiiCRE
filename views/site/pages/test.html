@@ -111,15 +111,14 @@
 
    <div class="col-md-6" id="informationfield"> <!-- Tabbed Upper-Right Corner -->
     <template v-if="info !== 'none'">
-     Nearest City: {{ info.nearest_city.name }} <br/>
-	 Elevation:  {{ info.elevation_calculated.value }} m <br/>
+     Nearest City: {{ info.nearest_city.name }}, Elevation: {{ roundedElevation }} m <br/>
 	 <br/>
-	 Dry Days: {{ roundedCddp }} <br/>
-	 Frost Days: {{ roundedFd }}<br/>
-	 Tropical Nights: {{ roundedTr }}<br/>
-	 Rain: {{ roundedRr20 }}<br/>
-	 Winter Rain: {{ roundedRw }}<br/>
-	 Summer Rain: {{ roundedRs }}<br/>
+	 Dry Days: <span v-html="roundedCddp"></span> days/year <br/>
+	 Frost Days: <span v-html="roundedFd"></span> days/year <br/>
+	 Tropical Nights: <span v-html="roundedTr"></span> days/year <br/>
+	 Rain: <span v-html="roundedRr20"></span> days/year <br/>
+	 Winter Rain: <span v-html="roundedRw"></span> days/year <br/>
+	 Summer Rain: <span v-html="roundedRs"></span> days/year <br/>	 
 	 <br/>
 	 {{ info }}
     </template>	 
