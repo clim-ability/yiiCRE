@@ -93,6 +93,7 @@ class Gis extends ActiveRecord
 		  $first = false;				
 	   }	   
 	   $sql += ") as foo GROUP BY hazard";
+	   var_dump($sql);
 	   $command = $connection->createCommand($sql);
        $result = $command->queryAll();
 	   return $result;	   
