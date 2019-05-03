@@ -83,7 +83,6 @@ class Gis extends ActiveRecord
 
     public static function getHazardExtremes($hazards)
 	{
-	   $connection = Yii::$app->pgsql_gisdata;	
 	   $sql = "SELECT hazard, MIN(min) as min, MAX(max) as max FROM (";
 	   $first = true;
 	   foreach($hazards as $table=>$hazard) {
@@ -94,6 +93,7 @@ class Gis extends ActiveRecord
 	   }	   
 	   $sql += ") as foo GROUP BY hazard";
 	   var_dump($sql);
+	   $connection = Yii::$app->pgsql_gisdata;	   
 	   $command = $connection->createCommand($sql);
        $result = $command->queryAll();
 	   return $result;	   
