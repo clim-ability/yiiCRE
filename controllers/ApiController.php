@@ -123,6 +123,34 @@ class ApiController extends Controller
        
    }
    
+   public function actionHazardExtremes()
+   {
+      $hazardsList = [];
+	  $inclInvisible = false;
+	  $parameters = ['pctl15', 'pctl85'];
+	  $hazards = Hazard::inqAllHazards($inclInvisible);
+	  $epochs = Epoch::inqAllEpochs( $inclInvisible);
+	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
+      foreach($parameters as $parameter)
+	  {	 
+	   foreach($hazards as $hazard)
+	   {
+	    foreach($epochs as $epoch)
+	    {
+	     foreach($scenarios as $scenario)
+	     {
+	       $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);	
+           $hazardsList[$table] = $hazard;
+	     }
+	    }
+	   }
+	  } 	   
+	  $result = getHazardExtremes($hazardsList);
+	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      return $result;	  
+   }
+   
    public function actionHazardValues($latitude, $longitude, $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
 	   $result = [];

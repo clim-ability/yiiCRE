@@ -26,6 +26,7 @@ class Gis extends ActiveRecord
         ];
     }
 	
+	/*  //Should be in Epoch...
 	public function inqAllEpochs( $inclInvisible = false ) {
 	    $epochs = Epoch::find();
 		if(!$inclInvisible) {
@@ -42,6 +43,7 @@ class Gis extends ActiveRecord
             ->one();
         return $epoch;
     }
+	*/
 	
 	public static function getCalculatedValue($table, $variable, $latitude, $longitude)
 	{
@@ -79,7 +81,20 @@ class Gis extends ActiveRecord
 	 return $result;
 	}
 
-	
+    public static function getHazardExtremes($hazards)
+	{
+	   $connection = Yii::$app->pgsql_gisdata;	
+	   $sql = "SELECT hazard, MIN(min) as min, MAX(max) as max FROM (";
+	   $first = true;
+	   foreach($hazards as $table=>$hazard) {
+		  if(!$first) { $sql += " UNION ";}
+		  $sql += "SELECT '".$hazard."' as hazard, MIN(".$hazard.") as min, MAX(".$hazard.") as max "
+		        . " FROM public.\"".$table."\" ";
+		  $first = false;				
+	   }	   
+	   $sql += ") as foo GROUP BY hazard";
+	}
+
 	public static function getHazardGeometry($table, $variable, $bbox)
 	{
 	 $sql =  "SELECT ".$variable." AS value, "
