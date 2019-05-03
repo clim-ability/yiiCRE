@@ -1,0 +1,2 @@
+docker exec crephp2a yiicre/yii migrate/up --interactive=0
+
