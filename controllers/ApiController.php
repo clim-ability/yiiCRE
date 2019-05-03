@@ -128,6 +128,7 @@ class ApiController extends Controller
       $hazardsList = [];
 	  $inclInvisible = false;
 	  $parameters = ['pctl15', 'pctl85'];
+	  $parameters = ['mean'];
 	  $hazards = Hazard::inqAllHazards($inclInvisible);
 	  if ('' != $hazard) {
 	    $hazards = [Hazard::findBy($hazard)];
