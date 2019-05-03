@@ -8,7 +8,7 @@ header('Access-Control-Allow-Origin: *');
 
 <script>
     var mapBaseUrl = "<?php echo $assets->baseUrl; ?>";
-	var apiBaseUrl = "<?php echo Url::home(true); ?>";
+	var apiBaseUrl = "<?php echo Url::home('https'); ?>";
 </script>
 
 <!-- Modal -->
