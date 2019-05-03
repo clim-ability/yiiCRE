@@ -91,7 +91,7 @@ class Gis extends ActiveRecord
 		        . " FROM public.\"".$table."\" ";
 		  $first = false;				
 	   }	   
-	   $sql += ") as foo GROUP BY hazard";
+	   $sql += " ) as foo GROUP BY hazard ";
 	   var_dump($sql);
 	   $connection = Yii::$app->pgsql_gisdata;	   
 	   $command = $connection->createCommand($sql);
