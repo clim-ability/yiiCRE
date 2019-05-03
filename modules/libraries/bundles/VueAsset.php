@@ -16,7 +16,7 @@ use yii\web\AssetBundle;
  * @author    Michael Kahle <michael.kahle@ub.uni-freiburg.de>
  * @since 2.0
  */
-class JqueryAsset extends AssetBundle
+class VueAsset extends AssetBundle
 {
     public $sourcePath = '@app/modules/libraries/assets/vue';   
     //public $basePath = '@webroot';
@@ -27,7 +27,6 @@ class JqueryAsset extends AssetBundle
     public $js = [
          'js/vue.min.js',
 		 'js/axios.min.js',
-         //'js/jquery.cookie.min.js',
     ];
     public $depends = [];
 }
