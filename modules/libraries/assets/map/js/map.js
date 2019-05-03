@@ -429,30 +429,30 @@ var vueSelect = new Vue({
   },
   mounted () {
     axios
-      //.get('mapBaseUrl'+'/api/hazards')
-	  .get('https://gis.clim-ability.eu/index.php/api/hazards')
+      .get(apiBaseUrl+'/api/hazards')
+	  //.get('https://gis.clim-ability.eu/index.php/api/hazards')
       .then(response => { 
 	    this.hazards = response.data; 
 		this.hazard = this.hazards[0].name;
 		this.updateParameters();
 		});
     axios
-      //.get('mapBaseUrl'+'/api/epochs')
-	  .get('https://gis.clim-ability.eu/index.php/api/epochs')
+      .get(apiBaseUrl+'/api/epochs')
+	  //.get('https://gis.clim-ability.eu/index.php/api/epochs')
       .then(response => { this.epochs = response.data; 
 		this.epoch = this.epochs[0].name;
 		this.updateParameters();
 		 });
     axios
-      //.get('mapBaseUrl'+'/api/scenarios')
-	  .get('https://gis.clim-ability.eu/index.php/api/scenarios')
+      .get(apiBaseUrl+'/api/scenarios')
+	  //.get('https://gis.clim-ability.eu/index.php/api/scenarios')
       .then(response => { this.scenarios = response.data; 
 		this.scenario = this.scenarios[0].name;
 		this.updateParameters();
 		 });
     axios
-      //.get('mapBaseUrl'+'/api/languages')
-	  .get('https://gis.clim-ability.eu/index.php/api/languages')
+      .get(apiBaseUrl+'/api/languages')
+	  //.get('https://gis.clim-ability.eu/index.php/api/languages')
       .then(response => { this.languages = response.data; 
 		this.language = this.languages[0].name;
 		 });	  
@@ -470,12 +470,17 @@ var vueInfo = new Vue({
     clickOnMap() {
 		var latitude = getCurrentLatitude();
 		var longitude = getCurrentLongitude();
-		var epoch = vueSelect.getCurrentEpoch();
-		var szenario = vueSelect.getCurrentSzenario();
-	var url = 'mapBaseUrl'+'/api/hazard-values';
-	    url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
-	url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+epoch+'&scenario='+szenario;
-    axios.get(url).then(response => ( this.info = response.data ));
+		if (latitude !== 0 && longitude !== 0) {
+		  var epoch = vueSelect.getCurrentEpoch();
+		  var szenario = vueSelect.getCurrentSzenario();
+	      var url = apiBaseUrl+'/api/hazard-values';
+	         // url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
+	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+epoch+'&scenario='+szenario;
+          axios.get(url).then(response => {
+	         this.info = response.data; 
+	         this.infoVisible = true;
+	      });
+	    }
 	},
 	roundedRange(para, digits) {
 	  if(para) {	
