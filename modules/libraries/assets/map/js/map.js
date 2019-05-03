@@ -136,29 +136,30 @@ function onMapClick(e) {
 map.on('click', onMapClick);
 }
 
+
+{
 // Create Leaflet Control Object for Legend
-var legend = L.control({position: 'bottomright'});
-
-// Function that runs when legend is added to map
-legend.onAdd = function (map) {
-
+  var legend = L.control({position: 'bottomright'});
+  legend.onAdd = function (map) {return L.DomUtil.create('div', 'legend')};
+  legend.addTo(map);
+  function updateLegend(epoch, szenario, parameters) {
+    map.removeControl(legend);	
+    // Function that runs when legend is added to map
+    legend.onAdd = function (map) {
 	// Create Div Element and Populate it with HTML
-	var div = L.DomUtil.create('div', 'legend');		    
-			div.innerHTML += '<b>Climate Indicators</b><br />';
-			div.innerHTML += 'near future<br />';
-			div.innerHTML += '<small></small><br />';  
-			div.innerHTML += '<i style="background: #FF0000"></i><p>tropical nights</p>';
-			div.innerHTML += '<i style="background: #CC6600"></i><p>dry days</p>';
-			div.innerHTML += '<i style="background: #33FFFF"></i><p>annual rainfall</p>';
-			div.innerHTML += '<i style="background: #33FF66"></i><p>rain summer</p>';
-			div.innerHTML += '<i style="background: #9999CC"></i><p>rain winter</p>';
-      div.innerHTML += '<i style="background: #3333FF"></i><p>frost days</p>';
-
-	// Return the Legend div containing the HTML content
-	return div;
-};
-
-legend.addTo(map);
+	  var div = L.DomUtil.create('div', 'legend');		    
+	  div.innerHTML += '<b>Climate Indicators</b><br />';
+	  div.innerHTML += epoch + '; ' + szenario + '<br />';
+	  div.innerHTML += '<small></small><br />';  
+      for (var i = 0; i < parameters.length; i++) {
+        div.innerHTML += '<i style="background: '+parameters[i].color_max+'"></i><p>'+parameters[i].label+'</p>';
+      }
+	  // Return the Legend div containing the HTML content
+	  return div;
+    };
+    legend.addTo(map);
+  }
+}
 
 var geojsonLayerWells = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
@@ -420,6 +421,7 @@ var vueSelect = new Vue({
     updateParameters() {
 	  if(this.hazard !== 'none' && this.epoch !== 'none' && this.scenario !== 'none' ) {	 
         setParametersOnMap(this.hazard, this.epoch, this.scenario);
+		updateLegend(this.epoch, this.scenario, this.hazards);
 		//window.viewInfo.clickOnMap();
 		vueEventBus.$emit('updatedParameters', this);
 	  }
@@ -435,6 +437,7 @@ var vueSelect = new Vue({
 	    this.hazards = response.data; 
 		this.hazard = this.hazards[0].name;
 		this.updateParameters();
+		updateLegend(this.epoch, this.scenario, this.hazards);
 		});
     axios
       .get(apiBaseUrl+'/api/epochs')
