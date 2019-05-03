@@ -123,12 +123,15 @@ class ApiController extends Controller
        
    }
    
-   public function actionHazardExtremes()
+   public function actionHazardExtremes($hazard='')
    {
       $hazardsList = [];
 	  $inclInvisible = false;
 	  $parameters = ['pctl15', 'pctl85'];
 	  $hazards = Hazard::inqAllHazards($inclInvisible);
+	  if ('' != $hazard) {
+	    $hazards = [Hazard::findBy($hazard)];
+	  }
 	  $epochs = Epoch::inqAllEpochs( $inclInvisible);
 	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
       foreach($parameters as $parameter)
