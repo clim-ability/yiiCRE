@@ -137,12 +137,16 @@ map.on('click', onMapClick);
 }
 
 
+function roundedValue(value, digits) {
+	   var pot = Math.pow(10.0, digits);
+	   return Math.round(pot*parseFloat(value))/pot;
+	}
 {
 // Create Leaflet Control Object for Legend
   var legend = L.control({position: 'bottomright'});
   legend.onAdd = function (map) {return L.DomUtil.create('div', 'legend')};
   legend.addTo(map);
-  function updateLegend(epoch, szenario, parameters) {
+  function updateLegend(hazard, epoch, szenario, parameters) {
     map.removeControl(legend);	
     // Function that runs when legend is added to map
     legend.onAdd = function (map) {
@@ -151,9 +155,19 @@ map.on('click', onMapClick);
 	  div.innerHTML += '<b>Climate Indicators</b><br />';
 	  div.innerHTML += epoch + '; ' + szenario + '<br />';
 	  div.innerHTML += '<small></small><br />';  
-      for (var i = 0; i < parameters.length; i++) {
-        div.innerHTML += '<i style="background: '+parameters[i].color_max+'"></i><p>'+parameters[i].label+'</p>';
-      }
+	  if ('all' == hazard) {
+        for (var i = 0; i < parameters.length; i++) {
+          div.innerHTML += '<i style="background: '+parameters[i].color_max+'"></i><p>'+parameters[i].label+'</p>';
+        }
+	  } else {
+        for (var i = 0.0; i < 8.0; i++) {
+		  var d1 = getValueGlobal(i/8.0);
+		  var d2 = getValueGlobal((i+1)/8.0);
+		  var label = ''+ roundedValue(d1,1)+' to '+roundedValue(d2,1);
+		  var color = getStyleColor(d1);
+          div.innerHTML += '<i style="background: '+color+'"></i><p>'+label+'</p>';
+        }
+      }		  
 	  // Return the Legend div containing the HTML content
 	  return div;
     };
@@ -195,14 +209,14 @@ function interpolateColor(a, b, amount) {
 
   function setExtremeValuesLocal(vmin, vmax)
   {
-    colorParameters.minValueLocal = vmin;
-	colorParameters.maxValueLocal = vmax;
+    colorParameters.minValueLocal = parseFloat(vmin);
+	colorParameters.maxValueLocal = parseFloat(vmax);
   }	 
 	
   function setExtremeValuesGlobal(vmin, vmax)
   {
-    colorParameters.minValueGlobal = vmin;
-	colorParameters.maxValueGlobal = vmax;
+    colorParameters.minValueGlobal = parseFloat(vmin);
+	colorParameters.maxValueGlobal = parseFloat(vmax);
   }	  
 
   function setExtremeColors(cmin, cmax)
@@ -211,28 +225,33 @@ function interpolateColor(a, b, amount) {
     colorParameters.maxColor = cmax;	  
   }	
 	
-  function setStyleColor(d) {
+  function getStyleColor(d) {
 	var amount = (parseFloat(d) - colorParameters.minValueGlobal) / (colorParameters.maxValueGlobal - colorParameters.minValueGlobal);
 	amount = Math.min(1.0, Math.min(1.0, amount)); 
     var color = interpolateColor(colorParameters.minColor, colorParameters.maxColor, amount);
 	return color;
   }
 
-  function setStyleOpacity(d) {
+  function getStyleOpacity(d) {
 	var amount = (parseFloat(d) - colorParameters.minValueLocal) / (colorParameters.maxValueLocal - colorParameters.minValueLocal);
 	amount = Math.min(1.0, Math.min(1.0, amount)); 
     var opacity = amount*(colorParameters.maxOpacity - colorParameters.minOpacity) + colorParameters.minOpacity;
 	return opacity;
   }
+  
+  function getValueGlobal(amount) {
+    var value = amount*(colorParameters.maxValueGlobal - colorParameters.minValueGlobal) + colorParameters.minValueGlobal;
+	return value;
+  }  
 		
   function LayerStyle(feature) {
     return {
-    fillColor: setStyleColor(feature.properties.value),
+    fillColor: getStyleColor(feature.properties.value),
     weight: 0.9,
     opacity: 0.8,
     color: 'black',
     dashArray: '0',
-    fillOpacity: setStyleOpacity(feature.properties.value) 
+    fillOpacity: getStyleOpacity(feature.properties.value) 
 	};
   }		
 
@@ -474,22 +493,26 @@ var vueSelect = new Vue({
 
 		  }	
 	    }
-		updateLegend(this.epoch, this.scenario, this.hazards);		
-  		axios
-          .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
-		  //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
-          .then(response => { 
-		    setExtremeValuesGlobal(response.data[0].min, response.data[0].max);
-            setParametersOnMap(this.hazard, this.epoch, this.scenario);				
-	  	});	
-  		axios
-          //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
-		  .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
-          .then(response => { 
-		    setExtremeValuesLocal(response.data[0].min, response.data[0].max);
-            setParametersOnMap(this.hazard, this.epoch, this.scenario);				
-	  	});		
-
+	    if('all' != this.hazard) {
+  		  axios
+            .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
+		    //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
+            .then(response => { 
+		      setExtremeValuesGlobal(response.data[0].min, response.data[0].max);
+              setParametersOnMap(this.hazard, this.epoch, this.scenario);	
+		      updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);				
+	    	});	
+  		  axios
+            //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
+		    .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
+            .then(response => { 
+		      setExtremeValuesLocal(response.data[0].min, response.data[0].max);
+              setParametersOnMap(this.hazard, this.epoch, this.scenario);	
+	    	  updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);				
+	  	  });		
+        } else {
+		  updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);	
+		}	
 		//window.viewInfo.clickOnMap();
 		vueEventBus.$emit('updatedParameters', this);
         //setParametersOnMap(this.hazard, this.epoch, this.scenario);		
@@ -504,9 +527,10 @@ var vueSelect = new Vue({
 	  //.get('https://gis.clim-ability.eu/index.php/api/hazards')
       .then(response => { 
 	    this.hazards = response.data; 
+		//this.hazards.unshift({name: 'all', label: 'all', color_min: '#000000', color_max: '#FFFFFF'});
 		this.hazard = this.hazards[0].name;
 		this.updateParameters();
-		updateLegend(this.epoch, this.scenario, this.hazards);
+		updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
 		});
     axios
       .get(apiBaseUrl+'/api/epochs')
@@ -564,9 +588,9 @@ var vueInfo = new Vue({
 		var minus = this.roundedValue(parseFloat(para.value) - parseFloat(para.std), digits);
 		var plus = this.roundedValue(parseFloat(para.value) + parseFloat(para.std), digits);
 		if(parseFloat(para.value) < 0.0) {
-		   return 'Decrease by <b>'+(0.0-plus)+' - '+(0.0-minus)+'</b>';		   
+		   return 'Decrease by <b>'+(0.0-plus)+' to '+(0.0-minus)+'</b>';		   
 		} else {
-           return 'Increase by <b>'+minus+' bis '+plus+'</b>';
+           return 'Increase by <b>'+minus+' to '+plus+'</b>';
 		}
 	  }
 	  return '';
@@ -590,6 +614,9 @@ var vueInfo = new Vue({
     },
 	roundedRw: function () {
 	  return this.roundedRange(this.info.rr_winter_delta_calculated, 1);
+    },
+	roundedSd: function () {
+	  return this.roundedRange(this.info.sd_delta_calculated, 1);
     },
 	roundedTr: function () {
 	  return this.roundedRange(this.info.tr_delta_calculated, 1);

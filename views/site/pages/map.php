@@ -86,8 +86,9 @@ header('Access-Control-Allow-Origin: *');
     <template v-if="info !== 'none'">
      Nearest City: {{ info.nearest_city.name }}, Elevation: {{ roundedElevation }} m <br/>
 	 <br/>
-	 Dry Days: <span v-html="roundedCddp"></span> days/year <br/>
+	 <!-- Dry Days: <span v-html="roundedCddp"></span> days/year <br/> -->
 	 Frost Days: <span v-html="roundedFd"></span> days/year <br/>
+	 Summer Days: <span v-html="roundedSd"></span> days/year <br/>
 	 Tropical Nights: <span v-html="roundedTr"></span> days/year <br/>
 	 Torrential Rain: <span v-html="roundedRr20"></span> days/year <br/>
 	 Winter Rain: <span v-html="roundedRw"></span> % <br/>
