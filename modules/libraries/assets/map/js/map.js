@@ -84,7 +84,7 @@ var statisticOptions = {
 // create image layer indicator pies
 var imageUrl = mapBaseUrl + '/images/pie_indicator.png',
     imageBounds = [[49.772, 6.66], [46.66, 9.12]];
-L.imageOverlay(imageUrl, imageBounds).addTo(map);
+//L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 
 // add statistic here
@@ -165,38 +165,68 @@ var geojsonLayerWells = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
 geojsonLayerWells.on('click', onMapClick);
 
-function setStyleColor(d) {
-        return d > 20  ? '#FF9988'  :
-               d > 15  ? '#EEAA88' :
-			   d > 15  ? '#DDBB88' :
-               d > 5   ? '#BBCC88'  :
-			   d > 0   ? '#AADD88'  : 
-               d > -5  ? '#99EE88' :
-                         '#88FF88' ;
-        }
-		
-function LayerStyle(feature) {
-  return {
-  fillColor: setStyleColor(feature.properties.value),
-  weight: 0.5,
-  opacity: 0.7,
-  color: 'black',
-  dashArray: '0',
-  fillOpacity: 0.5 };
-}		
+function interpolateColor(a, b, amount) { 
+    var ah = parseInt(a.replace('#', '0x'), 16),
+        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+        bh = parseInt(b.replace('#', '0x'), 16),
+        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+        rr = ar + amount * (br - ar),
+        rg = ag + amount * (bg - ag),
+        rb = ab + amount * (bb - ab);
+    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+}
 
-function loadGeoJson(data) {
+
+
+//$hazard='cddp', $epoch='2041-2070', $scenario='rcp45'
+
+{
+	
+  var colorParameters = {
+    minValue: -10.0,
+	maxValue: +10.0,
+	minColor: '#FFFFFF',
+	maxColor: '#000000'
+  }	  
+	
+  function setExtremeValues(vmin, vmax)
+  {
+    colorParameters.minValue = vmin;
+	colorParameters.maxValue = vmax;
+  }	  
+
+  function setExtremeColors(cmin, cmax)
+  {
+    colorParameters.minColor = cmin;
+    colorParameters.maxColor = cmax;	  
+  }	
+	
+  function setStyleColor(d) {
+	var amount = (parseFloat(d) - colorParameters.minValue) / (colorParameters.maxValue - colorParameters.minValue);
+	amount = Math.min(1.0, Math.min(1.0, amount)); 
+    var color = interpolateColor(colorParameters.minColor, colorParameters.maxColor, amount);
+	return color;
+  }
+		
+  function LayerStyle(feature) {
+    return {
+    fillColor: setStyleColor(feature.properties.value),
+    weight: 0.9,
+    opacity: 0.7,
+    color: 'black',
+    dashArray: '0',
+    fillOpacity: 0.5 };
+  }		
+
+  function loadGeoJson(data) {
     //console.log(data);
 	geojsonLayerWells.clearLayers();
     geojsonLayerWells.addData(data);
 	geojsonLayerWells.setStyle(LayerStyle);
 	//map.removeLayer(geojsonLayerWells);
     //map.addLayer(geojsonLayerWells);
-};
-
-//$hazard='cddp', $epoch='2041-2070', $scenario='rcp45'
-
-{
+  };
+	
     var defaultParameters = {
         hazard: 'cddp',
         epoch: '2041-2070',
@@ -419,9 +449,21 @@ var vueSelect = new Vue({
   },
   methods: {
     updateParameters() {
-	  if(this.hazard !== 'none' && this.epoch !== 'none' && this.scenario !== 'none' ) {	 
+	  if(this.hazard !== 'none' && this.epoch !== 'none' && this.scenario !== 'none' ) {
+        for (var i = 0; i < this.hazards.length; i++) {
+          if (this.hazard == this.hazards[i].name) {
+			setExtremeColors(this.hazards[i].color_min, this.hazards[i].color_max);  
+
+		  }	
+	    }
+  		axios
+          .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
+		  //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
+          .then(response => { 
+		    setExtremeValues(response.data[0].min, response.data[0].max);
+	  	});		
         setParametersOnMap(this.hazard, this.epoch, this.scenario);
-		updateLegend(this.epoch, this.scenario, this.hazards);
+		updateLegend(this.epoch, this.scenario, this.hazards);		
 		//window.viewInfo.clickOnMap();
 		vueEventBus.$emit('updatedParameters', this);
 	  }
