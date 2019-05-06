@@ -125,8 +125,8 @@ class m190506_100843_add_hazard_to_table extends Migration {
 	
 	private function checkTableExists($name)
 	{
-		$connection = \Yii::$app->db2;
-        $sql = "SELECT to_regclass('".$name."') AS tablename";
+		$connection = \Yii::$app->pgsql_gisdata;
+		$sql = "SELECT to_regclass('".$name."') AS tablename";
         $command = $connection->createCommand($sql);
         $table = $command->queryOne();
         return ('"'.$name.'"' === $table['tablename']);
