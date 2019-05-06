@@ -265,14 +265,16 @@ class ApiController extends Controller
 	  $result = [];
 	  $collected = Gis::getHazardsStatistic($hazardsList);
 	  foreach($collected as $row) {
-		$result['latitude']  = floatval($row['latitude']);
-		$result['longitude'] = floatval($row['longitude']);  
+		$new = [];   
+		$new['latitude']  = floatval($row['latitude']);
+		$new['longitude'] = floatval($row['longitude']);  
 		$values = [];
 	    foreach($hazards as $hazard) {
 			$values[$hazard['name'].'_plus'] = floatval($row[$hazard['name'].'_plus']);
 			$values[$hazard['name'].'_minus'] = floatval($row[$hazard['name'].'_minus']);
 		}
-		$result['values'] = $values;
+		$new['values'] = $values;
+		$result[] = $new;
 	  }	
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
