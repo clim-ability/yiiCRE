@@ -273,6 +273,7 @@ class ApiController extends Controller
 			$values[] = [ 'hazard' => $hazard['name'].'_plus', 'value' => floatval($row[$hazard['name'].'_plus']) ]; 
 			$values[] = [ 'hazard' => $hazard['name'].'_minus', 'value' => floatval($row[$hazard['name'].'_minus']) ]; 
 		}
+		$values[] = [ 'hazard' => 'none', 'value' => 0.01 ]; 
 		$new['values'] = $values;
 		$result[] = $new;
 	  }	
