@@ -270,8 +270,8 @@ class ApiController extends Controller
 		$new['longitude'] = floatval($row['longitude']);  
 		$values = [];
 	    foreach($hazards as $hazard) {
-			$values[$hazard['name'].'_plus'] = floatval($row[$hazard['name'].'_plus']);
-			$values[$hazard['name'].'_minus'] = floatval($row[$hazard['name'].'_minus']);
+			$values[] = [ 'hazard' => $hazard['name'].'_plus', 'value' => floatval($row[$hazard['name'].'_plus']) ]; 
+			$values[] = [ 'hazard' => $hazard['name'].'_minus', 'value' => floatval($row[$hazard['name'].'_minus']) ]; 
 		}
 		$new['values'] = $values;
 		$result[] = $new;
