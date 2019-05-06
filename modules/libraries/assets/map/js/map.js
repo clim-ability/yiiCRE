@@ -474,22 +474,25 @@ var vueSelect = new Vue({
 
 		  }	
 	    }
+		updateLegend(this.epoch, this.scenario, this.hazards);		
   		axios
           .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
 		  //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
           .then(response => { 
 		    setExtremeValuesGlobal(response.data[0].min, response.data[0].max);
+            setParametersOnMap(this.hazard, this.epoch, this.scenario);				
 	  	});	
   		axios
           //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
 		  .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
           .then(response => { 
 		    setExtremeValuesLocal(response.data[0].min, response.data[0].max);
+            setParametersOnMap(this.hazard, this.epoch, this.scenario);				
 	  	});		
-		updateLegend(this.epoch, this.scenario, this.hazards);
+
 		//window.viewInfo.clickOnMap();
 		vueEventBus.$emit('updatedParameters', this);
-        setParametersOnMap(this.hazard, this.epoch, this.scenario);		
+        //setParametersOnMap(this.hazard, this.epoch, this.scenario);		
 	  }
 	},
 	getCurrentEpoch() {return this.epoch; },
