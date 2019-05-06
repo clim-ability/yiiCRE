@@ -101,7 +101,7 @@ class Gis extends ActiveRecord
 	   return $result;	   
 	}
 
-    public static function getHazardsStatistic($hazardList)
+    public static function getHazardsStatistic($hazards)
 	{
 	    $sql = "SELECT ST_X(ST_Centroid(ST_Transform(geom, 4326))) as longitude, ST_Y(ST_Centroid(ST_Transform(geom, 4326))) as  latitude ";
 	    foreach($hazards as $table=>$hazard) {
