@@ -17,7 +17,7 @@ class m190506_100843_add_hazard_to_table extends Migration {
 		$this->update("hazard", ["visible" => true], "name='cddp'");
     }
 
-    private function addHazard($name, $description, minColor, $maxColor, $visible = true) {
+    private function addHazard($name, $description, $minColor, $maxColor, $visible = true) {
         return $this->insert('hazard', [
                     'name' => $name,
                     'description_en' => $description,
