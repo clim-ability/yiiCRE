@@ -94,7 +94,7 @@ header('Access-Control-Allow-Origin: *');
 	 Winter Rain: <span v-html="roundedRw"></span> % <br/>
 	 Summer Rain: <span v-html="roundedRs"></span> % <br/>	
 	 <br/>
-	 {{ info }}
+
     </template>	 
    </div> <!-- end md-6 -->
 

@@ -1,74 +1,6 @@
 //var mapBaseUrl = '.';
 
 
-var statisticOptions = {
-	recordsField: null,
-	locationMode: L.LocationModes.LATLNG,
-	//codeField: 'state',
-	latitudeField: 'latitude',
-	longitudeField: 'longitude',
-	chartOptions: {
-		'estimates[choice=Romney].value': {
-			color: 'hsl(0,100%,25%)',
-			fillColor: 'hsl(0,70%,60%)',
-			maxValue: 1,
-			maxHeight: 20,
-			displayName: 'Romney',
-			displayText: function (value) {
-				return value.toFixed(2);
-			}
-		},
-		'estimates[choice=Obama].value': {
-			color: 'hsl(240,100%,25%)',
-			fillColor: 'hsl(240,70%,60%)',
-			maxValue: 1,
-			maxHeight: 20,
-			displayName: 'Obama',
-			displayText: function (value) {
-				return value.toFixed(2);
-			}
-		},
-		'estimates[choice=Other].value': {
-			color: 'hsl(240,5%,75%)',
-			fillColor: 'hsl(240,5%,75%)',
-			maxValue: 1,
-			maxHeight: 20,
-			displayName: 'Other',
-			displayText: function (value) {
-				return value.toFixed(2);
-			}
-		}
-	},
-	layerOptions: {
-		fillOpacity: 0.9,
-		opacity: 1,
-		weight: 0.5,
-		radius: 10,
-		width: 5,
-		barThickness: 5
-	},
-	// Use displayOptions to dynamically size the radius and barThickness according to the number of
-	// polling results
-	displayOptions: {
-		'poll_count': {
-			radius: new L.LinearFunction(new L.Point(0, 10), new L.Point(1000, 100)),
-			barThickness: new L.LinearFunction(new L.Point(0, 4), new L.Point(1000, 80))
-		}
-	}
-	/* ,
-	tooltipOptions: {
-		iconSize: new L.Point(80,55),
-		iconAnchor: new L.Point(-5,55)
-	},
-	onEachRecord: function (layer,record) {
-		var $html = $(L.HTMLUtils.buildTable(record));
-			layer.bindPopup($html.wrap('<div/>').parent().html(),{
-			minWidth: 400,
-			maxWidth: 400
-		});
-	} */
-};
-
 
 
     // initialize the map
@@ -81,10 +13,6 @@ var statisticOptions = {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-// add statistic here
-//var statisticLayer = new L.PieChartDataLayer(data,statisticOptions);
-//map.addLayer(statisticLayer);
-
 /*
  var tmo_region = L.tileLayer.wms("http://climability.uni-landau.de/cgi-bin/qgis_mapserv.fcgi?map=/var/www/html/climability/cgi-bin/climability_TMO.qgs", {
     layers: 'tmo_region',
@@ -94,16 +22,7 @@ var statisticOptions = {
   }).addTo(map);
 */
 
-//locate by click
-var popup = L.popup();
-function onMapClickOld(e) {
-    popup
-        .setLatLng(e.latlng)
-        .setContent("I am here: " + e.latlng.toString())
-        .openOn(map);
-}
 {
-
 var marker = new L.marker([0,0], {id:'uni', draggable:'true'});
 function getCurrentLatitude() { return marker.getLatLng().lat; }
 function getCurrentLongitude() { return marker.getLatLng().lng; }
@@ -128,6 +47,7 @@ function onMapClick(e) {
     // set marker
 }
 map.on('click', onMapClick);
+map.on('zoomend', function() { updateZoomLevel(); });
 }
 
 
@@ -148,17 +68,18 @@ function roundedValue(value, digits) {
 	  var div = L.DomUtil.create('div', 'legend');		    
 	  div.innerHTML += '<b>Climate Indicators</b><br />';
 	  div.innerHTML += epoch + '; ' + szenario + '<br />';
-	  div.innerHTML += '<small></small><br />';  
 	  if ('all' == hazard) {
+		//div.innerHTML += '<small></small><br />'; 
         for (var i = 0; i < parameters.length; i++) {
 		  if ('all' != parameters[i].name) {	
-            div.innerHTML += '<i style="background: '+parameters[i].color_max+'"></i><p>'+parameters[i].label+'</p>';
+            div.innerHTML += '<i style="background: '+parameters[i].color_min+'">-</i><i style="background: '+parameters[i].color_max+'">+</i><p>'+parameters[i].label+'</p>';
 		  }
         }
 	  } else {
-        for (var i = 0.0; i < 8.0; i++) {
-		  var d1 = getValueGlobal(i/8.0);
-		  var d2 = getValueGlobal((i+1)/8.0);
+		div.innerHTML += hazard + '<br />';
+        for (var i = 0.0; i < 7.0; i++) {
+		  var d1 = getValueGlobal(i/7.0);
+		  var d2 = getValueGlobal((i+1)/7.0);
 		  var label = ''+ roundedValue(d1,1)+' to '+roundedValue(d2,1);
 		  var color = getStyleColor(d1);
           div.innerHTML += '<i style="background: '+color+'"></i><p>'+label+'</p>';
@@ -191,6 +112,100 @@ function interpolateColor(a, b, amount) {
 //$hazard='cddp', $epoch='2041-2070', $scenario='rcp45'
 
 {
+	
+
+var statisticData = [];
+		   
+function setStatisticData(data) {
+   statisticData = data;
+}	
+
+function updateZoomLevel() {
+	var zoom = map.getZoom();
+	
+	statisticOptions['displayOptions'] = {
+		'poll_count': {
+			radius: 6.0 * Math.pow(2.0, zoom - 7.0),
+			barThickness: 5.0 * Math.pow(2.0, zoom - 7.0)
+	}};
+}
+
+function initStatisticOptions(hazards)
+{
+	var zoom = map.getZoom();
+	var chartOptions = {};
+	chartOptions['values[hazard=none].value'] =
+		{
+			color: '#000000',
+			fillColor: '#FFFFFF',
+			maxValue: 1,
+			maxHeight: 20,
+			displayName: 'none'
+		};	
+	for (var i = 0; i < hazards.length; i++) {
+		chartOptions['values[hazard='+hazards[i].name+'_plus].value'] =
+		{
+			color: '#000000',
+			fillColor: hazards[i].color_max,
+			maxValue: 1,
+			maxHeight: 20,
+			displayName: hazards[i].label+'+',
+			displayText: function (value) {
+				return value.toFixed(2);
+			}
+		};	
+		chartOptions['values[hazard='+hazards[i].name+'_minus].value'] =
+		{
+			color: '#000000',
+			fillColor: hazards[i].color_min,
+			maxValue: 1,
+			maxHeight: 20,
+			displayName: hazards[i].label+'-',
+			displayText: function (value) {
+				return value.toFixed(2);
+			}
+		};			
+    }
+	statisticOptions['chartOptions'] = chartOptions;
+}
+
+var statisticOptions = {
+	recordsField: null,
+	locationMode: L.LocationModes.LATLNG,
+	//codeField: 'state',
+	latitudeField: 'latitude',
+	longitudeField: 'longitude',
+	chartOptions: {},
+	layerOptions: {
+		fillOpacity: 0.9,
+		opacity: 1,
+		weight: 0.5,
+		radius: 13,
+		width: 1,
+		barThickness: 8
+	},
+	displayOptions: {
+		'poll_count': {
+			radius: 13,
+			barThickness: 10
+		}
+	}
+	/* ,
+	tooltipOptions: {
+		iconSize: new L.Point(80,55),
+		iconAnchor: new L.Point(-5,55)
+	},
+	onEachRecord: function (layer,record) {
+		var $html = $(L.HTMLUtils.buildTable(record));
+			layer.bindPopup($html.wrap('<div/>').parent().html(),{
+			minWidth: 400,
+			maxWidth: 400
+		});
+	} */
+};
+
+	
+	
 	
   var colorParameters = {
 	minValueLocal: -1000.0,
@@ -280,16 +295,22 @@ function interpolateColor(a, b, amount) {
     }	
   
     var imageAdded = null;
+	var statisticLayer = null;
 
 	function redrawParameters() {
 	  if('all' == defaultParameters.hazard) {
         geojsonLayerWells.clearLayers();
         // create image layer indicator pies
-        var imageUrl = mapBaseUrl + '/images/pie_indicator.png';
-        var imageBounds = [[49.772, 6.66], [46.66, 9.12]];
-        imageAdded = L.imageOverlay(imageUrl, imageBounds).addTo(map);			
+        //var imageUrl = mapBaseUrl + '/images/pie_indicator.png';
+        //var imageBounds = [[49.772, 6.66], [46.66, 9.12]];
+        //imageAdded = L.imageOverlay(imageUrl, imageBounds).addTo(map);	
+        // add statistic here
+		if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }	
+        statisticLayer = new L.PieChartDataLayer(statisticData,statisticOptions);
+        map.addLayer(statisticLayer);
       } else {	
-        if (map.hasLayer(imageAdded)) { map.removeLayer(imageAdded); }	  
+        if (map.hasLayer(imageAdded)) { map.removeLayer(imageAdded); }
+        if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }			
         var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
         var parameters = L.Util.extend(defaultParameters, customParams);
 	  
@@ -520,8 +541,13 @@ var vueSelect = new Vue({
 	    	  updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);				
 	  	  });		
         } else {
-		  setParametersOnMap(this.hazard, this.epoch, this.scenario);		
-		  updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);	
+  		  axios
+            .get(apiBaseUrl+'/api/hazards-statistic?epoch='+this.epoch+'&scenario='+this.scenario)
+            .then(response => { 
+              setStatisticData(response.data);		
+		      setParametersOnMap(this.hazard, this.epoch, this.scenario);		
+		      updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);			
+	    	});			
 		}	
 		//window.viewInfo.clickOnMap();
 		vueEventBus.$emit('updatedParameters', this);
@@ -537,6 +563,7 @@ var vueSelect = new Vue({
 	  //.get('https://gis.clim-ability.eu/index.php/api/hazards')
       .then(response => { 
 	    this.hazards = response.data; 
+		initStatisticOptions(this.hazards);
 		this.hazards.unshift({name: 'all', label: 'all', color_min: '#000000', color_max: '#FFFFFF'});
 		this.hazard = this.hazards[0].name;
 		this.updateParameters();
