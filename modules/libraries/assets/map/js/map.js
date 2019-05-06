@@ -81,12 +81,6 @@ var statisticOptions = {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-// create image layer indicator pies
-var imageUrl = mapBaseUrl + '/images/pie_indicator.png',
-    imageBounds = [[49.772, 6.66], [46.66, 9.12]];
-//L.imageOverlay(imageUrl, imageBounds).addTo(map);
-
-
 // add statistic here
 //var statisticLayer = new L.PieChartDataLayer(data,statisticOptions);
 //map.addLayer(statisticLayer);
@@ -157,7 +151,9 @@ function roundedValue(value, digits) {
 	  div.innerHTML += '<small></small><br />';  
 	  if ('all' == hazard) {
         for (var i = 0; i < parameters.length; i++) {
-          div.innerHTML += '<i style="background: '+parameters[i].color_max+'"></i><p>'+parameters[i].label+'</p>';
+		  if ('all' != parameters[i].name) {	
+            div.innerHTML += '<i style="background: '+parameters[i].color_max+'"></i><p>'+parameters[i].label+'</p>';
+		  }
         }
 	  } else {
         for (var i = 0.0; i < 8.0; i++) {
@@ -282,16 +278,28 @@ function interpolateColor(a, b, amount) {
         };
 	  redrawParameters();
     }	
+  
+    var imageAdded = null;
 
 	function redrawParameters() {
-      var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
-      var parameters = L.Util.extend(defaultParameters, customParams);
-      $.ajax({
-        url: geoJsonUrl + L.Util.getParamString(parameters),
-        datatype: 'json',
-        jsonCallback: 'getJson',
-        success: loadGeoJson
+	  if('all' == defaultParameters.hazard) {
+        geojsonLayerWells.clearLayers();
+        // create image layer indicator pies
+        var imageUrl = mapBaseUrl + '/images/pie_indicator.png';
+        var imageBounds = [[49.772, 6.66], [46.66, 9.12]];
+        imageAdded = L.imageOverlay(imageUrl, imageBounds).addTo(map);			
+      } else {	
+        if (map.hasLayer(imageAdded)) { map.removeLayer(imageAdded); }	  
+        var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
+        var parameters = L.Util.extend(defaultParameters, customParams);
+	  
+        $.ajax({
+          url: geoJsonUrl + L.Util.getParamString(parameters),
+          datatype: 'json',
+          jsonCallback: 'getJson',
+          success: loadGeoJson
         });
+	  }	
 	}
 	
 map.on('moveend', function(){
@@ -468,7 +476,8 @@ $( "#addWinterRain" ).click(function() {
    L.control.layers(baseMaps,{
 	   '<strong>openstreetmap<strong/><br />':OpenStreetMap_DE, 
     /*  '<strong>upper Rhine region<strong/><br />': tmo_region,  */
-	  '<strong>climate indicators<strong/><br />':imageUrl}).addTo(map); 
+	/*  '<strong>climate indicators<strong/><br />':imageUrl */
+	}).addTo(map); 
 
 var vueEventBus = new Vue({ });
 	  
@@ -511,6 +520,7 @@ var vueSelect = new Vue({
 	    	  updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);				
 	  	  });		
         } else {
+		  setParametersOnMap(this.hazard, this.epoch, this.scenario);		
 		  updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);	
 		}	
 		//window.viewInfo.clickOnMap();
@@ -527,7 +537,7 @@ var vueSelect = new Vue({
 	  //.get('https://gis.clim-ability.eu/index.php/api/hazards')
       .then(response => { 
 	    this.hazards = response.data; 
-		//this.hazards.unshift({name: 'all', label: 'all', color_min: '#000000', color_max: '#FFFFFF'});
+		this.hazards.unshift({name: 'all', label: 'all', color_min: '#000000', color_max: '#FFFFFF'});
 		this.hazard = this.hazards[0].name;
 		this.updateParameters();
 		updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
