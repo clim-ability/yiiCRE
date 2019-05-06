@@ -115,7 +115,7 @@ class Gis extends ActiveRecord
 		  foreach($hazards as $table2=>$hazard2) { 
             if($hazard == $hazard2)	{	  
 		    $sql .= ", CASE WHEN (".$hazard2."-avg)/std > 1.0 THEN (".$hazard2."-avg)/std ELSE 0.0 END as ".$hazard2."_plus "
-		          . ", CASE WHEN (".$hazard2."-avg)/std < -1.0 THEN (".$hazard2."-avg)/std ELSE 0.0 END as ".$hazard2."_minus ";
+		          . ", CASE WHEN (".$hazard2."-avg)/std < -1.0 THEN (avg-".$hazard2.")/std ELSE 0.0 END as ".$hazard2."_minus ";
 		    } else {
 		    $sql .= ", 0 as ".$hazard2."_plus "
 		          . ", 0 as ".$hazard2."_minus ";
