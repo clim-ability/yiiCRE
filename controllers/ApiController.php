@@ -261,15 +261,19 @@ class ApiController extends Controller
 	    }
 	   }
 	  } 
-	  /*
-	  foreach($hazardsList as $table=>$hazard) {
-		var_dump($table);
-		var_dump($hazard);
-		echo " ";
-	  }
-      var_dump($hazardsList);
-      */	  
-	  $result = Gis::getHazardsStatistic($hazardsList);
+
+	  $result = [];
+	  $collected = Gis::getHazardsStatistic($hazardsList);
+	  foreach($collected as $row) {
+		$result['latitude']  = floatval($row['latitude']);
+		$result['longitude'] = floatval($row['longitude']);  
+		$values = [];
+	    foreach($hazards as $hazard) {
+			$values[$hazard['name'].'_plus'] = floatval($row[$hazard['name'].'_plus']);
+			$values[$hazard['name'].'_minus'] = floatval($row[$hazard['name'].'_minus']);
+		}
+		$result['values'] = $values;
+	  }	
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       return $result;	  
