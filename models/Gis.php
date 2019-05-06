@@ -101,6 +101,56 @@ class Gis extends ActiveRecord
 	   return $result;	   
 	}
 
+    public static function getHazardsStatistic($hazardList)
+	{
+	    $sql = "SELECT ST_X(ST_Centroid(ST_Transform(geom, 4326))) as longitude, ST_Y(ST_Centroid(ST_Transform(geom, 4326))) as  latitude ";
+	    foreach($hazards as $table=>$hazard) {
+		   	$sql .= ", SUM(".$hazard."_plus) as ".$hazard."_plus, SUM(".$hazard."_minus) as ".$hazard."_minus ";
+	    }
+	    $sql .= " FROM ( ";
+	   $first = true;
+	   foreach($hazards as $table=>$hazard) {
+		  if(!$first) { $sql .= " UNION ";}
+		  $sql .= " SELECT geom ";
+		  foreach($hazards as $table2=>$hazard2) { 
+            if($hazard == $hazard2)	{	  
+		    $sql . = ", CASE WHEN (".$hazard2."-avg)/std > 1.0 THEN (".$hazard2."-avg)/std ELSE 0.0 END as ".$hazard2."_plus "
+		           . ", CASE WHEN (".$hazard2."-avg)/std < -1.0 THEN (".$hazard2."-avg)/std ELSE 0.0 END as ".$hazard2."_minus ";
+		    } else {
+		    $sql . = ", 0 as ".$hazard2."_plus "
+		           . ", 0 as ".$hazard2."_minus ";
+		    }		 
+          }
+		  $sql .= " FROM public.\"".$table."\", "
+          . " (SELECT AVG(".$hazard.") as avg, STDDEV(".$hazard.") as std "
+		  . " FROM public.\"".$table."\") AS stat ";
+		  $first = false;
+		   //var_dump($sql);
+	   }	   
+	   $sql .= " ) AS foo GROUP BY geom ";
+	   //var_dump($sql);
+	   $connection = Yii::$app->pgsql_gisdata;	   
+	   $command = $connection->createCommand($sql);
+       $result = $command->queryAll();
+	   return $result;	  
+
+/*
+SELECT ST_X(ST_Centroid(ST_Transform(geom, 4326))) as longitude, ST_Y(ST_Centroid(ST_Transform(geom, 4326))) as latitude, SUM(cddp_plus) as cddp_plus, SUM(cddp_minus) as cddp_minus, SUM(sd_plus) as sd_plus, SUM(sd_minus) as sd_minus 
+FROM
+(
+    SELECT geom, CASE WHEN (cddp-avg)/std > 1.0 THEN (cddp-avg)/std ELSE 0.0 END as cddp_plus, CASE WHEN (cddp-avg)/std < -1.0 THEN (cddp-avg)/std ELSE 0.0 END as cddp_minus, 0 as sd_plus, 0 as sd_minus
+ FROM public."cddp_mean_rcp45_2021-2050_minus_knp",
+   (SELECT AVG(cddp) as avg, STDDEV(cddp) as std FROM public."cddp_mean_rcp45_2021-2050_minus_knp") AS stat
+UNION
+    SELECT geom, 0 as cddp_plus, 0 as cddp_minus, CASE WHEN (sd-avg)/std > 1.0 THEN (sd-avg)/std ELSE 0.0 END as sd_plus, CASE WHEN (sd-avg)/std < -1.0 THEN (sd-avg)/std ELSE 0.0 END as sd_minus
+ FROM public."sd_mean_rcp45_2021-2050_minus_knp",
+   (SELECT AVG(sd) as avg, STDDEV(sd) as std FROM public."sd_mean_rcp45_2021-2050_minus_knp") AS stat
+   ) AS foo GROUP BY geom		
+*/
+
+		
+	}	
+
 	public static function getHazardGeometry($table, $variable, $bbox)
 	{
 	 $sql =  "SELECT ".$variable." AS value, "

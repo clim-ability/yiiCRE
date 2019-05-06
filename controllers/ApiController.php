@@ -231,15 +231,50 @@ class ApiController extends Controller
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }   
-   
-   
-   /*
-   SELECT id, geom, cddp, (cddp-avg)/std as norm
- FROM public."cddp_mean_rcp45_2021-2050_minus_knp",
-   (SELECT AVG(cddp) as avg, STDDEV(cddp) as std FROM public."cddp_mean_rcp45_2021-2050_minus_knp") AS stat
- WHERE (cddp-avg)/std > 1.0 OR (cddp-avg)/std < -1.0
- */
-   
+ 
+   public function actionHazardsStatistic($epoch='', $scenario='')
+   {
+      $hazardsList = [];
+	  $inclInvisible = false;
+	  $parameters = ['mean'];
+	  $hazards = Hazard::inqAllHazards($inclInvisible);
+	  $epochs = Epoch::inqAllEpochs( $inclInvisible);
+	  if ('' != $epoch) {
+	    $epochs = [Epoch::findBy($epoch)];
+	  }
+	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
+	  if ('' != $scenario) {
+	    $scenarios = [Scenario::findBy($scenario)];
+	  }
+      foreach($parameters as $parameter)
+	  {	 
+	   $parameter = Parameter::findBy($parameter);
+	   foreach($hazards as $hazard)
+	   {
+	    foreach($epochs as $epoch)
+	    {
+	     foreach($scenarios as $scenario)
+	     {
+	       $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);	
+           $hazardsList[$table] = $hazard['name'];
+	     }
+	    }
+	   }
+	  } 
+	  /*
+	  foreach($hazardsList as $table=>$hazard) {
+		var_dump($table);
+		var_dump($hazard);
+		echo " ";
+	  }
+      var_dump($hazardsList);
+      */	  
+	  $result = Gis::getHazardsStatistic($hazardsList);
+	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      return $result;	  
+   }
+  
 
 }
 
