@@ -183,16 +183,26 @@ function interpolateColor(a, b, amount) {
 {
 	
   var colorParameters = {
-    minValue: -10.0,
-	maxValue: +10.0,
+	minValueLocal: -10.0,
+	maxValueLocal: +10.0,
+    minValueGlobal: -10.0,
+	maxValueGlobal: +10.0,
+	minOpacity: 0.2,
+	maxOpacity: 0.8,
 	minColor: '#FFFFFF',
 	maxColor: '#000000'
   }	  
-	
-  function setExtremeValues(vmin, vmax)
+
+  function setExtremeValuesLocal(vmin, vmax)
   {
-    colorParameters.minValue = vmin;
-	colorParameters.maxValue = vmax;
+    colorParameters.minValueLocal = vmin;
+	colorParameters.maxValueLocal = vmax;
+  }	 
+	
+  function setExtremeValuesGlobal(vmin, vmax)
+  {
+    colorParameters.minValueGlobal = vmin;
+	colorParameters.maxValueGlobal = vmax;
   }	  
 
   function setExtremeColors(cmin, cmax)
@@ -202,20 +212,28 @@ function interpolateColor(a, b, amount) {
   }	
 	
   function setStyleColor(d) {
-	var amount = (parseFloat(d) - colorParameters.minValue) / (colorParameters.maxValue - colorParameters.minValue);
+	var amount = (parseFloat(d) - colorParameters.minValueGlobal) / (colorParameters.maxValueGlobal - colorParameters.minValueGlobal);
 	amount = Math.min(1.0, Math.min(1.0, amount)); 
     var color = interpolateColor(colorParameters.minColor, colorParameters.maxColor, amount);
 	return color;
+  }
+
+  function setStyleOpacity(d) {
+	var amount = (parseFloat(d) - colorParameters.minValueLocal) / (colorParameters.maxValueLocal - colorParameters.minValueLocal);
+	amount = Math.min(1.0, Math.min(1.0, amount)); 
+    var opacity = amount*(colorParameters.maxOpacity - colorParameters.minOpacity) + colorParameters.minOpacity;
+	return opacity;
   }
 		
   function LayerStyle(feature) {
     return {
     fillColor: setStyleColor(feature.properties.value),
     weight: 0.9,
-    opacity: 0.7,
+    opacity: 0.8,
     color: 'black',
     dashArray: '0',
-    fillOpacity: 0.5 };
+    fillOpacity: setStyleOpacity(feature.properties.value) 
+	};
   }		
 
   function loadGeoJson(data) {
@@ -460,7 +478,13 @@ var vueSelect = new Vue({
           .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
 		  //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
           .then(response => { 
-		    setExtremeValues(response.data[0].min, response.data[0].max);
+		    setExtremeValuesGlobal(response.data[0].min, response.data[0].max);
+	  	});	
+  		axios
+          //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
+		  .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
+          .then(response => { 
+		    setExtremeValuesLocal(response.data[0].min, response.data[0].max);
 	  	});		
         setParametersOnMap(this.hazard, this.epoch, this.scenario);
 		updateLegend(this.epoch, this.scenario, this.hazards);		

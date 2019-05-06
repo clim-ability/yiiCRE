@@ -78,16 +78,7 @@ header('Access-Control-Allow-Origin: *');
 
 
 
-    <div id="map"></div>
-    <div id="controls">
-     <button id="removeIndicators">hide indicators</button>
-     <button id="addTropical">tropical nights</button>
-     <button id="addRainfall">annual rainfall</button>
-     <button id="addFrostdays">frost days</button>
-     <button id="addDrydays">dry days</button>
-     <button id="addSummerRain">summer rain</button>
-     <button id="addWinterRain">winter rain</button>
-    </div>
+   <div id="map"></div>
 
    </div> <!-- end md-6 -->
 
@@ -98,9 +89,9 @@ header('Access-Control-Allow-Origin: *');
 	 Dry Days: <span v-html="roundedCddp"></span> days/year <br/>
 	 Frost Days: <span v-html="roundedFd"></span> days/year <br/>
 	 Tropical Nights: <span v-html="roundedTr"></span> days/year <br/>
-	 Rain: <span v-html="roundedRr20"></span> days/year <br/>
-	 Winter Rain: <span v-html="roundedRw"></span> days/year <br/>
-	 Summer Rain: <span v-html="roundedRs"></span> days/year <br/>	
+	 Torrential Rain: <span v-html="roundedRr20"></span> days/year <br/>
+	 Winter Rain: <span v-html="roundedRw"></span> % <br/>
+	 Summer Rain: <span v-html="roundedRs"></span> % <br/>	
 	 <br/>
 	 {{ info }}
     </template>	 
