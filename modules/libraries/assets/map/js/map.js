@@ -183,13 +183,13 @@ function interpolateColor(a, b, amount) {
 {
 	
   var colorParameters = {
-	minValueLocal: -10.0,
-	maxValueLocal: +10.0,
-    minValueGlobal: -10.0,
-	maxValueGlobal: +10.0,
+	minValueLocal: -1000.0,
+	maxValueLocal: +1000.0,
+    minValueGlobal: -1000.0,
+	maxValueGlobal: +1000.0,
 	minOpacity: 0.2,
 	maxOpacity: 0.8,
-	minColor: '#FFFFFF',
+	minColor: '#000000',
 	maxColor: '#000000'
   }	  
 
@@ -486,10 +486,10 @@ var vueSelect = new Vue({
           .then(response => { 
 		    setExtremeValuesLocal(response.data[0].min, response.data[0].max);
 	  	});		
-        setParametersOnMap(this.hazard, this.epoch, this.scenario);
-		updateLegend(this.epoch, this.scenario, this.hazards);		
+		updateLegend(this.epoch, this.scenario, this.hazards);
 		//window.viewInfo.clickOnMap();
 		vueEventBus.$emit('updatedParameters', this);
+        setParametersOnMap(this.hazard, this.epoch, this.scenario);		
 	  }
 	},
 	getCurrentEpoch() {return this.epoch; },
