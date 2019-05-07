@@ -1,53 +1,124 @@
 <?php
+use app\modules\libraries\bundles\MapAsset;
+use yii\helpers\Url;
+$assets = MapAsset::register($this);
 
-/* @var $this yii\web\View */
-
-$this->title = 'My Yii Application';
+header('Access-Control-Allow-Origin: *');
 ?>
-<div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations</h1>
+<script>
+    var mapBaseUrl = "<?php echo $assets->baseUrl; ?>";
+	var apiBaseUrl = "<?php echo Url::home('https'); ?>";
+</script>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
 
-    <div class="body-content">
-<?php \Yii::$app->view->renderFile('@app/views/site/pages/map.php'); ?>
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+  </div>
+</div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+<div id="climateinspector">
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+      <h1 class="my-4">Changing of climate
+        <small>at the Upper Rhine</small>
+      </h1>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+ <div class="container-fluid">
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+    <div class="row" id="selectionrow">
+ 	  <div class="col-md-3">
+       <select v-model="hazard" v-on:change="updateParameters" class="form-control">
+        <option v-for="hazard in hazards" v-bind:value="hazard.name">
+         {{ hazard.label }} 
+        </option>
+       </select>
+	  </div>	
+ 	  <div class="col-md-3">
+       <select v-model="epoch" v-on:change="updateParameters" class="form-control">
+        <option v-for="epoch in epochs" v-bind:value="epoch.name">
+         {{ epoch.label }} 
+        </option>
+       </select>
+	  </div>	
+ 	  <div class="col-md-3">
+       <select v-model="scenario" v-on:change="updateParameters" class="form-control">
+        <option v-for="scenario in scenarios" v-bind:value="scenario.name">
+         {{ scenario.label }} 
+        </option>
+       </select>
+	  </div>		 
+	  <div class="col-md-3 ">	   
+	   <select v-model="language" class="form-control">
+        <option v-for="language in languages" v-bind:value="language.name">
+         {{ language.label }}
+        </option>
+       </select>
+	  </div>
+	</div> 
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+ 
+  <div class="row" style="margin: 8px;">
+   <div class="col-md-6 "> <!-- eoEvents Upper-Left Corner -->
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
+
+
+
+   <div id="map"></div>
+
+   </div> <!-- end md-6 -->
+
+   <div class="col-md-6" id="informationfield"> <!-- Tabbed Upper-Right Corner -->
+    <template v-if="info !== 'none'">
+     Nearest City: {{ info.nearest_city.name }}, Elevation: {{ roundedElevation }} m <br/>
+	 <br/>
+	 <!-- Dry Days: <span v-html="roundedCddp"></span> days/year <br/> -->
+	 Frost Days: <span v-html="roundedFd"></span> days/year <br/>
+	 Summer Days: <span v-html="roundedSd"></span> days/year <br/>
+	 Tropical Nights: <span v-html="roundedTr"></span> days/year <br/>
+	 Torrential Rain: <span v-html="roundedRr20"></span> days/year <br/>
+	 Winter Rain: <span v-html="roundedRw"></span> % <br/>
+	 Summer Rain: <span v-html="roundedRs"></span> % <br/>	
+	 <br/>
+
+    </template>	 
+   </div> <!-- end md-6 -->
+
+  </div> <!-- end row -->
+
+	
+  <div class="row">
+   <div class="col-md-12 "><!-- for better alignment -->
+  </div>
+  </div> <!-- end UPPER row -->
+				
+  <div class="row">
+   <div class="col-md-6 "> <!-- table Lower-Right Corner-->
+   </div>
+  
+   <div class="col-md-6 "><!-- charts Lower-Left Corner -->
+   </div>
+  </div> <!-- end LOWER row -->	
+
+ </div> <!-- end container-fluid -->
 
     </div>
 </div>
+	 
+
+
+
