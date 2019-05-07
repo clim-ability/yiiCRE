@@ -72,7 +72,7 @@ function roundedValue(value, digits) {
 		//div.innerHTML += '<small></small><br />'; 
         for (var i = 0; i < parameters.length; i++) {
 		  if ('all' != parameters[i].name) {	
-            div.innerHTML += '<i style="background: '+parameters[i].color_min+'">-</i><i style="background: '+parameters[i].color_max+'">+</i><p>'+parameters[i].label+'</p>';
+            div.innerHTML += '<i style="background: '+parameters[i].color_min+'">-</i><i style="background: '+parameters[i].color_max+'">+</i><p><small>'+parameters[i].label+'</small></p>';
 		  }
         }
 	  } else {
@@ -190,18 +190,7 @@ var statisticOptions = {
 			barThickness: 10
 		}
 	}
-	/* ,
-	tooltipOptions: {
-		iconSize: new L.Point(80,55),
-		iconAnchor: new L.Point(-5,55)
-	},
-	onEachRecord: function (layer,record) {
-		var $html = $(L.HTMLUtils.buildTable(record));
-			layer.bindPopup($html.wrap('<div/>').parent().html(),{
-			minWidth: 400,
-			maxWidth: 400
-		});
-	} */
+
 };
 
 	
@@ -300,11 +289,6 @@ var statisticOptions = {
 	function redrawParameters() {
 	  if('all' == defaultParameters.hazard) {
         geojsonLayerWells.clearLayers();
-        // create image layer indicator pies
-        //var imageUrl = mapBaseUrl + '/images/pie_indicator.png';
-        //var imageBounds = [[49.772, 6.66], [46.66, 9.12]];
-        //imageAdded = L.imageOverlay(imageUrl, imageBounds).addTo(map);	
-        // add statistic here
 		if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }	
         statisticLayer = new L.PieChartDataLayer(statisticData,statisticOptions);
         map.addLayer(statisticLayer);
@@ -313,7 +297,6 @@ var statisticOptions = {
         if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }			
         var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
         var parameters = L.Util.extend(defaultParameters, customParams);
-	  
         $.ajax({
           url: geoJsonUrl + L.Util.getParamString(parameters),
           datatype: 'json',
@@ -337,168 +320,21 @@ map.on('moveend', function(){
     };
 });
 
+
+var baseMaps = {};    
+L.control.layers(baseMaps,{
+	   '<strong>Openstreetmap<strong/><br />':OpenStreetMap_DE, 
+   /*    '<strong>Indicator<strong/><br />': geojsonLayerWells,  
+	  '<strong>Statistics<strong/><br />':statisticLayer */
+}).addTo(map); 
+
+
 }
 
 redrawParameters();
-/*
-
-// Null variable that will hold our data
-  var clim_ex = null;
-
-
-// load GeoJSON from an external file
-  $.getJSON("./layer/clim_ex_wgs84.geojson",function(data){
-    // set clim_ex to GeoJSON, add GeoJSON layer to the map once the file is loaded
-    clim_ex = L.geoJson(data, {color:'black', weight:1, opacity:0.1
-    },{
-        onEachFeature: function (feature, layer) {
-            layer.bindPopup(feature.properties.cat_trop);
-      }
-    }).addTo(map);
-});
-
-// Use $( "elementID") and the jQuery click listener method to remove all of the data layers
-$( "#removeIndicators" ).click(function() {
-    map.removeLayer(clim_ex);
-});
-
-// Use $( "elementID") and the jQuery click listener method to create a filter
-$( "#addTropical" ).click(function() {
-    map.removeLayer(clim_ex);
-    $.getJSON("./layer/clim_ex_wgs84.geojson",function(data){
-        // add GeoJSON layer to the map once the file is loaded
-      clim_ex = L.geoJson(data,{ 
-        style: function(feature){
-        var fillColor,
-          cat_trop = feature.properties.cat_trop;
-        if ( cat_trop = "high" ) fillColor = "#FF0000";
-        else fillColor = "#fee5d9";  // no data
-        return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
-      },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.cat_trop);
-            }, filter: function (feature, layer) {
-                return feature.properties.cat_trop == "high";
-            }
-        }).addTo(map);
-    });
-});
-
-$( "#addRainfall" ).click(function() {
-    map.removeLayer(clim_ex);
-    $.getJSON("./layer/clim_ex_wgs84.geojson",function(data){
-        // add GeoJSON layer to the map once the file is loaded
-        clim_ex = L.geoJson(data,{
-          style: function(feature){
-        var fillColor,
-          cat_rainf = feature.properties.cat_rainf;
-        if ( cat_rainf = "high" ) fillColor = "#33FFFF";
-        else fillColor = "#fee5d9";  // no data
-        return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
-      },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.cat_rainf);
-            }, filter: function (feature, layer) {
-                return feature.properties.cat_rainf == "high";
-            }
-        }).addTo(map);
-    });
-});
-
-$( "#addFrostdays" ).click(function() {
-    map.removeLayer(clim_ex);
-    $.getJSON("./layer/clim_ex_wgs84.geojson",function(data){
-        // add GeoJSON layer to the map once the file is loaded
-        clim_ex = L.geoJson(data,{
-          style: function(feature){
-        var fillColor,
-          cat_frost = feature.properties.cat_frost;
-        if ( cat_frost = "high" ) fillColor = "#3333FF";
-        else fillColor = "#fee5d9";  // no data
-        return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
-      },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.cat_frost);
-            }, filter: function (feature, layer) {
-                return feature.properties.cat_frost == "high";
-            }
-        }).addTo(map);
-    });
-});
-
-$( "#addDrydays" ).click(function() {
-    map.removeLayer(clim_ex);
-    $.getJSON("./layer/clim_ex_wgs84.geojson",function(data){
-        // add GeoJSON layer to the map once the file is loaded
-        clim_ex = L.geoJson(data,{
-          style: function(feature){
-        var fillColor,
-          cat_dryd = feature.properties.cat_dryd;
-        if ( cat_trop = "high" ) fillColor = "#CC6600";
-        else fillColor = "#fee5d9";  // no data
-        return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
-      },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.cat_dryd);
-            }, filter: function (feature, layer) {
-                return feature.properties.cat_dryd == "high";
-            }
-        }).addTo(map);
-    });
-});
-
-$( "#addSummerRain" ).click(function() {
-    map.removeLayer(clim_ex);
-    $.getJSON("./layer/clim_ex_wgs84.geojson",function(data){
-        // add GeoJSON layer to the map once the file is loaded
-        clim_ex = L.geoJson(data,{
-          style: function(feature){
-        var fillColor,
-          cat_rain_s = feature.properties.cat_rain_s;
-        if ( cat_rain_s = "high" ) fillColor = "#33FF66";
-        else fillColor = "#fee5d9";  // no data
-        return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
-      },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.cat_rain_s);
-            }, filter: function (feature, layer) {
-                return feature.properties.cat_rain_s == "high";
-            }
-        }).addTo(map);
-    });
-});
-
-$( "#addWinterRain" ).click(function() {
-    map.removeLayer(clim_ex);
-    $.getJSON("./layer/clim_ex_wgs84.geojson",function(data){
-        // add GeoJSON layer to the map once the file is loaded
-        clim_ex = L.geoJson(data,{
-          style: function(feature){
-        var fillColor,
-          cat_rain_w = feature.properties.cat_rain_w;
-        if ( cat_rain_w = "high" ) fillColor = "#9999CC";
-        else fillColor = "#fee5d9";  // no data
-        return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .6 };
-      },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.cat_rain_w);
-            }, filter: function (feature, layer) {
-                return feature.properties.cat_rain_w == "high";
-            }
-        }).addTo(map);
-    });
-});
-
-*/
 
 
 
-  var baseMaps = {};    
-   L.control.layers(baseMaps,{
-	   '<strong>openstreetmap<strong/><br />':OpenStreetMap_DE, 
-    /*  '<strong>upper Rhine region<strong/><br />': tmo_region,  */
-	/*  '<strong>climate indicators<strong/><br />':imageUrl */
-	}).addTo(map); 
 
 var vueEventBus = new Vue({ });
 	  
