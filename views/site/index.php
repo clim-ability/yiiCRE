@@ -15,7 +15,7 @@ $this->title = 'My Yii Application';
     </div>
 
     <div class="body-content">
-
+<?php \Yii::$app->view->renderFile('@app/views/site/pages/map.php'); ?>
         <div class="row">
             <div class="col-lg-4">
                 <h2>Heading</h2>
