@@ -191,6 +191,7 @@ class ApiController extends Controller
          $resultList[$scenario['scenario']][$epoch['name']] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 	    }
 	  }	
+	  $result = [];
 	  foreach($resultList as $szenario=>$data) {
 		 $column = [$szenario];
  		  foreach($data as $epoch=>$values) {
