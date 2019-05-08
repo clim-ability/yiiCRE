@@ -176,6 +176,7 @@ class ApiController extends Controller
    {
 	  $hazard = Hazard::findBy($hazard);
 	  $parameter='mean';
+	  $parameter = Parameter::findBy($parameter);
 	  $inclInvisible = false;
 	  $epochs = Epoch::inqAllEpochs( $inclInvisible);
 	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
