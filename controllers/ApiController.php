@@ -184,13 +184,20 @@ class ApiController extends Controller
       foreach($scenarios as $scenario)
 	  {
 		$resultList[$scenario['name']] = []; 
+		$resultList[$scenario['name']]['1970-2000'] = [value => 0.0];
 	    foreach($epochs as $epoch)
 	    {
 	     $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);	
-         $resultList[$epoch['scenario']][$epoch['name']] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
+         $resultList[$scenario['scenario']][$epoch['name']] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 	    }
 	  }	
-      $result = $resultList;
+	  foreach($resultList as $szenario=>$data) {
+		 $column = [$szenario];
+ 		  foreach($data as $epoch=>$values) {
+			 $column[] = $values['value'];  
+		  }	  
+		  $result[] = $column;
+	  }	  
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       return $result;	  
