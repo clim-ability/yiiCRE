@@ -199,6 +199,7 @@ class ApiController extends Controller
 		  }	  
 		  $result[] = $column;
 	  }	  
+	  $result =  $resultList;
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       return $result;	  
