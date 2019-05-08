@@ -172,6 +172,28 @@ class ApiController extends Controller
       return $result;	  
    }
    
+   public function actionHazardTimeChart($hazard, $latitude = null, $longitude = NULL)
+   {
+	  $hazard = Hazard::findBy($hazard);
+	  $parameter='mean';
+	  $epochs = Epoch::inqAllEpochs( $inclInvisible);
+	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
+	  $resultList = [];
+      foreach($scenarios as $scenario)
+	  {
+		$resultList[$scenario'name'] = []; 
+	    foreach($epochs as $epoch)
+	    {
+	     $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);	
+         $resultList[$epoch'scenario'][$epoch'name'] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
+	    }
+	  }	
+      $result = $resultList;
+	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      return $result;	  
+   }
+   
    public function actionHazardValues($latitude, $longitude, $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
 	   $result = [];
