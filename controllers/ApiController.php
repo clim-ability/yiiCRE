@@ -184,7 +184,7 @@ class ApiController extends Controller
       foreach($scenarios as $scenario)
 	  {
 		$resultList[$scenario['name']] = []; 
-		$resultList[$scenario['name']]['1970-2000'] = [value => 0.0];
+		$resultList[$scenario['name']]['1970-2000'] = ['value' => 0.0];
 	    foreach($epochs as $epoch)
 	    {
 	     $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);	
