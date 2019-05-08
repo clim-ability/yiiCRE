@@ -188,7 +188,7 @@ class ApiController extends Controller
 	    foreach($epochs as $epoch)
 	    {
 	     $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);	
-         $resultList[$scenario['scenario']][$epoch['name']] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
+         $resultList[$scenario['name']][$epoch['name']] = Gis::getCalculatedValue($table, $hazard['name'], $latitude, $longitude);
 	    }
 	  }	
 	  $result = [];
@@ -199,7 +199,7 @@ class ApiController extends Controller
 		  }	  
 		  $result[] = $column;
 	  }	  
-	  $result =  $resultList;
+	  //$result =  $resultList;
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       return $result;	  
