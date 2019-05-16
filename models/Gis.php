@@ -101,7 +101,7 @@ class Gis extends ActiveRecord
 	   return $result;	   
 	}
 
-    public static function getHazardsStatistic($hazards)
+    public static function getHazardsStatistic($hazards, $absolute=false)
 	{
 	    $sql = "SELECT ST_X(ST_Centroid(ST_Transform(geom, 4326))) as longitude, ST_Y(ST_Centroid(ST_Transform(geom, 4326))) as  latitude ";
 	    foreach($hazards as $table=>$hazard) {
@@ -110,20 +110,38 @@ class Gis extends ActiveRecord
 	    $sql .= " FROM ( ";
 	   $first = true;
 	   foreach($hazards as $table=>$hazard) {
+	      $refEpoch = Epoch::findBy('1970-2000');
+	      $refParameter = Parameter::findBy('mean');
+	      $refTable = Gis::getRasterTable($hazard, $refParameter, $refEpoch, null);		   
 		  if(!$first) { $sql .= " UNION ";}
 		  $sql .= " SELECT geom ";
 		  foreach($hazards as $table2=>$hazard2) { 
-            if($hazard == $hazard2)	{	  
-		    $sql .= ", CASE WHEN (".$hazard2."-avg)/std > 1.0 THEN (".$hazard2."-avg)/std ELSE 0.0 END as ".$hazard2."_plus "
-		          . ", CASE WHEN (".$hazard2."-avg)/std < -1.0 THEN (avg-".$hazard2.")/std ELSE 0.0 END as ".$hazard2."_minus ";
+            if($hazard == $hazard2)	{	
+		      if($absolute) { 			
+		        $sql .= ", CASE WHEN (abs.".$hazard2."+rel.".$hazard2."-avg)/std > 1.0 THEN (abs.".$hazard2."+rel.".$hazard2."-avg)/std ELSE 0.0 END as ".$hazard2."_plus "
+		             . ", CASE WHEN (abs.".$hazard2."+rel.".$hazard2."-avg)/std < -1.0 THEN (avg-abs.".$hazard2."-rel.".$hazard2.")/std ELSE 0.0 END as ".$hazard2."_minus ";
+			  } else {
+		        $sql .= ", CASE WHEN (rel.".$hazard2."-avg)/std > 1.0 THEN (rel.".$hazard2."-avg)/std ELSE 0.0 END as ".$hazard2."_plus "
+		             . ", CASE WHEN (rel.".$hazard2."-avg)/std < -1.0 THEN (avg-rel.".$hazard2.")/std ELSE 0.0 END as ".$hazard2."_minus ";
+              }				  
 		    } else {
 		    $sql .= ", 0 as ".$hazard2."_plus "
 		          . ", 0 as ".$hazard2."_minus ";
 		    }		 
           }
-		  $sql .= " FROM public.\"".$table."\", "
-          . " (SELECT AVG(".$hazard.") as avg, STDDEV(".$hazard.") as std "
-		  . " FROM public.\"".$table."\") AS stat ";
+		  
+		  if($absolute) { 
+		    $sql .= " FROM public.\"".$table."\" as rel, public.\"".$refTable."\" as abs "
+            . " (SELECT AVG(absstat.".$hazard." + relstat.".$hazard.") as avg, STDDEV(absstat.".$hazard." + relstat.".$hazard.") as std "
+		    . " FROM public.\"".$table."\" AS relstat, public.\"".$refTable."\" AS absstat WHERE relstat.geom=absstat.geom) AS stat ";
+		  } else {
+		    $sql .= " FROM public.\"".$table."\" as rel, "
+            . " (SELECT AVG(".$hazard.") as avg, STDDEV(".$hazard.") as std "
+		    . " FROM public.\"".$table."\") AS stat ";
+		  }
+
+		  
+		  
 		  $first = false;
 		   //var_dump($sql);
 	   }	   
@@ -133,22 +151,6 @@ class Gis extends ActiveRecord
 	   $command = $connection->createCommand($sql);
        $result = $command->queryAll();
 	   return $result;	  
-
-/*
-SELECT ST_X(ST_Centroid(ST_Transform(geom, 4326))) as longitude, ST_Y(ST_Centroid(ST_Transform(geom, 4326))) as latitude, SUM(cddp_plus) as cddp_plus, SUM(cddp_minus) as cddp_minus, SUM(sd_plus) as sd_plus, SUM(sd_minus) as sd_minus 
-FROM
-(
-    SELECT geom, CASE WHEN (cddp-avg)/std > 1.0 THEN (cddp-avg)/std ELSE 0.0 END as cddp_plus, CASE WHEN (cddp-avg)/std < -1.0 THEN (cddp-avg)/std ELSE 0.0 END as cddp_minus, 0 as sd_plus, 0 as sd_minus
- FROM public."cddp_mean_rcp45_2021-2050_minus_knp",
-   (SELECT AVG(cddp) as avg, STDDEV(cddp) as std FROM public."cddp_mean_rcp45_2021-2050_minus_knp") AS stat
-UNION
-    SELECT geom, 0 as cddp_plus, 0 as cddp_minus, CASE WHEN (sd-avg)/std > 1.0 THEN (sd-avg)/std ELSE 0.0 END as sd_plus, CASE WHEN (sd-avg)/std < -1.0 THEN (sd-avg)/std ELSE 0.0 END as sd_minus
- FROM public."sd_mean_rcp45_2021-2050_minus_knp",
-   (SELECT AVG(sd) as avg, STDDEV(sd) as std FROM public."sd_mean_rcp45_2021-2050_minus_knp") AS stat
-   ) AS foo GROUP BY geom		
-*/
-
-		
 	}	
 
 	public static function getHazardGeometry($table, $variable, $bbox)

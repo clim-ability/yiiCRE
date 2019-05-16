@@ -265,7 +265,7 @@ class ApiController extends Controller
        return $result;
    }   
  
-   public function actionHazardsStatistic($epoch='', $scenario='')
+   public function actionHazardsStatistic($epoch='', $scenario='', $absolute='')
    {
       $hazardsList = [];
 	  $inclInvisible = false;
@@ -296,7 +296,7 @@ class ApiController extends Controller
 	  } 
 
 	  $result = [];
-	  $collected = Gis::getHazardsStatistic($hazardsList);
+	  $collected = Gis::getHazardsStatistic($hazardsList, !empty($absolute));
 	  foreach($collected as $row) {
 		$new = [];   
 		$new['latitude']  = floatval($row['latitude']);
