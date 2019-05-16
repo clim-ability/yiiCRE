@@ -112,7 +112,7 @@ class Gis extends ActiveRecord
 	   foreach($hazards as $table=>$hazard) {
 	      $refEpoch = Epoch::findBy('1970-2000');
 	      $refParameter = Parameter::findBy('mean');
-	      $refTable = Gis::getRasterTable($hazard, $refParameter, $refEpoch, null);		   
+	      $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);		   
 		  if(!$first) { $sql .= " UNION ";}
 		  $sql .= " SELECT geom ";
 		  foreach($hazards as $table2=>$hazard2) { 
