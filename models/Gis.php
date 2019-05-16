@@ -131,7 +131,7 @@ class Gis extends ActiveRecord
           }
 		  
 		  if($absolute) { 
-		    $sql .= " FROM public.\"".$table."\" as rel, public.\"".$refTable."\" as abs "
+		    $sql .= " FROM public.\"".$table."\" as rel, public.\"".$refTable."\" as abs, "
             . " (SELECT AVG(absstat.".$hazard." + relstat.".$hazard.") as avg, STDDEV(absstat.".$hazard." + relstat.".$hazard.") as std "
 		    . " FROM public.\"".$table."\" AS relstat, public.\"".$refTable."\" AS absstat WHERE relstat.geom=absstat.geom) AS stat ";
 		  } else {
