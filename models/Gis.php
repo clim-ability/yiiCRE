@@ -146,7 +146,7 @@ class Gis extends ActiveRecord
 		   //var_dump($sql);
 	   }	   
 	   $sql .= " ) AS foo GROUP BY geom ";
-	   //var_dump($sql);
+	   var_dump($sql);
 	   $connection = Yii::$app->pgsql_gisdata;	   
 	   $command = $connection->createCommand($sql);
        $result = $command->queryAll();
