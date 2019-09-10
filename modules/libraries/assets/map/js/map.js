@@ -43,7 +43,7 @@ function onMapClick(e) {
 	var latitude = e.latlng.lat;
 	var longitude = e.latlng.lng;
 	window.vueInfo.clickOnMap(latitude, longitude);
-	updateChartData();
+	//mk// updateChartData();
     // set marker
 }
 map.on('click', onMapClick);
@@ -404,7 +404,7 @@ var vueSelect = new Vue({
 		  }	
 	    }
 	    if('all' != this.hazard) {
-		  updateChartData();
+		  //mk// updateChartData();
   		  axios
             .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
 		    //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
