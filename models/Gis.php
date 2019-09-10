@@ -131,16 +131,15 @@ class Gis extends ActiveRecord
           }
 		  
 		  if($absolute) { 
-		    $sql .= " FROM public.\"".$table."\" as rel, public.\"".$refTable."\" as abs, public.rasteronly, "
+		    $sql .= " FROM public.\"".$table."\" as rel, public.\"".$refTable."\" as abs, "
             . " (SELECT AVG(absstat.".$hazard." + relstat.".$hazard.") as avg, STDDEV(absstat.".$hazard." + relstat.".$hazard.") as std "
-		    . " FROM public.\"".$table."\" AS relstat, public.\"".$refTable."\" AS absstat"
-			. " WHERE relstat.id=absstat.id) AS stat "
-			. " WHERE abs.id = rel.id AND rel.id = rasteronly.id";
+		    . " FROM public.\"".$table."\" AS relstat, public.\"".$refTable."\" AS absstat, public.rasteronly"
+			. " WHERE relstat.id=absstat.id AND relstat.id=rasteronly.id) AS stat "
+			. " WHERE abs.id = rel.id ";
 		  } else {
-		    $sql .= " FROM public.\"".$table."\" as rel, public.rasteronly, "
+		    $sql .= " FROM public.\"".$table."\" as rel, "
             . " (SELECT AVG(".$hazard.") as avg, STDDEV(".$hazard.") as std "
-		    . " FROM public.\"".$table."\") AS stat "
-			. " WHERE rel.id = rasteronly.id" ;
+		    . " FROM public.\"".$table."\", public.rasteronly WHERE rel.id = rasteronly.id) AS stat ";
 		  }
 
 		  
