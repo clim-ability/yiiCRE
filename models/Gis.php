@@ -139,7 +139,7 @@ class Gis extends ActiveRecord
 		  } else {
 		    $sql .= " FROM public.\"".$table."\" as rel, "
             . " (SELECT AVG(".$hazard.") as avg, STDDEV(".$hazard.") as std "
-		    . " FROM public.\"".$table."\", public.rasteronly WHERE rel.id = rasteronly.id) AS stat ";
+		    . " FROM public.\"".$table."\" AS relstat, public.rasteronly WHERE relstat.id = rasteronly.id) AS stat ";
 		  }
 
 		  
