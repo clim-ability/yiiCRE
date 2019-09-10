@@ -2,7 +2,6 @@
 
 
 
-
     // initialize the map
   var map = L.map('map').setView([48.25, 8], 8);
 
@@ -44,11 +43,22 @@ function onMapClick(e) {
 	var latitude = e.latlng.lat;
 	var longitude = e.latlng.lng;
 	window.vueInfo.clickOnMap(latitude, longitude);
+	updateChartData();
     // set marker
 }
 map.on('click', onMapClick);
 map.on('zoomend', function() { updateZoomLevel(); });
 }
+
+// Manual removing of hover event and binding of click event....
+L.PieChartMarker2 = L.PieChartMarker.extend({
+	_bindMouseEvents: function (layer, a, b) { 
+	        layer.off('mouseover');
+			layer.on({click: onMapClick});
+	}
+})
+L.PieChartMarker = L.PieChartMarker2.extend({})
+
 
 
 function roundedValue(value, digits) {
@@ -107,9 +117,36 @@ function interpolateColor(a, b, amount) {
     return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
 }
 
+{
 
+var c3Data = {
+      columns: [
+        ['rcp45', 30, 200, 100, 400, 150, 250],
+        ['rcp85', 50, 20, 10, 40, 15, 25]
+      ],
+    };
 
-//$hazard='cddp', $epoch='2041-2070', $scenario='rcp45'
+var c3Chart = c3.generate({
+    bindto: '#chartHazard',
+    data: c3Data,
+});
+
+function updateChartData() {
+  var latitude = getCurrentLatitude();
+  var longitude = getCurrentLongitude();
+  var hazard = vueSelect.getCurrentHazard();
+  var url = apiBaseUrl+'/api/hazard-time-chart';
+  // url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
+  url = url + '?latitude='+latitude+'&longitude='+longitude+'&hazard='+hazard;
+  axios.get(url).then(response => {
+    c3Data.columns = response.data; 
+	c3Chart = c3.generate({
+      bindto: '#chartHazard',
+      data: c3Data,
+    });
+  });
+}
+}
 
 {
 	
@@ -167,6 +204,7 @@ function initStatisticOptions(hazards)
 		};			
     }
 	statisticOptions['chartOptions'] = chartOptions;
+	//statisticOptions['chartOptions'] = {};
 }
 
 var statisticOptions = {
@@ -175,6 +213,12 @@ var statisticOptions = {
 	//codeField: 'state',
 	latitudeField: 'latitude',
 	longitudeField: 'longitude',
+	showLegendTooltips: false,
+	tooltipOptions: {
+		iconSize: new L.Point(0, 0),
+		iconAnchor: new L.Point(0, 0),
+		mouseOverExaggeration: 1,
+	},
 	chartOptions: {},
 	layerOptions: {
 		fillOpacity: 0.9,
@@ -193,9 +237,7 @@ var statisticOptions = {
 
 };
 
-	
-	
-	
+
   var colorParameters = {
 	minValueLocal: -1000.0,
 	maxValueLocal: +1000.0,
@@ -291,7 +333,11 @@ var statisticOptions = {
         geojsonLayerWells.clearLayers();
 		if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }	
         statisticLayer = new L.PieChartDataLayer(statisticData,statisticOptions);
+		//statisticLayer.unbindTooltip();
+		//statisticLayer.off('mouseover');
+
         map.addLayer(statisticLayer);
+		statisticLayer.on('click', onMapClick);
       } else {	
         if (map.hasLayer(imageAdded)) { map.removeLayer(imageAdded); }
         if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }			
@@ -334,8 +380,6 @@ L.control.layers(baseMaps,{
 redrawParameters();
 
 
-
-
 var vueEventBus = new Vue({ });
 	  
 var vueSelect = new Vue({
@@ -360,6 +404,7 @@ var vueSelect = new Vue({
 		  }	
 	    }
 	    if('all' != this.hazard) {
+		  updateChartData();
   		  axios
             .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
 		    //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
@@ -378,7 +423,8 @@ var vueSelect = new Vue({
 	  	  });		
         } else {
   		  axios
-            .get(apiBaseUrl+'/api/hazards-statistic?epoch='+this.epoch+'&scenario='+this.scenario)
+            // .get(apiBaseUrl+'/api/hazards-statistic?epoch='+this.epoch+'&scenario='+this.scenario+'&absolute=true')
+			.get(apiBaseUrl+'/api/hazards-statistic?epoch='+this.epoch+'&scenario='+this.scenario)
             .then(response => { 
               setStatisticData(response.data);		
 		      setParametersOnMap(this.hazard, this.epoch, this.scenario);		
@@ -392,6 +438,7 @@ var vueSelect = new Vue({
 	},
 	getCurrentEpoch() {return this.epoch; },
 	getCurrentSzenario() {return this.scenario; },
+	getCurrentHazard() {return this.hazard; },
   },
   mounted () {
     axios
