@@ -119,6 +119,7 @@ function interpolateColor(a, b, amount) {
 
 {
 
+/*
 var c3Data = {
       columns: [
         ['rcp45', 30, 200, 100, 400, 150, 250],
@@ -130,6 +131,7 @@ var c3Chart = c3.generate({
     bindto: '#chartHazard',
     data: c3Data,
 });
+*/
 
 function updateChartData() {
   var latitude = getCurrentLatitude();
