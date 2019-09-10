@@ -131,15 +131,15 @@ class Gis extends ActiveRecord
           }
 		  
 		  if($absolute) { 
-		    $sql .= " FROM public.\"".$table."\" as rel, public.\"".$refTable."\" as abs, "
+		    $sql .= " FROM public.\"".$table."\" as rel, public.\"".$refTable."\" as abs, , public.rasteronly AS raster, "
             . " (SELECT AVG(absstat.".$hazard." + relstat.".$hazard.") as avg, STDDEV(absstat.".$hazard." + relstat.".$hazard.") as std "
 		    . " FROM public.\"".$table."\" AS relstat, public.\"".$refTable."\" AS absstat, public.rasteronly"
 			. " WHERE relstat.id=absstat.id AND relstat.id=rasteronly.id) AS stat "
-			. " WHERE abs.id = rel.id ";
+			. " WHERE abs.id = rel.id AND rel.id = raster.id ";
 		  } else {
-		    $sql .= " FROM public.\"".$table."\" as rel, "
+		    $sql .= " FROM public.\"".$table."\" as rel, public.rasteronly AS raster, "
             . " (SELECT AVG(".$hazard.") as avg, STDDEV(".$hazard.") as std "
-		    . " FROM public.\"".$table."\" AS relstat, public.rasteronly WHERE relstat.id = rasteronly.id) AS stat ";
+		    . " FROM public.\"".$table."\" AS relstat) AS stat WHERE rel.id = raster.id ";
 		  }
 
 		  
