@@ -114,7 +114,7 @@ class Gis extends ActiveRecord
 	      $refParameter = Parameter::findBy('mean');
 	      $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);		   
 		  if(!$first) { $sql .= " UNION ";}
-		  $sql .= " SELECT rel.geom as geom, raster.geom as fullgeom";
+		  $sql .= " SELECT rel.geom as geom";
 		  foreach($hazards as $table2=>$hazard2) { 
             if($hazard == $hazard2)	{	
 		      if($absolute) { 			
@@ -131,16 +131,15 @@ class Gis extends ActiveRecord
           }
 		  
 		  if($absolute) { 
-		    $sql .= " FROM public.\"".$table."\" as rel, public.\"".$refTable."\" as abs, public.rasteronly AS raster, "
+		    $sql .= " FROM public.\"".$table."\" as rel, public.\"".$refTable."\" as abs, "
             . " (SELECT AVG(absstat.".$hazard." + relstat.".$hazard.") as avg, STDDEV(absstat.".$hazard." + relstat.".$hazard.") as std "
 		    . " FROM public.\"".$table."\" AS relstat, public.\"".$refTable."\" AS absstat"
 			. " WHERE relstat.id=absstat.id) AS stat "
-			. " WHERE abs.id = rel.id AND rel.id=raster.id";
+			. " WHERE abs.id = rel.id ";
 		  } else {
-		    $sql .= " FROM public.\"".$table."\" as rel, public.rasteronly AS raster, "
+		    $sql .= " FROM public.\"".$table."\" as rel, "
             . " (SELECT AVG(".$hazard.") as avg, STDDEV(".$hazard.") as std "
-		    . " FROM public.\"".$table."\") AS stat "
-			. " WHERE rel.id=raster.id";
+		    . " FROM public.\"".$table."\") AS stat ";
 		  }
 
 		  
