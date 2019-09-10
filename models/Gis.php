@@ -114,7 +114,7 @@ class Gis extends ActiveRecord
 	      $refParameter = Parameter::findBy('mean');
 	      $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);		   
 		  if(!$first) { $sql .= " UNION ";}
-		  $sql .= " SELECT rel.geom as geom";
+		  $sql .= " SELECT raster.geom as geom";
 		  foreach($hazards as $table2=>$hazard2) { 
             if($hazard == $hazard2)	{	
 		      if($absolute) { 			
