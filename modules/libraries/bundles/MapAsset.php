@@ -35,7 +35,8 @@ class MapAsset extends AssetBundle
         'yii\web\JqueryAsset', //'app\modules\libraries\bundles\JqueryAsset',
         'yii\bootstrap\BootstrapAsset',
         'app\modules\libraries\bundles\TweenAsset', 
-        'app\modules\libraries\bundles\VueAsset',		
+        'app\modules\libraries\bundles\VueAsset',
+        'app\modules\libraries\bundles\D3Asset',		
     ];
    
 }
