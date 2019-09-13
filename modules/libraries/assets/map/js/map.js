@@ -87,12 +87,22 @@ function roundedValue(value, digits) {
         }
 	  } else {
 		div.innerHTML += hazard + '<br />';
+		var digits = (getDigitsGlobal()>1.2)?0:1;
         for (var i = 0.0; i < 7.0; i++) {
 		  var d1 = getValueGlobal(i/7.0);
 		  var d2 = getValueGlobal((i+1)/7.0);
-		  var label = ''+ roundedValue(d1,1)+' to '+roundedValue(d2,1);
+		  if(d1*d2<0.0) {
+		  var label = ''+ roundedValue(d1,digits)+' to '+roundedValue(0.0,digits);
 		  var color = getStyleColor(d1);
           div.innerHTML += '<i style="background: '+color+'"></i><p><small>'+label+'</small></p>';
+		  var label = ''+ roundedValue(0.0,digits)+' to '+roundedValue(d2,digits);
+		  var color = getStyleColor(0.0);
+          div.innerHTML += '<i style="background: '+color+'"></i><p><small>'+label+'</small></p>';		  
+		  } else {
+		  var label = ''+ roundedValue(d1,digits)+' to '+roundedValue(d2,digits);
+		  var color = getStyleColor(d1);
+          div.innerHTML += '<i style="background: '+color+'"></i><p><small>'+label+'</small></p>';
+		  }
         }
       }		  
 	  // Return the Legend div containing the HTML content
@@ -248,7 +258,8 @@ var statisticOptions = {
 	minOpacity: 0.2,
 	maxOpacity: 0.8,
 	minColor: '#000000',
-	maxColor: '#000000'
+	maxColor: '#000000',
+	reverse: false
   }	  
 
   function setExtremeValuesLocal(vmin, vmax)
@@ -261,6 +272,7 @@ var statisticOptions = {
   {
     colorParameters.minValueGlobal = parseFloat(vmin);
 	colorParameters.maxValueGlobal = parseFloat(vmax);
+	colorParameters.reverse = ((colorParameters.minValueGlobal+colorParameters.maxValueGlobal) < 0.0);
   }	  
 
   function setExtremeColors(cmin, cmax)
@@ -272,6 +284,9 @@ var statisticOptions = {
   function getStyleColor(d) {
 	var amount = (parseFloat(d) - colorParameters.minValueGlobal) / (colorParameters.maxValueGlobal - colorParameters.minValueGlobal);
 	amount = Math.min(1.0, Math.min(1.0, amount)); 
+	if (colorParameters.reverse) {
+		amount = 1.0 - amount;
+	}
     var color = interpolateColor(colorParameters.minColor, colorParameters.maxColor, amount);
 	return color;
   }
@@ -279,8 +294,15 @@ var statisticOptions = {
   function getStyleOpacity(d) {
 	var amount = (parseFloat(d) - colorParameters.minValueLocal) / (colorParameters.maxValueLocal - colorParameters.minValueLocal);
 	amount = Math.min(1.0, Math.min(1.0, amount)); 
+	if (colorParameters.reverse) {
+		amount = 1.0 - amount;
+	}
     var opacity = amount*(colorParameters.maxOpacity - colorParameters.minOpacity) + colorParameters.minOpacity;
 	return opacity;
+  }
+  
+  function getDigitsGlobal() {
+	 return Math.log10(Math.abs(colorParameters.maxValueGlobal - colorParameters.minValueGlobal));  
   }
   
   function getValueGlobal(amount) {
