@@ -27,7 +27,7 @@ $left =
     [
         [
             'label' => Language::t('p:menue', 'Admin'),
-            'visible' => (\Yii::$app->user->can('sysadmin')),
+            'visible' => (\Yii::$app->user->identity->hasRole('sysadmin')),
             'items' => [
                 ['label' => Language::t('p:menue', 'Add user'), 'url' => ['/user/user/create'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Manage user'), 'url' => ['/user/user/index'], 'visible' => $special],
@@ -51,7 +51,7 @@ $left =
         [
             'label' => Language::t('p:menue', 'Geographic Names'),
             'url' => ['/locating/name/index'],
-            'visible' => (\Yii::$app->user->can('sysadmin')),
+            'visible' => (\Yii::$app->user->identity->hasRole('sysadmin')),
             'items' => [
                 ['label' => Language::t('p:menue', 'Names'), 'url' => ['/locating/name/index']],
                 ['label' => Language::t('p:menue', 'Location'), 'url' => ['/locating/location/index']],
