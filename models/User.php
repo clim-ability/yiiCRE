@@ -106,7 +106,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     }
 	
 	public static function hasRole($role) {
-		if (!Yii::$app->user->isGuest) { 
+		if (!\Yii::$app->user->isGuest) { 
 		  return (Yii::$app->user->identity->role === $role);
 		}
 		return false;
