@@ -59,7 +59,7 @@ $left =
                 ['label' => Language::t('p:menue', 'Tags'), 'url' => ['/locating/tag/index']],
             ]
         ],
-        ['label' => Language::t('p:menue', 'About'), 'url' => ['/site/page', 'view' => 'about']],
+        ['label' => Language::t('p:menue', 'About'), 'url' => '/site/about'],
     ];
 
 if (isset($this->params['menu'])) {
@@ -86,32 +86,18 @@ $menu = [
             'linkOptions' => ['class' => 'dumbly'],
             'active' =>false,
         ],
-        \Yii::$app->user->isGuest ?
-            [
-                'label' => Language::t('p:menue', 'Login'),
-                'url' => '/site/login',
-
-            ]
-            : // noGuest
-            [
-                'label' => '<span class="glyphicon glyphicon-user"></span>',
-                'url' => ['/user/admin/update-profile', 'id' => Yii::$app->user->id],
-                'items' => [
-                    [   'visible' => false, 
-                        'label' => Language::t('p:menue', 'Profile'),
-                        'url' => '#',
-                        'linkOptions' => ['class' => 'modalItem', 'data-title' => Language::t('p:menue', 'Profile'),
-                            'data-url'=> \Yii::$app->urlManager->createUrl(["/user/user/update-user", 'id' => Yii::$app->user->id]),
-                            'data-url-succ' => Url::current(),
-                    ]],
-                    [
-                        'label' => Language::t('p:menue', 'Logout {username}',
-                            ['username' => Yii::$app->user->identity->username]),
-                        'url' => ['/user/security/logout'],
-                        'linkOptions' => ['data-method' => 'post']
-                    ],
-                ]
-            ], // end isGuest
+        Yii::$app->user->isGuest ? (
+                ['label' => 'Login', 'url' => ['/site/login']]
+            ) : (
+                '<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>'
+            )
     ],
 ];
 
