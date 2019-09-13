@@ -11,6 +11,7 @@
     <link href="../../../modules/libraries/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-dvf/0.3.1/css/dvf.min.css" rel="stylesheet">
     <link href="../../../modules/libraries/assets/map/css/map.css" rel="stylesheet">
+	<link href="../../../modules/libraries/assets/d3/css/c3.css" rel="stylesheet">
     <link href="../../../web/css/site.css" rel="stylesheet"></head>
 <body>
 
@@ -105,15 +106,22 @@
      Nearest City: {{ info.nearest_city.name }}, Elevation: {{ roundedElevation }} m <br/>
 	 <br/>
 	 <!-- Dry Days: <span v-html="roundedCddp"></span> days/year <br/> -->
-	 Frost Days: <span v-html="roundedFd"></span> days/year <br/>
-	 Summer Days: <span v-html="roundedSd"></span> days/year <br/>
-	 Tropical Nights: <span v-html="roundedTr"></span> days/year <br/>
-	 Torrential Rain: <span v-html="roundedRr20"></span> days/year <br/>
-	 Winter Rain: <span v-html="roundedRw"></span> % <br/>
-	 Summer Rain: <span v-html="roundedRs"></span> % <br/>	 
+	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')">Frost Days: </span><span v-html="roundedFd"></span> days/year <br/>
+	 <span :class="('sd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('sd')">Summer Days: </span><span v-html="roundedSd"></span> days/year <br/>
+	 <span :class="('tr' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('tr')">Tropical Nights: </span><span v-html="roundedTr"></span> days/year <br/>
+	 <span :class="('rr20' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr20')">Torrential Rain: </span><span v-html="roundedRr20"></span> days/year <br/>
+	 <span :class="('rr_winter' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_winter')">Winter Rain: </span><span v-html="roundedRw"></span> % <br/>
+	 <span :class="('rr_summer' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_summer')">Summer Rain: </span><span v-html="roundedRs"></span> % <br/>	 
 	 <br/>
-	 {{ info }}
-    </template>	 
+
+    </template>	
+
+	
+   </div> <!-- end md-6 -->
+
+   <div class="col-md-6" > <!-- Tabbed Upper-Right Corner -->
+   <div id="chartHazard"></div>
+	 <br/>		
    </div> <!-- end md-6 -->
 
   </div> <!-- end row -->
@@ -121,6 +129,7 @@
 	
   <div class="row">
    <div class="col-md-12 "><!-- for better alignment -->
+
   </div>
   </div> <!-- end UPPER row -->
 				
@@ -160,6 +169,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tweenjs/0.6.1/tweenjs.min.js"></script>
 <script src="../../../modules/libraries/assets/tween/js/tween.js"></script>
+<script src="../../../modules/libraries/assets/d3/js/d3.js"></script>
+<script src="../../../modules/libraries/assets/d3/js/c3.js"></script>
 <script src="../../../modules/libraries/assets/map/js/map.js"></script>
 <script src="../../../vendor/yiisoft/yii2/assets/yii.js"></script>
 <script src="../../../modules/libraries/assets/bootstrap/js/bootstrap.js"></script>

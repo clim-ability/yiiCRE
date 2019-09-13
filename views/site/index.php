@@ -87,15 +87,21 @@ header('Access-Control-Allow-Origin: *');
      Nearest City: {{ info.nearest_city.name }}, Elevation: {{ roundedElevation }} m <br/>
 	 <br/>
 	 <!-- Dry Days: <span v-html="roundedCddp"></span> days/year <br/> -->
-	 Frost Days: <span v-html="roundedFd"></span> days/year <br/>
-	 Summer Days: <span v-html="roundedSd"></span> days/year <br/>
-	 Tropical Nights: <span v-html="roundedTr"></span> days/year <br/>
-	 Torrential Rain: <span v-html="roundedRr20"></span> days/year <br/>
-	 Winter Rain: <span v-html="roundedRw"></span> % <br/>
-	 Summer Rain: <span v-html="roundedRs"></span> % <br/>	
+	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')">Frost Days: </span>
+	  <span v-html="roundedFd"></span> days/year <br/>
+	 <span :class="('sd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('sd')">Summer Days: </span>
+	   <span v-html="roundedSd"></span> days/year <br/>
+	 <span :class="('tr' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('tr')">Tropical Nights: </span>
+	   <span v-html="roundedTr"></span> days/year <br/>
+	 <span :class="('rr20' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr20')">Torrential Rain: </span>
+	   <span v-html="roundedRr20"></span> days/year <br/>
+	 <span :class="('rr_winter' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_winter')">Winter Rain: </span>
+	   <span v-html="roundedRw"></span> % <br/>
+	 <span :class="('rr_summer' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_summer')">Summer Rain: </span>
+	   <span v-html="roundedRs"></span> % <br/>	 
 	 <br/>
 
-    </template>	 
+    </template>	
    </div> <!-- end md-6 -->
 
   </div> <!-- end row -->

@@ -92,7 +92,7 @@ function roundedValue(value, digits) {
 		  var d2 = getValueGlobal((i+1)/7.0);
 		  var label = ''+ roundedValue(d1,1)+' to '+roundedValue(d2,1);
 		  var color = getStyleColor(d1);
-          div.innerHTML += '<i style="background: '+color+'"></i><p>'+label+'</p>';
+          div.innerHTML += '<i style="background: '+color+'"></i><p><small>'+label+'</small></p>';
         }
       }		  
 	  // Return the Legend div containing the HTML content
@@ -441,6 +441,7 @@ var vueSelect = new Vue({
 	getCurrentEpoch() {return this.epoch; },
 	getCurrentSzenario() {return this.scenario; },
 	getCurrentHazard() {return this.hazard; },
+	setCurrentHazard(hazard) {this.hazard = hazard; }
   },
   mounted () {
     axios
@@ -482,15 +483,22 @@ var vueInfo = new Vue({
   el: '#informationfield',
   data: {
     info: 'none',
-	infoVisible: false
+	infoVisible: false,
+	currHazard: ''
   },
   methods: { 
+    switchHazard(hazard) {
+		vueSelect.setCurrentHazard(hazard);
+		vueSelect.updateParameters();
+		this.currHazard = vueSelect.getCurrentHazard(); 
+	},	 
     clickOnMap() {
 		var latitude = getCurrentLatitude();
 		var longitude = getCurrentLongitude();
 		if (latitude !== 0 && longitude !== 0) {
 		  var epoch = vueSelect.getCurrentEpoch();
 		  var szenario = vueSelect.getCurrentSzenario();
+		  this.currHazard = vueSelect.getCurrentHazard();
 	      var url = apiBaseUrl+'/api/hazard-values';
 	         // url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+epoch+'&scenario='+szenario;
