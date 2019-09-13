@@ -1,10 +1,10 @@
  <?php
 use app\widgets\TmbMenu;
-use app\widgets\TmbLogin;
+//use app\widgets\TmbLogin;
 use app\modules\translation\models\Language;
 use app\modules\translation\widgets\LanguageSelector;
 use yii\helpers\Url;
-use app\modules\user\models\User;
+use app\models\User;
 
 $url = Yii::$app->request->getUrl();
 $params = Yii::$app->request->getQueryParams();
@@ -22,27 +22,8 @@ foreach (Language::getVisibleLanguages() as $lg => $label) {
     ];
 }
      
-$left = [
-        [
-            'label' => Language::t('p:menue', 'MyDesktop'),
-            'visible' => (!\Yii::$app->user->isGuest),
-            'items' => [
-                ['label' => Language::t('p:menue', 'MyDesktop'), 'url' => ['/site/page', 'view' => 'myDesktop']],
-                ['label' => Language::t('p:menue', 'MyProjects'), 'url' => ['/grouping/project/list']],
-                ['label' => Language::t('p:menue', 'MyCollections'), 'url' => ['/grouping/collection/list'], 'visible' => (\Yii::$app->user->can('admin') || \Yii::$app->user->can('sysadmin'))],
-                ['label' => Language::t('p:menue', 'MyResults'), 'url' => ['/result/list', 'id' => Yii::$app->user->id]],
-                ['label' => Language::t('p:menue', 'MyReviews'), 'url' => ['/grouping/review/list'], 'visible' => (\Yii::$app->user->can('reviewer')|| \Yii::$app->user->can('admin') ||\Yii::$app->user->can('sysadmin'))],
-            ]
-        ],
-        [
-            'label' => Language::t('p:menue', 'Find'),
-            'items' => [
-                ['label' => Language::t('p:menue', 'Explore'), 'url' => ['/explore/map']],
-                ['label' => Language::t('p:menue', 'Search'), 'url' => ['/grouping/event/list', 'mode'=>'search']], 
-                ['label' => Language::t('p:menue', 'History'), 'url' => ['/grouping/event/list', 't[history]' => 'today', 'sort'=>'t.begin']],
-            ]
-        ], 
-
+$left = 
+    [
         [
             'label' => Language::t('p:menue', 'Admin'),
             'visible' => (\Yii::$app->user->can('sysadmin')),
@@ -65,23 +46,7 @@ $left = [
                 ['label' => Language::t('p:menue', 'Manage Metrics'), 'url' => ['/coding/metricui/index']],                
             ]
         ],
-        ['label' => Language::t('p:menue', 'Showroom'),  'url' => ['/site/page', 'view' => 'showroom']],
-        [
-            'label' => Language::t('p:menue', 'Results'),
-            'url' => ['/result/list'],
-            'items' => [
-                ['label' => Language::t('p:menue', 'List all Results'), 'url' => ['/result/list']],
-                [
-                    'label' => Language::t('p:menue', 'Create new Result'),
-                    'url' => ['/result/new'],
-                    'visible' => (\Yii::$app->user->can('member'))
-                ],
-                ['label' => 'show', 'url' => ['/result/show'], 'visible' => false],
-                ['label' => 'modify', 'url' => ['/result/modify'], 'visible' => false],
-                ['label' => 'history', 'url' => ['/result/history'], 'visible' => false],
-            ]
-            ,'visible' => true
-        ],
+
         [
             'label' => Language::t('p:menue', 'Geographic Names'),
             'url' => ['/locating/name/index'],
@@ -102,7 +67,7 @@ if (isset($this->params['menu'])) {
 }
 
 $menu = [
-    'brand' => ['label' => Language::t('p:menue', 'Tambora'), 'url' => ['/site/index']],
+    'brand' => ['label' => Language::t('p:menue', 'Climability'), 'url' => ['/site/index']],
     'left' => $left,
     'right' => [
         [
@@ -124,12 +89,7 @@ $menu = [
         \Yii::$app->user->isGuest ?
             [
                 'label' => Language::t('p:menue', 'Login'),
-                'linkOptions' => ['class' => 'disabled'],
-                /* 'disabled' used to make the parent "Login" link clickable  */
-                'options' => ['class' => 'login-dropdown'],
-                'items' => [
-                    TmbLogin::widget()
-                ],
+                'url' => '/site/login',
 
             ]
             : // noGuest
@@ -137,7 +97,7 @@ $menu = [
                 'label' => '<span class="glyphicon glyphicon-user"></span>',
                 'url' => ['/user/admin/update-profile', 'id' => Yii::$app->user->id],
                 'items' => [
-                    [
+                    [   'visible' => false, 
                         'label' => Language::t('p:menue', 'Profile'),
                         'url' => '#',
                         'linkOptions' => ['class' => 'modalItem', 'data-title' => Language::t('p:menue', 'Profile'),
