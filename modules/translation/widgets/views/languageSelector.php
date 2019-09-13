@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Url;
+use app\models\User;
 use app\modules\translation\TranslationAsset;
 $assets = TranslationAsset::register($this);
 
@@ -9,7 +10,7 @@ $assets = TranslationAsset::register($this);
  
 <span id="languageSelector">
 <?php 
-if (\User::hasRole('sysadmin')
+if (User::hasRole('sysadmin')
 ) {
 
     $tooltip = yii::t('p:translate', 'Switch to translation mode');
