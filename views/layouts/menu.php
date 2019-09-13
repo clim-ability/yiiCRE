@@ -27,7 +27,7 @@ $left =
     [
         [
             'label' => Language::t('p:menue', 'Admin'),
-            'visible' => (\Yii::$app->user->identity->hasRole('sysadmin')),
+            'visible' => (User::hasRole('sysadmin')),
             'items' => [
                 ['label' => Language::t('p:menue', 'Add user'), 'url' => ['/user/user/create'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Manage user'), 'url' => ['/user/user/index'], 'visible' => $special],

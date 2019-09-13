@@ -105,7 +105,10 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         return $this->password === $password;
     }
 	
-	public function hasRole($role) {
-		return $this->role === $role;
+	public static function hasRole($role) {
+		if (!Yii::$app->user->isGuest) {
+		  return (Yii::$app->user->identity->role === $role);
+		}
+		return false;
 	}
 }
