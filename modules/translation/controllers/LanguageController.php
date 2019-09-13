@@ -8,7 +8,7 @@
 namespace app\modules\translation\controllers;
 
 use app\controllers\ControllerBase;
-use app\modules\user\models\Profile;
+//use app\modules\user\models\Profile;
 use app\modules\translation\models\Language;
 use app\modules\translation\models\LanguageSearch;
 use Yii;
@@ -131,10 +131,10 @@ class LanguageController extends ControllerBase
         $translation['currentFull'] = $translation['all'][$currentLanguage];
 
         $translation['user'] = $currentLanguage;
-        $userLanguage = Profile::find()->where(["user_id" => Yii::$app->user->id])->one()->translate;
-        if (is_string($userLanguage)) {
-            $translation['user'] = $userLanguage;
-        }
+        //$userLanguage = Profile::find()->where(["user_id" => Yii::$app->user->id])->one()->translate;
+        //if (is_string($userLanguage)) {
+        //    $translation['user'] = $userLanguage;
+        //}
         $translation['categories'] = Language::getAllCategories($translation['user']);
         $translation['category'] = $category;
         $translation['messages'] = Language::getAllMessagesOfCategoryAndLanguage($category, $currentLanguage, $translation['user']);
