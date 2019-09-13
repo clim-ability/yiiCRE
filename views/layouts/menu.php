@@ -51,7 +51,7 @@ $left =
         [
             'label' => Language::t('p:menue', 'Geographic Names'),
             'url' => ['/locating/name/index'],
-            'visible' => (\Yii::$app->user->identity->hasRole('sysadmin')),
+            'visible' => (User::hasRole('sysadmin')),
             'items' => [
                 ['label' => Language::t('p:menue', 'Names'), 'url' => ['/locating/name/index']],
                 ['label' => Language::t('p:menue', 'Location'), 'url' => ['/locating/location/index']],
@@ -77,7 +77,7 @@ $menu = [
             'linkOptions' => ['class' => 'no-wait', 'id' => 'help', 'target'=>'_tmbHelp'],
             'visible' => (isset($this->params['help']) && User::hasRole('sysadmin')),
         ],
-        [
+        [ 
             'label' => LanguageSelector::widget([]),
             'linkOptions' => ['class' => 'no-wait hidden']
         ],
