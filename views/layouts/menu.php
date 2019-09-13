@@ -10,7 +10,7 @@ $url = Yii::$app->request->getUrl();
 $params = Yii::$app->request->getQueryParams();
 
 
-$special = (User::current() && User::current()->special);
+$special = true;
 $languages = [];
 foreach (Language::getVisibleLanguages() as $lg => $label) {
     $languages[] = [
