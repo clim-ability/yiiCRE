@@ -95,6 +95,7 @@ class Language extends \yii\db\ActiveRecord
         $command = Yii::$app->db->createCommand($sql);
         $command->bindValue(':minimum', (float)$minRequests);
         $languages = $command->queryAll();
+		$result = [];
         foreach ($languages as $language) {
             $result[$language['language']] = $language['name'];
         }
@@ -260,6 +261,7 @@ class Language extends \yii\db\ActiveRecord
         $command = Yii::$app->db->createCommand($sql);
         $command->bindValue(':language', $language, PDO::PARAM_STR);        
         $categories = $command->queryAll();
+		$result = [];
         foreach ($categories as $category) {
            $result[$category['category']] = Language::beautifyCategory($category['category']);
         }
