@@ -75,7 +75,7 @@ $menu = [
             'label' => '',
             'url' => ['/site/page', 'view' => 'onlineHelp', '#'=> isset($this->params['help']) ? $this->params['help'] : 'toc'],
             'linkOptions' => ['class' => 'no-wait', 'id' => 'help', 'target'=>'_tmbHelp'],
-            'visible' => (isset($this->params['help']) && \Yii::$app->user->can('sysadmin')),
+            'visible' => (isset($this->params['help']) && \Yii::$app->user->identity->hasRole('sysadmin')),
         ],
         [
             'label' => LanguageSelector::widget([]),

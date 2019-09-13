@@ -17,6 +17,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
             'password' => LOCAL_CONFIG_DB_PASSWORD,
             'authKey' => 'test100key',
             'accessToken' => '100-token',
+			'role' => 'sysadmin',
         ],
         '101' => [
             'id' => '101',
@@ -24,6 +25,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
             'password' => 'demo',
             'authKey' => 'test101key',
             'accessToken' => '101-token',
+			'role' => 'user',
         ],
     ];
 
@@ -101,4 +103,8 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     {
         return $this->password === $password;
     }
+	
+	public function hasRole($role) {
+		return $this->role === $role;
+	}
 }
