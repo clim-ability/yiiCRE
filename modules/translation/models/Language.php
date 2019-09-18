@@ -621,7 +621,8 @@ class Language extends \yii\db\ActiveRecord
         //    $numberSuggestions += 1;
         //}
         // add more privileges: log(number of translations, logins, ... of user.)
-        $participation = Language::getParticipation($userId, $language);
+        // $participation = Language::getParticipation($userId, $language);
+		$participation = 2;
         if (sizeof($participation) > 0) {
             $numberSuggestions += (int)floor(log10(1.0 + $participation[0]['translations'] + $participation[0]['logins']));
         }
