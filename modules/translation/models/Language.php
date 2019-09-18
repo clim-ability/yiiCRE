@@ -630,11 +630,11 @@ class Language extends \yii\db\ActiveRecord
         //}
 		
         // for some categories only suggestions are added
-        if ((substr( $category, 0, 4 ) == 'sug:') and !(User::hasRole('sysadmin')) { 
+        if ((substr( $category, 0, 4 ) == 'sug:') and !(User::hasRole('sysadmin'))) { 
             $numberSuggestions = 0;
         }
         
-        if (($numberSuggestions > $votingTranslation) or (User::hasRole('sysadmin')) {
+        if (($numberSuggestions > $votingTranslation) or (User::hasRole('sysadmin'))) {
             $result = yii::t('p:translate', 'Translation added');
             
             // add new suggestion as official translation
