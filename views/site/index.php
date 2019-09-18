@@ -33,7 +33,7 @@ header('Access-Control-Allow-Origin: *');
 </div>
 
 <div id="climateinspector">
-
+      <p></p>
       <h1 class="my-4">Changing of climate
         <small>at the Upper Rhine</small>
       </h1>
