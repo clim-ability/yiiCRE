@@ -601,7 +601,7 @@ class Language extends \yii\db\ActiveRecord
         }
         // suggestion: same id,language, tranlation, creator -> already entered
         $userId = Yii::$app->user->id;
-        $Profile = Profile::find()->where(["user_id" => $userId])->one() ;
+        // $Profile = Profile::find()->where(["user_id" => $userId])->one() ;
         // add suggestion to database
         Language::addSuggestion($id,$language,$message,$userId);
         $result = yii::t('p:translate', 'Suggestion added');
@@ -617,9 +617,9 @@ class Language extends \yii\db\ActiveRecord
             (substr($category, 0, 4) == 'sug:')) ) {
             $numberSuggestions = $votingTranslation + 1;
         }
-        if ($Profile->translate == $language) {
-            $numberSuggestions += 1;
-        }
+        //if ($Profile->translate == $language) {
+        //    $numberSuggestions += 1;
+        //}
         // add more privileges: log(number of translations, logins, ... of user.)
         $participation = Language::getParticipation($userId, $language);
         if (sizeof($participation) > 0) {
