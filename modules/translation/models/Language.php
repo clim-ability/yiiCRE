@@ -13,6 +13,7 @@ use PDO;
 use app\modules\translation\widgets\LanguageTranslate;
 use app\modules\user\models\Profile;
 use app\components\utils\CurlHandler;
+use app\models\User;
 
 
 /**
@@ -576,7 +577,7 @@ class Language extends \yii\db\ActiveRecord
             $source   =  $existingSource[0]['message'];  
              // check if category starts with 'sys:*' 
             $category =  strtolower($existingSource[0]['category']); 
-            if ((substr( $category, 0, 4 ) == 'sys:') and !(Yii::$app->user->can('sysadmin'))) { 
+            if ((substr( $category, 0, 4 ) == 'sys:') and !(User::hasRole('sysadmin')) { 
                 $result = yii::t('p:translate', 'Only allowed to be translated by sysadmin.'); 
                  
                  return $result;
@@ -609,10 +610,10 @@ class Language extends \yii\db\ActiveRecord
         // count suggestions that are the same...
         $numberSuggestions = Language::getNumberOfSameSuggestions($id, $language, $message);
         // sysadmin have higher priority
-        if (Yii::$app->user->can('sysadmin')) {
+        if (User::hasRole('sysadmin')) {
             $numberSuggestions += 2;
         }
-        if (Yii::$app->user->can('sysadmin') and 
+        if ((User::hasRole('sysadmin') and 
            ((substr($category, 0, 4) == 'sys:') or 
             (substr($category, 0, 4) == 'sug:')) ) {
             $numberSuggestions = $votingTranslation + 1;
@@ -623,15 +624,17 @@ class Language extends \yii\db\ActiveRecord
         // add more privileges: log(number of translations, logins, ... of user.)
         // $participation = Language::getParticipation($userId, $language);
 		$participation = 2;
-        if (sizeof($participation) > 0) {
-            $numberSuggestions += (int)floor(log10(1.0 + $participation[0]['translations'] + $participation[0]['logins']));
-        }
+		
+        //if (sizeof($participation) > 0) {
+        //    $numberSuggestions += (int)floor(log10(1.0 + $participation[0]['translations'] + $participation[0]['logins']));
+        //}
+		
         // for some categories only suggestions are added
-        if ((substr( $category, 0, 4 ) == 'sug:') and !(Yii::$app->user->can('sysadmin'))) { 
+        if ((substr( $category, 0, 4 ) == 'sug:') and !(User::hasRole('sysadmin')) { 
             $numberSuggestions = 0;
         }
         
-        if (($numberSuggestions > $votingTranslation) or (Yii::$app->user->can('sysadmin'))) {
+        if (($numberSuggestions > $votingTranslation) or (User::hasRole('sysadmin')) {
             $result = yii::t('p:translate', 'Translation added');
             
             // add new suggestion as official translation
