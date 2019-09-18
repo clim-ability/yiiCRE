@@ -19,6 +19,6 @@ if (User::hasRole('sysadmin')
 ?>
     <script type="text/javascript">
         var currentLanguage = '<?php echo $currentLang; ?>';
-        var baseUrl = '<?php echo Url::base(true); ?>';        
+        var baseUrl = '<?php echo Url::base(''); ?>';        
     </script>
 </span>    
