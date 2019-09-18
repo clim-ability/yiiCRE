@@ -577,7 +577,7 @@ class Language extends \yii\db\ActiveRecord
             $source   =  $existingSource[0]['message'];  
              // check if category starts with 'sys:*' 
             $category =  strtolower($existingSource[0]['category']); 
-            if ((substr( $category, 0, 4 ) == 'sys:') and !(User::hasRole('sysadmin')) { 
+            if ((substr( $category, 0, 4 ) == 'sys:') and !(User::hasRole('sysadmin'))) { 
                 $result = yii::t('p:translate', 'Only allowed to be translated by sysadmin.'); 
                  
                  return $result;
