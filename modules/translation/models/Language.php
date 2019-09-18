@@ -613,7 +613,7 @@ class Language extends \yii\db\ActiveRecord
         if (User::hasRole('sysadmin')) {
             $numberSuggestions += 2;
         }
-        if ((User::hasRole('sysadmin') and 
+        if (User::hasRole('sysadmin') and 
            ((substr($category, 0, 4) == 'sys:') or 
             (substr($category, 0, 4) == 'sug:')) ) {
             $numberSuggestions = $votingTranslation + 1;
