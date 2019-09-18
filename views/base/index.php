@@ -8,7 +8,7 @@ use yii\grid\GridView;
 
 $this->title = $messages['title']; 
 ?>
-<br/><br/><br/>
+<p></p><p></p><p></p>
 <div class="item-index">
 
     <p>
