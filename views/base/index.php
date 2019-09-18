@@ -8,7 +8,7 @@ use yii\grid\GridView;
 
 $this->title = $messages['title']; 
 ?>
-<p></p><p></p><p></p>
+<div class="row">
 <div class="item-index">
 
     <p>
@@ -35,5 +35,5 @@ $this->title = $messages['title'];
         'filterModel' => $searchModel,
         'columns' => $allColumns,
     ]); ?>
-
+</div>
 </div>
