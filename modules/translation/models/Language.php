@@ -729,6 +729,7 @@ class Language extends \yii\db\ActiveRecord
     // function is called, when YII finds a translation not yet covered in DB
     // first english translation is added automatically
     public static function missingTranslation($event) {
+		var_dump($event);
         $language = $event->language;
         $category = $event->category;
         $message = $event->message;
