@@ -113,3 +113,31 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+
+@media (max-width: 767px) {
+    div.container-main {
+        padding-top: 55px; 
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    div.container-main {
+        padding-top: 90px; 
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    div.container-main {
+        padding-top: 60px; 
+    }
+}
+
+@media (min-width: 1200px) {
+    .container-main {
+        padding-top: 60px;  
+    }
+
+}
+
+
