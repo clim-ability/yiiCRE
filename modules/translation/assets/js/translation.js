@@ -184,6 +184,26 @@ function pausecomp(millis)
     while(curDate-date < millis);
 }
 
+function addCategoryToTranslationPool(category) {
+    axios
+        .get(apiBaseUrl+'/translation/language/whole-category?category='+category+'&language='+language+'&message='+message)
+        .then(response => { 
+		   if(response.data) {
+		    var para = response.data.parameter;
+		    var hash = hash64(para.category, para.message, para.language); 
+		    if(response.data.translations.length > 0) {
+		      for (var i = 0; i < response.data.translations.length; i++) {
+			    var msg = response.data.translations[i]; 	 
+			    var hash2 = hash64(msg.category, msg.message, msg.language);	
+			    if(!(hash2 in translationPool)) {
+				  addToTranslationPool(hash2, msg.translation);
+			    }
+			  }
+		    } 			  	
+          }
+		}
+}
+
 function tr(category, message, language) {
 	if(!language) {
 	   language = currentLanguage;
@@ -192,7 +212,7 @@ function tr(category, message, language) {
 	if (hash in translationPool) {
 	  return translationPool[hash];
 	} else {
-  		  axios
+  		axios
             .get(apiBaseUrl+'/translation/language/whole-category?category='+category+'&language='+language+'&message='+message)
             .then(response => { 
 			  if(response.data) {
@@ -214,10 +234,10 @@ function tr(category, message, language) {
 			    }  			  
 			  }
 	    	});
-      pausecomp(350);
-	  if(hash in translationPool) {
-		return translationPool[hash];
-	  } 			
+        pausecomp(350);
+	    if(hash in translationPool) {
+		  return translationPool[hash];
+	    }  			
 	}
     return message; 	
 }

@@ -579,5 +579,6 @@ var vueInfo = new Vue({
   },
   mounted () {
     vueEventBus.$on('updatedParameters', e => { this.clickOnMap();})
+	addCategoryToTranslationPool('hazards');
   }
 })
