@@ -65,7 +65,7 @@ header('Access-Control-Allow-Origin: *');
      Nearest City: {{ info.nearest_city.name }}, Elevation: {{ roundedElevation }} m <br/>
 	 <br/>
 	 <!-- Dry Days: <span v-html="roundedCddp"></span> days/year <br/> -->
-	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')">Frost Days: </span>
+	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')"><span class="languageTranslate" data-category="hazards" data-message="Frost Days">Frost Days</span>: </span>
 	  <span v-html="roundedFd"></span> days/year <br/>
 	 <span :class="('sd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('sd')">Summer Days: </span>
 	   <span v-html="roundedSd"></span> days/year <br/>
