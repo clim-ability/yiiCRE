@@ -13,7 +13,7 @@ $this->title = $messages['title'];
 foreach($dataProvider as $data) {
 	var_dump($data); 
 }
-foreach($allColumns as $column) {
+foreach($columns as $column) {
 	var_dump($column); 
 }
 
