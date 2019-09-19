@@ -161,20 +161,12 @@ class LanguageController extends ControllerBase
        return ['parameter' => ['category' => $category, 'language'=>$language, 'message'=>$message], 'translations'=> $result];
 	}
 
-    public function actionAddMissingTranslation()
+    public function actionAddMissingTranslation($category = '', $language='en', $message='', $translation='')
 	{
-	   $request = Yii::$app->request;
-       if($request->isPost)	{   
-	     $message = $request->post('message');
-		 $translation = $request->post('translation');
-		 $language = $request->post('language');
-		 $category = $request->post('category');
 	     $result = Language::addTranslation($message, $language, $translation, $category);
 	     \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');  //remove	   
          \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
          return true;
-	   }
-	   return false;
 	}
 
     public function actionGetTranslation($lang = "", $id = "")

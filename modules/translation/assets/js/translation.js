@@ -204,12 +204,7 @@ function tr(category, message, language) {
 				} 
 			  } 			  
 			  // post   
-			  axios.post(apiBaseUrl+'/translation/language/add-missing-translation' , {
-               message: para.message,
-               translation: para.message,
-			   language: para.language,
-			   category: para.category,
-               });
+			  axios.get(apiBaseUrl+'/translation/language/add-missing-translation?category='+category+'&language='+language+'&message='+message+'&translation='+message);
               addToTranslationPool(hash, para.message); 
 			  }
             return para.message;				  
