@@ -46,7 +46,8 @@ class LanguageController extends ControllerBase
                                 'get-translation',
                                 'get-languages',
                                 'statistics',
-                                'translate'
+                                'translate',
+								'whole-category'
                             ],
                             'roles' => ['?', '@'],
                         ],
@@ -150,6 +151,14 @@ class LanguageController extends ControllerBase
             'translation' => $translation,
         ));
     }
+
+    public function actionWholeCategory($category = '', $language='en')
+	{
+	   $result = Language::getAllMessagesOfCategoryAndLanguage($category, $language, $language);
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+       return $result;
+	}
 
     public function actionGetTranslation($lang = "", $id = "")
     {
