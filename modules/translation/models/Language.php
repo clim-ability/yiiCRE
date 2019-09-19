@@ -323,6 +323,21 @@ class Language extends \yii\db\ActiveRecord
         return $result;
     }    
     
+    public static function getAllTranslationsOfCategoryAndLanguage($category, $language) {
+        //
+        $sql = "SELECT DISTINCT ON(src.id) src.id, category, message, translation, language".
+                " FROM table_message_target trg, table_message_source src".
+                " WHERE src.category = :category AND trg.id = src.id".
+                " AND language = :language".
+                " ORDER BY src.id";
+        
+        $command = Yii::$app->db->createCommand($sql);
+        $command->bindValue(':category', $category, PDO::PARAM_STR);
+        $command->bindValue(':language', $language, PDO::PARAM_STR);
+        $result = $command->queryAll();
+        return $result;
+    } 	
+	
     public static function getTranslationByCategory($category, $message, $language)
     {
         // 

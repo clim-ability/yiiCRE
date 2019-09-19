@@ -47,7 +47,8 @@ class LanguageController extends ControllerBase
                                 'get-languages',
                                 'statistics',
                                 'translate',
-								'whole-category'
+								'whole-category',
+								'add-missing-translation'
                             ],
                             'roles' => ['?', '@'],
                         ],
@@ -154,10 +155,26 @@ class LanguageController extends ControllerBase
 
     public function actionWholeCategory($category = '', $language='en')
 	{
-	   $result = Language::getAllMessagesOfCategoryAndLanguage($category, $language, $language);
+	   $result = Language::getAllTranslationsOfCategoryAndLanguage($category, $language);
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
+	}
+
+    public function actionAddMissingTranslation()
+	{
+	   $request = Yii::$app->request;
+       if($request->isPost)	{   
+	     $message = $request->post('message');
+		 $translation = $request->post('translation');
+		 $language = $request->post('language');
+		 $category = $request->post('category');
+	     $result = Language::addTranslation($message, $language, $translation, $category);
+	     \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');  //remove	   
+         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+         return true;
+	   }
+	   return false,
 	}
 
     public function actionGetTranslation($lang = "", $id = "")
