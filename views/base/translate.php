@@ -18,7 +18,7 @@ $this->title = $messages['title'];
 <?php
 foreach($dataProvider->getModels() as $data) {
   $name = $data->formName();
-  echo '<li><ul>'.;	 
+  echo '<li><ul>';	 
   if (in_array('name', $columns) && in_array('description', $columns)) {
 	echo $data['name'].'<li>Name: ';
 	tr($name.':name', $data['name']); 
