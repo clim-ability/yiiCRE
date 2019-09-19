@@ -56,7 +56,7 @@ class ApiController extends Controller
    } 	
 	
 	public static function tr($message) {
-	   return Language::getTranslationByCategory('hazard', $message, Yii::$app->language);
+		return \Yii::t('hazard', $message, [], Yii::$app->language);
 	}
 	
     public function actionHazards($mode='visible-only') {
