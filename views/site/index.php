@@ -1,6 +1,7 @@
 <?php
 use app\modules\libraries\bundles\MapAsset;
 use yii\helpers\Url;
+use app\modules\translation\widgets\LanguageTranslate;
 $assets = MapAsset::register($this);
 
 header('Access-Control-Allow-Origin: *');
@@ -14,8 +15,6 @@ function tr($c, $m, $p = []) {
     var mapBaseUrl = "<?php echo $assets->baseUrl; ?>";
 	var apiBaseUrl = "<?php echo Url::home('https'); ?>";
 </script>
-
-
 
 <div id="climateinspector">
       <h1 class="my-4"><?php tr('main', 'Changing of climate'); ?>
