@@ -191,8 +191,8 @@ function tr(category, message, language) {
 			    var para = response.data.parameter;
 			    var hash = hash64(para.category, para.message, para.language); 
 			    if(response.data.translations.length > 0) {
-			      for (var i = 0; i < response.data.length; i++) {
-				   var msg = response.data[i]; 	 
+			      for (var i = 0; i < response.data.translations.length; i++) {
+				   var msg = response.data.translations[i]; 	 
 				   var hash2 = hash64(msg.category, msg.message, msg.language);	
 				   if(!(hash2 in translationPool)) {
 					  addToTranslationPool(hash2, msg.translation);
