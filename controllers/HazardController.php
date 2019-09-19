@@ -37,7 +37,7 @@ class HazardController extends ControllerBase
                     [
                         [
                             'allow' => true,
-                            'actions' => ['list', 'show', 'new' ,'modify', 'remove'],
+                            'actions' => ['list', 'show', 'new' ,'modify', 'remove', 'translate'],
                             'roles' => ['@','sysadmin','admin'],
                         ],
                     ], $this->crudRules()),

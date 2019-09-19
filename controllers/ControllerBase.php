@@ -201,6 +201,27 @@ class ControllerBase extends Controller
     }
 
     /**
+     * List all models
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionTranslate()
+    {
+        $searchModel = $this->newSearchModel();
+        $columns = $this->getColumns();
+        if ($searchModel !== null) {
+            $dataProvider = $searchModel->search();
+            return $this->render('@app/views/base/translate', [
+                'columns' => $columns,
+                'messages' => $this->getMessages(),
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
      * Displays a single model.
      * @param $id
      * @return string

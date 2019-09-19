@@ -29,8 +29,8 @@ $left =
             'label' => Language::t('p:menue', 'Admin'),
             'visible' => (User::hasRole('sysadmin')), 
             'items' => [
-                ['label' => Language::t('p:menue', 'Add user'), 'url' => ['/user/user/create'], 'visible' => $special],
-                ['label' => Language::t('p:menue', 'Manage user'), 'url' => ['/user/user/index'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Manage Hazards'), 'url' => ['/hazard/index'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Translate Hazards'), 'url' => ['/hazard/translate'], 'visible' => $special],
                 '<li class="divider'.($special ? '' : ' hidden' ).'"></li>',
                 ['label' => Language::t('p:menue', 'List Projects'), 'url' => ['/grouping/project/list'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Manage Projects'), 'url' => ['/grouping/project/index'], 'visible' => $special],
