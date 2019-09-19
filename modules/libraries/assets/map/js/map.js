@@ -539,9 +539,9 @@ var vueInfo = new Vue({
 	   
 		var minus = this.roundedValue(parseFloat(para.value) - parseFloat(para.std), digits);
 		var plus = this.roundedValue(parseFloat(para.value) + parseFloat(para.std), digits);
-		var decrease = tr('Hazards', 'Decrease by');
-		var increase = tr('Hazards', 'Increase by');
-		var upto = tr('Hazards', 'to');
+		var decrease = tr('hazards', 'Decrease by');
+		var increase = tr('hazards', 'Increase by');
+		var upto = tr('hazards', 'to');
 		if(parseFloat(para.value) < 0.0) {
 		   return decrease+' <b>'+(0.0-plus)+' '+upto+' '+(0.0-minus)+'</b>';		   
 		} else {
