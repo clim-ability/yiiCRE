@@ -46,8 +46,7 @@ foreach($dataProvider->getModels() as $data) {
   }	  
   echo '</ul></li>';	
 }
-</ul>
 ?>
-
+</ul>
 </div>
 
