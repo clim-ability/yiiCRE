@@ -176,6 +176,10 @@ function addToTranslationPool(hash, translation) {
   translationPool[hash] = translation;
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function tr(category, message, language) {
 	if(!language) {
 	   language = currentLanguage;
@@ -209,7 +213,12 @@ function tr(category, message, language) {
 			  }
             return para.message;				  
 	    	});
-	}	
+	}
+    await sleep(350);
+	if(hash in translationPool) {
+		return translationPool[hash];
+	} 
+    return message; 	
 	
 }
 
