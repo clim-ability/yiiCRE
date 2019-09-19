@@ -174,7 +174,7 @@ class LanguageController extends ControllerBase
          \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
          return true;
 	   }
-	   return false,
+	   return false;
 	}
 
     public function actionGetTranslation($lang = "", $id = "")
