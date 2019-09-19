@@ -31,6 +31,7 @@ class MapAsset extends AssetBundle
     ];
     public $depends = [
         //'app\modules\libraries\bundles\OpenlayersAsset',
+		'app\modules\translation\TranslationAsset',
 	    'app\modules\libraries\bundles\LeafletAsset',
         'yii\web\JqueryAsset', //'app\modules\libraries\bundles\JqueryAsset',
         'yii\bootstrap\BootstrapAsset',
