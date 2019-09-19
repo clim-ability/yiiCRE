@@ -17,30 +17,30 @@ $this->title = $messages['title'];
 <ul>
 <?php
 foreach($dataProvider->getModels() as $data) {
-  echo '<li><ul>';	
   $name = $data->formName();
+  echo '<li><ul>'.;	 
   if (in_array('name', $columns) && in_array('description', $columns)) {
-	echo '<li>';
+	echo $data['name'].'<li>Name: ';
 	tr($name.':name', $data['name']); 
-	echo '</li><li>';
+	echo '</li><li>Description: ';
 	tr('hazard:description', $data['description']); 
     echo '</li>';
   } elseif (in_array('name', $columns))	{
-	echo '<li>';
+	echo $data['name'].'<li>Name: ';
     tr($name.':name', $data['name']); 
-	echo '</li><li>';	
+	echo '</li><li>Description: ';	
 	 tr($name.':description', $data['name']); 
     echo '</li>';
   } elseif (in_array('description', $columns)) {
-	echo '<li>';	  
+	echo $data['description'].'<li>Name: ';	  
 	      tr($name.':name', $data['description']); 
-	echo '</li><li>';		  
+	echo '</li><li>Description: ';		  
 	 tr($name.':description', $data['description']);
     echo '</li>';
   }	elseif (in_array('label', $columns)) {
-	echo '<li>';	  
+	echo $data['label'].'<li>Name: ';	  
 	tr($name.':name', $data['label']); 
-	echo '</li><li>';		   
+	echo '</li><li>Description: ';		   
 	tr($name.':description', $data['label']); 
     echo '</li>';
   }	  
