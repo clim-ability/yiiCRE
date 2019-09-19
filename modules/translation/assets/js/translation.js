@@ -201,7 +201,7 @@ function addCategoryToTranslationPool(category) {
 			  }
 		    } 			  	
           }
-		}
+		})
 }
 
 function tr(category, message, language) {
