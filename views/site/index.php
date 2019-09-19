@@ -4,6 +4,10 @@ use yii\helpers\Url;
 $assets = MapAsset::register($this);
 
 header('Access-Control-Allow-Origin: *');
+
+function tr($c, $m, $p = []) {
+    echo LanguageTranslate::widget(['category' => $c, 'message' => $m, 'params' => $p]);
+}
 ?>
 
 <script>
@@ -11,9 +15,11 @@ header('Access-Control-Allow-Origin: *');
 	var apiBaseUrl = "<?php echo Url::home('https'); ?>";
 </script>
 
+
+
 <div id="climateinspector">
-      <h1 class="my-4">Changing of climate
-        <small>at the Upper Rhine</small>
+      <h1 class="my-4"><?php tr('main', 'Changing of climate'); ?>
+        <small><?php tr('main', 'at the Upper Rhine'); ?></small>
       </h1>
 
  <div class="container-fluid">
@@ -62,20 +68,20 @@ header('Access-Control-Allow-Origin: *');
 
    <div class="col-md-6" id="informationfield"> <!-- Tabbed Upper-Right Corner -->
     <template v-if="info !== 'none'">
-     Nearest City: {{ info.nearest_city.name }}, Elevation: {{ roundedElevation }} m <br/>
+     <?php tr('main', 'Nearest City'); ?>: {{ info.nearest_city.name }}, <?php tr('main', 'Elevation'); ?>: {{ roundedElevation }} m <br/>
 	 <br/>
 	 <!-- Dry Days: <span v-html="roundedCddp"></span> days/year <br/> -->
-	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')"><span class="languageTranslate" data-category="hazards" data-message="Frost Days">Frost Days</span>: </span>
-	  <span v-html="roundedFd"></span> days/year <br/>
-	 <span :class="('sd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('sd')">Summer Days: </span>
-	   <span v-html="roundedSd"></span> days/year <br/>
-	 <span :class="('tr' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('tr')">Tropical Nights: </span>
-	   <span v-html="roundedTr"></span> days/year <br/>
-	 <span :class="('rr20' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr20')">Torrential Rain: </span>
-	   <span v-html="roundedRr20"></span> days/year <br/>
-	 <span :class="('rr_winter' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_winter')">Winter Rain: </span>
+	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')"><?php tr('hazards', 'Frost Days'); ?>: </span>
+	  <span v-html="roundedFd"></span> <?php tr('hazards', 'days/year'); ?> <br/>
+	 <span :class="('sd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('sd')"><?php tr('hazards', 'Summer Days'); ?>: </span>
+	   <span v-html="roundedSd"></span> <?php tr('hazards', 'days/year'); ?> <br/>
+	 <span :class="('tr' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('tr')"><?php tr('hazards', 'Tropical Nights'); ?>: </span>
+	   <span v-html="roundedTr"></span> <?php tr('hazards', 'days/year'); ?> <br/>
+	 <span :class="('rr20' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr20')"><?php tr('hazards', 'Torrential Rain'); ?>: </span>
+	   <span v-html="roundedRr20"></span> <?php tr('hazards', 'days/year'); ?> <br/>
+	 <span :class="('rr_winter' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_winter')"><?php tr('hazards', 'Winter Rain'); ?>: </span>
 	   <span v-html="roundedRw"></span> % <br/>
-	 <span :class="('rr_summer' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_summer')">Summer Rain: </span>
+	 <span :class="('rr_summer' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_summer')"><?php tr('hazards', 'Summer Rain'); ?>: </span>
 	   <span v-html="roundedRs"></span> % <br/>	 
 	 <br/>
 
