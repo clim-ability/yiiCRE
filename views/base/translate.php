@@ -10,13 +10,14 @@ $this->title = $messages['title'];
 <div class="item-index">
 
 <?php
-foreach($dataProvider as $data) {
+foreach($dataProvider->getModels() as $data) {
 	var_dump($data); 
 }
 foreach($columns as $column) {
 	var_dump($column); 
 }
 
+var_dump($columns);
 ?>
 
 </div>
