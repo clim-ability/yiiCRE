@@ -153,12 +153,12 @@ class LanguageController extends ControllerBase
         ));
     }
 
-    public function actionWholeCategory($category = '', $language='en')
+    public function actionWholeCategory($category = '', $language='en', $message='')
 	{
 	   $result = Language::getAllTranslationsOfCategoryAndLanguage($category, $language);
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-       return $result;
+       return ['parameter' => ['category' => $category, 'language'=>$language, 'message'=>$message], 'translations'=> $result];
 	}
 
     public function actionAddMissingTranslation()

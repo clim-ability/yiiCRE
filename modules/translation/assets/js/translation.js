@@ -147,3 +147,75 @@ function addTranslation() {
     }); 
 }
 
+{
+
+function hash32(str, asString, seed) {
+    /*jshint bitwise:false */
+    var i, l,
+        hval = (seed === undefined) ? 0x811c9dc5 : seed;
+
+    for (i = 0, l = str.length; i < l; i++) {
+        hval ^= str.charCodeAt(i);
+        hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
+    }
+    if( asString ){
+        // Convert to 8 digit hex string
+        return ("0000000" + (hval >>> 0).toString(16)).substr(-8);
+    }
+    return hval >>> 0;
+}
+
+function hash64(category, message, language) {
+    var h1 = hash32(category+'::'+language+'::'+message);  // returns 32 bit (as 8 byte hex string)
+    return h1 + hash32(h1 + message);  // 64 bit (as 16 byte hex string)
+}
+
+var translationPool = {};
+
+function addToTranslationPool(hash, translation) {
+  translationPool[hash] = translation;
+}
+
+function tr(category, message, language) {
+	if(!language) {
+	   language = currentLanguage;
+	}
+	var hash = hash64(category, message, language);
+	if (hash in translationPool) {
+	  return translationPool[hash];
+	} else {
+  		  axios
+            .get(apiBaseUrl+'/translation/language/whole-category?category='+category+'&language='+language+'&hash='+hash)
+            .then(response => { 
+			  if(response.data) {
+			    var para = response.data.parameter;
+			    var hash = hash64(para.category, para.message, para.language); 
+			    if(response.data.translations.length > 0) {
+			      for (var i = 0; i < response.data.length; i++) {
+				   var msg = response.data[i]; 	 
+				   var hash2 = hash64(msg.category, msg.message, msg.language);	
+				   if(!(hash2 in translationPool)) {
+					  addToTranslationPool(hash2, msg.translation);
+				   }
+				}
+
+				if(hash in translationPool) {
+				   return translationPool[hash];
+				} 
+			  } 			  
+			  // post   
+			  axios.post('/translation/language/add-missing-translation' , {
+               message: para.message,
+               translation: para.message,
+			   language: para.language,
+			   category: para.category,
+               });
+              addToTranslationPool(hash, para.message); 
+			  }
+            return para.message;				  
+	    	});
+	}	
+	
+}
+
+}
