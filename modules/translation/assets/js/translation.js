@@ -186,7 +186,7 @@ function pausecomp(millis)
 
 function addCategoryToTranslationPool(category) {
     axios
-        .get(apiBaseUrl+'/translation/language/whole-category?category='+category+'&language='+currentLanguage+'&message=nix)
+        .get(apiBaseUrl+'/translation/language/whole-category?category='+category+'&language='+currentLanguage+'&message=nix')
         .then(response => { 
 		   if(response.data) {
 		    var para = response.data.parameter;
