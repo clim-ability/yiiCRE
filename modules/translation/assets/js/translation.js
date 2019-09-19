@@ -204,7 +204,7 @@ function tr(category, message, language) {
 				} 
 			  } 			  
 			  // post   
-			  axios.post('/translation/language/add-missing-translation' , {
+			  axios.post(apiBaseUrl+'/translation/language/add-missing-translation' , {
                message: para.message,
                translation: para.message,
 			   language: para.language,
