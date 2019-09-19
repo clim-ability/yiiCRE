@@ -200,30 +200,26 @@ function tr(category, message, language) {
 			    var hash = hash64(para.category, para.message, para.language); 
 			    if(response.data.translations.length > 0) {
 			      for (var i = 0; i < response.data.translations.length; i++) {
-				   var msg = response.data.translations[i]; 	 
-				   var hash2 = hash64(msg.category, msg.message, msg.language);	
-				   if(!(hash2 in translationPool)) {
+				    var msg = response.data.translations[i]; 	 
+				    var hash2 = hash64(msg.category, msg.message, msg.language);	
+				    if(!(hash2 in translationPool)) {
 					  addToTranslationPool(hash2, msg.translation);
-				   }
-				}
+				    }
+				  }
 
-				if(hash in translationPool) {
-				   return translationPool[hash];
-				} 
-			  } 			  
-			  // post   
-			  axios.get(apiBaseUrl+'/translation/language/add-missing-translation?category='+category+'&language='+language+'&message='+message+'&translation='+message);
-              addToTranslationPool(hash, para.message); 
+			    } 			  
+			    if(!(hash in translationPool)) {
+	              addToTranslationPool(hash, para.message); 				
+			      axios.get(apiBaseUrl+'/translation/language/add-missing-translation?category='+category+'&language='+language+'&message='+message+'&translation='+message);
+			    }  			  
 			  }
-            return para.message;				  
 	    	});
-	}
-    pausecomp(350);
-	if(hash in translationPool) {
+      pausecomp(350);
+	  if(hash in translationPool) {
 		return translationPool[hash];
-	} 
+	  } 			
+	}
     return message; 	
-	
 }
 
 }
