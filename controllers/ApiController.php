@@ -12,6 +12,7 @@ use app\models\Hazard;
 use app\models\Parameter;
 use app\models\Scenario;
 use app\models\Gis;
+use app\modules\translation\models\Language;
 //use yii\web\NotFoundHttpException;
 //use yii\data\ActiveDataProvider;
 //use app\components\RssFormater;
@@ -54,10 +55,14 @@ class ApiController extends Controller
        return $result;
    } 	
 	
+	public static function tr($message) {
+	   return Language::getTranslationByCategory('hazard', $message, Yii::$app->language);
+	}
+	
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);
-	   $result = array_map(function($e) { $e->label = $e->name; return $e; },$result); 
+	   $result = array_map(function($e) { $e->label = this::tr($e->name); return $e; },$result); 
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
