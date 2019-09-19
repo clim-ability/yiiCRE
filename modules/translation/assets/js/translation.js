@@ -185,7 +185,7 @@ function tr(category, message, language) {
 	  return translationPool[hash];
 	} else {
   		  axios
-            .get(apiBaseUrl+'/translation/language/whole-category?category='+category+'&language='+language+'&hash='+hash)
+            .get(apiBaseUrl+'/translation/language/whole-category?category='+category+'&language='+language+'&message='+message)
             .then(response => { 
 			  if(response.data) {
 			    var para = response.data.parameter;
