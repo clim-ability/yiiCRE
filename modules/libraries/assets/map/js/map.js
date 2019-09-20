@@ -1,6 +1,6 @@
 //var mapBaseUrl = '.';
 
-
+addCategoryToTranslationPool('hazards');
 
     // initialize the map
   var map = L.map('map').setView([48.25, 8], 8);
@@ -581,6 +581,6 @@ var vueInfo = new Vue({
   },
   mounted () {
     vueEventBus.$on('updatedParameters', e => { this.clickOnMap();})
-	addCategoryToTranslationPool('hazards');
+	//addCategoryToTranslationPool('hazards');
   }
 })
