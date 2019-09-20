@@ -26,7 +26,9 @@ class m190920_130843_create_danger_table extends Migration {
 		$this->insert('danger', [ 'name' => 'Allgemein', 'visible' => true]);
 		$this->insert('danger', [ 'name' => 'milde Winter', 'visible' => true]);
 		$this->insert('danger', [ 'name' => 'längere Sommer', 'visible' => true]);
-								   
+		$this->insert('danger', [ 'name' => 'unknown1', 'visible' => false]);	
+		$this->insert('danger', [ 'name' => 'unknown2', 'visible' => false]);
+		$this->insert('danger', [ 'name' => 'unknown3', 'visible' => false]);		
     }
 
     public function safeDown() {
