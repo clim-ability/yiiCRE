@@ -14,18 +14,18 @@ class m190920_130843_create_danger_table extends Migration {
             'updated_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
         ]);
 		
-		$this->insert('station', [ 'name' => 'Überschwemmung', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'Sturm', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'Starkregen', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'Hitzewellen', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'Schnee', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'Frost', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'Hagel', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'Trockenperiode', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'Blitzschlag', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'Allgemein', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'milde Winter', 'visible' => true]);
-		$this->insert('station', [ 'name' => 'längere Sommer', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Überschwemmung', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Sturm', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Starkregen', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Hitzewellen', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Schnee', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Frost', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Hagel', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Trockenperiode', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Blitzschlag', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'Allgemein', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'milde Winter', 'visible' => true]);
+		$this->insert('danger', [ 'name' => 'längere Sommer', 'visible' => true]);
 								   
     }
 
