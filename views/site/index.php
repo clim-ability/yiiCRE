@@ -70,18 +70,23 @@ function tr($c, $m, $p = []) {
      <?php tr('main', 'Nearest City'); ?>: {{ info.nearest_city.name }}, <?php tr('main', 'Elevation'); ?>: {{ roundedElevation }} m <br/>
 	 <br/>
 	 <!-- Dry Days: <span v-html="roundedCddp"></span> days/year <br/> -->
-	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')" title='<?php echo \Yii::t('Hazard:description', 'fd', []); ?>'>
+	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')" title='<?php echo \Yii::t('Hazard:description', 'fd', []); ?>' >
 	   <?php tr('Hazard:Name', 'fd'); ?>: </span>
 	  <span v-html="roundedFd"></span> <?php tr('hazards', 'days/year'); ?> <br/>
-	 <span :class="('sd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('sd')"><?php tr('Hazard:Name', 'sd'); ?>: </span>
+	 <span :class="('sd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('sd')" title='<?php echo \Yii::t('Hazard:description', 'sd', []); ?>' >
+	 <?php tr('Hazard:Name', 'sd'); ?>: </span>
 	   <span v-html="roundedSd"></span> <?php tr('hazards', 'days/year'); ?> <br/>
-	 <span :class="('tr' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('tr')"><?php tr('Hazard:Name', 'tr'); ?>: </span>
+	 <span :class="('tr' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('tr')" title='<?php echo \Yii::t('Hazard:description', 'tr', []); ?>' >
+	 <?php tr('Hazard:Name', 'tr'); ?>: </span>
 	   <span v-html="roundedTr"></span> <?php tr('hazards', 'days/year'); ?> <br/>
-	 <span :class="('rr20' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr20')"><?php tr('Hazard:Name', 'rr20'); ?>: </span>
+	 <span :class="('rr20' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr20')" title='<?php echo \Yii::t('Hazard:description', 'rr20', []); ?>' >
+	 <?php tr('Hazard:Name', 'rr20'); ?>: </span>
 	   <span v-html="roundedRr20"></span> <?php tr('hazards', 'days/year'); ?> <br/>
-	 <span :class="('rr_winter' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_winter')"><?php tr('Hazard:Name', 'rr_winter'); ?>: </span>
+	 <span :class="('rr_winter' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_winter')" title='<?php echo \Yii::t('Hazard:description', 'rr_winter', []); ?>' >
+	 <?php tr('Hazard:Name', 'rr_winter'); ?>: </span>
 	   <span v-html="roundedRw"></span> % <br/>
-	 <span :class="('rr_summer' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_summer')"><?php tr('Hazard:Name', 'rr_summer'); ?>: </span>
+	 <span :class="('rr_summer' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('rr_summer')" title='<?php echo \Yii::t('Hazard:description', 'rr_summer', []); ?>' >
+	 <?php tr('Hazard:Name', 'rr_summer'); ?>: </span>
 	   <span v-html="roundedRs"></span> % <br/>	 
 	 <br/>
 
