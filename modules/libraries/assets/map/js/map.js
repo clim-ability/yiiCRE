@@ -476,7 +476,8 @@ var vueSelect = new Vue({
       .then(response => { 
 	    this.hazards = response.data; 
 		initStatisticOptions(this.hazards);
-		this.hazards.unshift({name: 'all', label: 'all', color_min: '#000000', color_max: '#FFFFFF'});
+		var allTranslate = tr('Hazard:name', 'all');
+		this.hazards.unshift({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
 		this.hazard = this.hazards[0].name;
 		this.updateParameters();
 		updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
