@@ -42,7 +42,7 @@ foreach($dataProvider->getModels() as $data) {
 	tr($name.':name', $data['label']); 
 	echo '</li><li>Description: ';		   
 	tr($name.':description', $data['label']); 
-    echo '</li>'';
+    echo '</li>';
   }	  
   echo '<br/></ul></li>';	
 }
