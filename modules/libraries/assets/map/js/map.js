@@ -1,9 +1,5 @@
 //var mapBaseUrl = '.';
 
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip();
-});
-
 addCategoryToTranslationPool('hazards');
 addCategoryToTranslationPool('Hazard:name');
 addCategoryToTranslationPool('Hazard:description');
