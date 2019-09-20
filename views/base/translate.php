@@ -20,7 +20,7 @@ foreach($dataProvider->getModels() as $data) {
   $name = $data->formName();
   echo '<li><ul>';	 
   if (in_array('name', $columns) && in_array('description', $columns)) {
-	echo $data['name'].'<li>Name: ';
+	echo '<br/>'.$data['name'].'<li>Name: ';
 	tr($name.':name', $data['name']); 
 	echo '</li><li>Description: ';
 	tr('hazard:description', $data['description']); 
