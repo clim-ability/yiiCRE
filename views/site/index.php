@@ -38,7 +38,7 @@ function tr($c, $m, $p = []) {
         <small><?php tr('main', 'at the Upper Rhine'); ?></small>
       </h1>
 
-    <div class="row" id="selectionrow">
+    <div class="row">
  	  <div class="col-md-4">
          <?php tr('hazard', 'Klima-Parameter'); ?>
 	  </div>	
