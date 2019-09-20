@@ -58,7 +58,7 @@ class ApiController extends Controller
     public function actionHazards($mode='visible-only', $language='en') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);
-	   $result = array_map(function($e) { 
+	   $result = array_map(function($e) use ($language) { 
 	      $e->label = \Yii::t('Hazard:name', $e->name, [], $language);
 		  $e->description = \Yii::t('Hazard:description', $e->name, [], $language);
 		  return $e; 
