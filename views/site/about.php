@@ -15,9 +15,9 @@ function tr($c, $m, $p = []) {
 <div class="site-about">
  <div class="container-fluid">
   <div class="row">
-   <div class="col-md-2">
+   <div class="col-md-1">
    </div>
-   <div class="col-md-7">
+   <div class="col-md-6">
 
     <h3><?php tr('about', 'Warum noch ein Tool zum Klimawandel?'); ?></h3>
 
