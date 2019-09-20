@@ -55,12 +55,12 @@ class ApiController extends Controller
        return $result;
    } 	
 	
-    public function actionHazards($mode='visible-only') {
+    public function actionHazards($mode='visible-only', , $language='en') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);
 	   $result = array_map(function($e) { 
-	      $e->label = \Yii::t('Hazard:name', $e->name, []);
-		  $e->description = \Yii::t('Hazard:description', $e->name, []);
+	      $e->label = \Yii::t('Hazard:name', $e->name, [], $language);
+		  $e->description = \Yii::t('Hazard:description', $e->name, [], $language);
 		  return $e; 
 		  } ,$result); 
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   

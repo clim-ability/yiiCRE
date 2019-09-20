@@ -471,7 +471,7 @@ var vueSelect = new Vue({
   },
   mounted () {
     axios
-      .get(apiBaseUrl+'/api/hazards')
+      .get(apiBaseUrl+'/api/hazards?language='+currentLanguage)
 	  //.get('https://gis.clim-ability.eu/index.php/api/hazards')
       .then(response => { 
 	    this.hazards = response.data; 
