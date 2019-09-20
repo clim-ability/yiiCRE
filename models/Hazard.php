@@ -11,7 +11,6 @@ class Hazard extends ActiveRecord
 {
 //    public $id;
 //    public $name;
-//    public $description;
 //    public $year_begin;
 //    public $year_end;
 //	  public $visible;
