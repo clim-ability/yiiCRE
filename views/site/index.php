@@ -101,7 +101,7 @@ function tr($c, $m, $p = []) {
 	   <span v-html="roundedRs"></span> % <br/>	 
 	 <br/>
 	 <p>
-      <?php tr('hazard', 'Alle Änderungen beziehen sich auf den Bezugszeitraum von 1971-2000.'); ?>: 
+      <?php tr('hazard', 'Alle Änderungen beziehen sich auf den Bezugszeitraum von 1971-2000.'); ?> 
      </p>	
     </template>	
 	</div> <!-- end #informationfield -->
