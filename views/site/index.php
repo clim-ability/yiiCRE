@@ -40,6 +40,18 @@ function tr($c, $m, $p = []) {
 
     <div class="row" id="selectionrow">
  	  <div class="col-md-4">
+         <?php tr('hazard', 'Klima-Parameter'); ?>
+	  </div>	
+ 	  <div class="col-md-4">
+         <?php tr('hazard', 'Zeithorizont'); ?>
+	  </div>	
+ 	  <div class="col-md-4">
+         <?php tr('hazard', 'Szenario'); ?>
+	  </div>		 
+	</div> 
+
+    <div class="row" id="selectionrow">
+ 	  <div class="col-md-4">
        <select v-model="hazard" v-on:change="updateParameters" class="form-control">
         <option v-for="hazard in hazards" v-bind:value="hazard.name">
          {{ hazard.label }} 
@@ -65,6 +77,7 @@ function tr($c, $m, $p = []) {
     <div id="informationfield">
    
     <template v-if="info !== 'none'">
+	 <br/>
      <?php tr('main', 'Nearest City'); ?>: {{ info.nearest_city.name }}, <?php tr('main', 'Elevation'); ?>: {{ roundedElevation }} m <br/>
 	 <br/>
 	 <!-- Dry Days: <span v-html="roundedCddp"></span> days/year <br/> -->
@@ -87,7 +100,9 @@ function tr($c, $m, $p = []) {
 	 <?php tr('Hazard:Name', 'rr_summer'); ?>: </span>
 	   <span v-html="roundedRs"></span> % <br/>	 
 	 <br/>
-
+	 <p>
+      <?php tr('hazard', 'Alle Änderungen beziehen sich auf den Bezugszeitraum von 1971-2000.'); ?>: 
+     </p>	
     </template>	
 	</div> <!-- end #informationfield -->
    </div> <!-- end md-6 -->
