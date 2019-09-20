@@ -53,23 +53,23 @@ function tr($c, $m, $p = []) {
 	<p><ul>
       <li>
 	  <?php tr('about', 'Die {Eingangskarte} gibt an, welche Parameter sich wo besonders stark oder besonders schwach verändern.', 
-	    ['Eingangskarte'] => '<strong>'.yii::t('about', 'Eingangskarte').'</strong>'); ?> 
+	    ['Eingangskarte' => '<strong>'.yii::t('about', 'Eingangskarte').'</strong>']); ?> 
       <?php tr('about', 'Sie ist als eine Synthese der ausgewerteten klimatischen Daten zu verstehen.'); ?> 
 	  <?php tr('about', 'Durch Klick in die Karte werden die Änderungssignale aller Parameter am ausgewählten Standort angezeigt.'); ?>
       </li>
       <li>
 	  <?php tr('about', 'Die übrigen {Klimakarten} beziehen sich jeweils nur auf den ausgewählten Parameter und zeigen die prognostizierten Änderungssignale im Vergleich zur Periode 1971-2000.', 
-	    ['Klimakarten'] => '<strong>'.yii::t('about', 'Klimakarten').'</strong>'); ?> 
+	    ['Klimakarten' => '<strong>'.yii::t('about', 'Klimakarten').'</strong>']); ?> 
       <?php tr('about', 'Durch Klick in die Karte wird das Änderungssignal des ausgewählten Parameters am ausgewählten Standort angezeigt.'); ?>
       <?php tr('about', 'Die kartographischen Darstellungen machen deutlich, dass die klimatischen Änderungen innerhalb der Region zum Teil stark variieren.'); ?>	  
 	  </li>
 	  <li>
 	  <?php tr('about', '{Referenzwerte} von mehreren Messstation in der Region ermöglichen zudem einen Vergleich mit dem aktuellen Klima der Region und helfen dabei, das Ausmaß der klimatischen Änderungen einzuschätzen.', 
-	    ['Referenzwerte'] => '<strong>'.yii::t('about', 'Referenzwerte').'</strong>'); ?> 
+	    ['Referenzwerte' => '<strong>'.yii::t('about', 'Referenzwerte').'</strong>']); ?> 
 	  </li>
 	  <li>
 	  <?php tr('about', 'Speziell für Unternehmen werden {potentielle Folgen} des Klimawandels und ihre Auswirkungen auf verschiedene Unternehmensbereiche genannt.', 
-	    ['potentielle Folgen'] => '<strong>'.yii::t('about', 'potentielle Folgen').'</strong>'); ?> 
+	    ['potentielle Folgen' => '<strong>'.yii::t('about', 'potentielle Folgen').'</strong>']); ?> 
 	  <?php tr('about', 'Diese Informationen helfen den Benutzern, die konkreten Folgen des Klimawandels an ihrem individuellen Standort einzuschätzen.'); ?>
 	  <?php tr('about', 'Sie stellen die Basis für eine vertiefte Auseinandersetzung mit individuellen Klimaanpassungsmaßnahmen dar und geben Hinweise auf potentielle Risiken und Chancen.'); ?>	  
 	  </li>	  
