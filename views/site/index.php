@@ -70,7 +70,7 @@ function tr($c, $m, $p = []) {
      <?php tr('main', 'Nearest City'); ?>: {{ info.nearest_city.name }}, <?php tr('main', 'Elevation'); ?>: {{ roundedElevation }} m <br/>
 	 <br/>
 	 <!-- Dry Days: <span v-html="roundedCddp"></span> days/year <br/> -->
-	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')" title='<?php \Yii::t('Hazard:description', 'fd', []); ?>'>
+	 <span :class="('fd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('fd')" title='<?php echo \Yii::t('Hazard:description', 'fd', []); ?>'>
 	   <?php tr('Hazard:Name', 'fd'); ?>: </span>
 	  <span v-html="roundedFd"></span> <?php tr('hazards', 'days/year'); ?> <br/>
 	 <span :class="('sd' == currHazard)? 'active':'inactive'" v-on:click="switchHazard('sd')"><?php tr('Hazard:Name', 'sd'); ?>: </span>
