@@ -55,7 +55,7 @@ class ApiController extends Controller
        return $result;
    } 	
 	
-    public function actionHazards($mode='visible-only', , $language='en') {
+    public function actionHazards($mode='visible-only', $language='en') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);
 	   $result = array_map(function($e) { 
