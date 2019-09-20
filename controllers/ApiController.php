@@ -56,13 +56,17 @@ class ApiController extends Controller
    } 	
 	
 	public static function tr($message) {
-		return \Yii::t('hazards', $message, [], Yii::$app->language);
+		return ;
 	}
 	
     public function actionHazards($mode='visible-only') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);
-	   $result = array_map(function($e) { $e->label = ApiController::tr($e->name); return $e; },$result); 
+	   $result = array_map(function($e) { 
+	      $e->label = \Yii::t('Hazard:name', $e->name, [], Yii::$app->language);
+		  $e->description = \Yii::t('Hazard:description', $e->name, [], Yii::$app->language);
+		  return $e; 
+		  } ,$result); 
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
