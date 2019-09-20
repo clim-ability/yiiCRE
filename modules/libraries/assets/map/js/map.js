@@ -88,7 +88,7 @@ function roundedValue(value, digits) {
         }
 	  } else {
 		var hazardTranslation = tr('Hazard:name', hazard);
-		div.innerHTML += hazard + '<br />';
+		div.innerHTML += hazardTranslation + '<br />';
 		var digits = (getDigitsGlobal()>1.2)?0:1;
         for (var i = 0.0; i < 7.0; i++) {
 		  var d1 = getValueGlobal(i/7.0);
