@@ -17,44 +17,11 @@ function tr($c, $m, $p = []) {
 </script>
 
 <div id="climateinspector">
-      <h1 class="my-4"><?php tr('main', 'Changing of climate'); ?>
-        <small><?php tr('main', 'at the Upper Rhine'); ?></small>
-      </h1>
+
 
  <div class="container-fluid">
 
-    <div class="row" id="selectionrow">
- 	  <div class="col-md-3">
-       <select v-model="hazard" v-on:change="updateParameters" class="form-control">
-        <option v-for="hazard in hazards" v-bind:value="hazard.name">
-         {{ hazard.label }} 
-        </option>
-       </select>
-	  </div>	
- 	  <div class="col-md-3">
-       <select v-model="epoch" v-on:change="updateParameters" class="form-control">
-        <option v-for="epoch in epochs" v-bind:value="epoch.name">
-         {{ epoch.label }} 
-        </option>
-       </select>
-	  </div>	
- 	  <div class="col-md-3">
-       <select v-model="scenario" v-on:change="updateParameters" class="form-control">
-        <option v-for="scenario in scenarios" v-bind:value="scenario.name">
-         {{ scenario.label }} 
-        </option>
-       </select>
-	  </div>		 
-	  <div class="col-md-3 ">	   
-	   <select v-model="language" class="form-control">
-        <option v-for="language in languages" v-bind:value="language.name">
-         {{ language.label }}
-        </option>
-       </select>
-	  </div>
-	</div> 
 
- 
   <div class="row" style="margin: 8px;">
    <div class="col-md-6 "> <!-- eoEvents Upper-Left Corner -->
 
@@ -66,6 +33,36 @@ function tr($c, $m, $p = []) {
    </div> <!-- end md-6 -->
 
    <div class="col-md-6" id="informationfield"> <!-- Tabbed Upper-Right Corner -->
+
+      <h1 class="my-4"><?php tr('main', 'Changing of climate'); ?>
+        <small><?php tr('main', 'at the Upper Rhine'); ?></small>
+      </h1>
+
+    <div class="row" id="selectionrow">
+ 	  <div class="col-md-4">
+       <select v-model="hazard" v-on:change="updateParameters" class="form-control">
+        <option v-for="hazard in hazards" v-bind:value="hazard.name">
+         {{ hazard.label }} 
+        </option>
+       </select>
+	  </div>	
+ 	  <div class="col-md-4">
+       <select v-model="epoch" v-on:change="updateParameters" class="form-control">
+        <option v-for="epoch in epochs" v-bind:value="epoch.name">
+         {{ epoch.label }} 
+        </option>
+       </select>
+	  </div>	
+ 	  <div class="col-md-4">
+       <select v-model="scenario" v-on:change="updateParameters" class="form-control">
+        <option v-for="scenario in scenarios" v-bind:value="scenario.name">
+         {{ scenario.label }} 
+        </option>
+       </select>
+	  </div>		 
+	</div> 
+	
+   
     <template v-if="info !== 'none'">
      <?php tr('main', 'Nearest City'); ?>: {{ info.nearest_city.name }}, <?php tr('main', 'Elevation'); ?>: {{ roundedElevation }} m <br/>
 	 <br/>
