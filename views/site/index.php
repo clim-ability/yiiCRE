@@ -32,7 +32,7 @@ function tr($c, $m, $p = []) {
 
    </div> <!-- end md-6 -->
 
-   <div class="col-md-6" id="informationfield"> <!-- Tabbed Upper-Right Corner -->
+   <div class="col-md-6" > <!-- Tabbed Upper-Right Corner -->
 
       <h1 class="my-4"><?php tr('main', 'Changing of climate'); ?>
         <small><?php tr('main', 'at the Upper Rhine'); ?></small>
@@ -62,6 +62,7 @@ function tr($c, $m, $p = []) {
 	  </div>		 
 	</div> 
 	
+    <div id="informationfield">
    
     <template v-if="info !== 'none'">
      <?php tr('main', 'Nearest City'); ?>: {{ info.nearest_city.name }}, <?php tr('main', 'Elevation'); ?>: {{ roundedElevation }} m <br/>
@@ -88,6 +89,7 @@ function tr($c, $m, $p = []) {
 	 <br/>
 
     </template>	
+	</div> <!-- end #informationfield -->
    </div> <!-- end md-6 -->
 
   </div> <!-- end row -->
