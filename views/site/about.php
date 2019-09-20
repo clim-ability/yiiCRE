@@ -15,10 +15,7 @@ function tr($c, $m, $p = []) {
 <div class="site-about">
  <div class="container-fluid">
   <div class="row">
-   <div class="col-md-1">
-   </div>  
    <div class="col-md-2">
-      <?php echo Html::img("@web/images/logo_climate_inspector.png", ['width'=>'200', 'id'=>'logo', 'alt'=>'climate inspector logo']); ?>
    </div>
    <div class="col-md-7">
 
@@ -95,7 +92,9 @@ function tr($c, $m, $p = []) {
 	</p>	
    </div>	
    <div class="col-md-1">
-       
+   </div>  
+   <div class="col-md-2">
+    <?php echo Html::img("@web/images/logo_climate_inspector.png", ['width'=>'200', 'id'=>'logo', 'alt'=>'climate inspector logo']); ?>       
    </div>
   </div>	  
  </div>	
