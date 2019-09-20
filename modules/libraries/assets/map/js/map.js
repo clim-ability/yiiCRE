@@ -1,6 +1,8 @@
 //var mapBaseUrl = '.';
 
 addCategoryToTranslationPool('hazards');
+addCategoryToTranslationPool('Hazard:name');
+addCategoryToTranslationPool('Hazard:description');
 
     // initialize the map
   var map = L.map('map').setView([48.25, 8], 8);
