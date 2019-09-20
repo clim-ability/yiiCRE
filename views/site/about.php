@@ -13,6 +13,10 @@ function tr($c, $m, $p = []) {
 }
 ?>
 <div class="site-about">
+ <div class="container-fluid">
+  <div class="row">
+   <div class="col-md-6">
+
     <h3><?php tr('about', 'Warum noch ein Tool zum Klimawandel?'); ?></h3>
 
     <p>
@@ -84,6 +88,11 @@ function tr($c, $m, $p = []) {
 	  <?php tr('about', 'Trotz der großen Bandbreite der simulierten Ergebnisse lassen sich gewisse Trends mit hoher Wahrscheinlichkeit vorhersagen.'); ?> 
 	  <?php tr('about', 'Die wichtigsten klimatischen Trends der Oberrheinregion sind durch die 6 ausgewerteten klimatischen Parameter abgedeckt.'); ?>	  
 	</p>	
-	
+   </div>	
+   <div class="col-md-6">
+     <?php echo Html::img("@web/images/logo_climate_inspector.png", ['width'=>'200', 'id'=>'logo', 'alt'=>'climate inspector logo']); ?>    
+   </div>
+  </div>	  
+ </div>	
 	
 </div>
