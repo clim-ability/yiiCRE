@@ -125,13 +125,13 @@ function tr($c, $m, $p = []) {
 	   <td><span class='inactive' v-on:click="switchHazard('rr_winter')" title='<?php echo \Yii::t('Hazard:description', 'rr_winter', []); ?>' > <?php tr('Hazard:Name', 'rr_winter'); ?></span></td>
 	   <td>{{roundedRw.tendency}}</td><td>{{roundedRw.min}}</td><td>{{roundedRw.to}}</td><td>{{roundedRw.max}}</td>
 	   <td><?php tr('hazards', 'days/year'); ?></td>
-	   <td></td><td><?php tr('hazards', 'Referenzwert'); ?></td><td>{{nearestStation.rr_winter}}</td><td>%</td>
+	   <td></td><td><?php tr('hazards', 'Referenzwert'); ?></td><td>{{nearestStation.rr_winter}}</td><td>mm</td>
 	  </tr>
 	  <tr>
 	   <td><span class='inactive' v-on:click="switchHazard('rr_summer')" title='<?php echo \Yii::t('Hazard:description', 'rr_summer', []); ?>' > <?php tr('Hazard:Name', 'rr_summer'); ?></span></td>
 	   <td>{{roundedRs.tendency}}</td><td>{{roundedRs.min}}</td><td>{{roundedRs.to}}</td><td>{{roundedRs.max}}</td>
 	   <td><?php tr('hazards', 'days/year'); ?></td>
-	   <td></td><td><?php tr('hazards', 'Referenzwert'); ?></td><td>{{nearestStation.rr_summer}}</td><td>%</td>
+	   <td></td><td><?php tr('hazards', 'Referenzwert'); ?></td><td>{{nearestStation.rr_summer}}</td><td>mm</td>
 	  </tr>
 	 </table>
 	<br/>
