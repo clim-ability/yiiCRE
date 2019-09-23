@@ -145,6 +145,10 @@ function tr($c, $m, $p = []) {
 	 <h2><?php tr('Hazard:Name', 'fd'); ?></h2>
 	 <p><?php tr('Hazard:description', 'fd'); ?></p>
 
+<p>
+  <?php tr('In der Näher der Gemeinde {{ info.nearest_city.name }} aändert sich....', 'fd'); ?>
+</p>
+
     </template>
 	
 
