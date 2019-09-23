@@ -65,7 +65,9 @@ class Station extends ActiveRecord
 	
 	public function inqAllStations( $inclInvisible = false ) {
 	    $stations = Station::find();
-		$stations = $stations->select(['*', 'ST_X(location::geometry) AS longitude', 'ST_Y(location::geometry) AS latitude']);
+		$longitude = new Expression('ST_X(location::geometry) AS longitude');
+		$latitude = new Expression('ST_X(location::geometry) AS latitude');
+		$stations = $stations->select(['*', $longitude, $latitude);
 		if(!$inclInvisible) {
 		   $stations = $stations->where(['visible' => true]);	
 		}
