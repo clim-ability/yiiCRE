@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m190920_130843_create_danger_table extends Migration {
+class m230920_150843_expand_danger_table extends Migration {
 
     public function safeUp() {
 		$this->insert('danger', [ 'name' => 'cddp', 'visible' => false]);

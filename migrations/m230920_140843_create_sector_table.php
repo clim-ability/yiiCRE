@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m190920_140843_create_sector_table extends Migration {
+class m230920_140843_create_sector_table extends Migration {
 
     public function safeUp() {
         $this->createTable('sector', [
@@ -14,18 +14,18 @@ class m190920_140843_create_sector_table extends Migration {
             'updated_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
         ]);
 		
-		$this->insert('sector', [ 'name' => 'Lieferanten', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'Verkehrsinfrastruktur', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'Energieversorgung', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'Wasserversorgung', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'Gebäude und Flächen', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'Produktionsanlagen', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'Lagerbestände', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'Mitarbeiter', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'IT und Kommunikation', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'Kunden', 'visible' => true]);
-		$this->insert('sector', [ 'name' => 'Management und Compliance', 'visible' => true]);
-	
+		$this->insert('sector', [ 'name' => 'Agriculture', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Forestry', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Fishery', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Manufactoring industry', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Construction sector', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Trade', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Services', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Logistik', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Winter Tourism', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Summer Tourism', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Tourism', 'visible' => true]);
+		$this->insert('sector', [ 'name' => 'Transportation', 'visible' => true]);	
 								   
     }
 
