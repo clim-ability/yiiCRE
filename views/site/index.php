@@ -94,7 +94,8 @@ function tr($c, $m, $p = []) {
 	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td><td><?php tr('hazards', 'Distance'); ?>: {{Math.round(parseFloat(nearestStation.distance/1000)).toString()}} km</td>
 	  </tr>	
 	 </table>	
-	 <template v-if="currHazard === 'all')">
+     </template>		 
+	 <template v-if="((info !== 'none') && (currHazard === 'all'))">
 	 <br/>	
 	 <table class="table">
 	  <tr>
@@ -140,14 +141,13 @@ function tr($c, $m, $p = []) {
      </p>	
     </template>	
 	
-	<template v-if="currHazard === 'fd'">
+	<template v-if="(info !== 'none') && (currHazard === 'fd'))">
 	 <h2><?php tr('Hazard:Name', 'fd'); ?></h2>
 	 <p><?php tr('Hazard:description', 'fd'); ?></p>
 
     </template>
 	
-	
-	</template>	
+
 	</div> <!-- end #informationfield -->
    </div> <!-- end md-6 -->
 
