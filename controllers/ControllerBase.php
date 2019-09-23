@@ -210,7 +210,7 @@ class ControllerBase extends Controller
         $searchModel = $this->newSearchModel();
         $columns = $this->getColumns();
         if ($searchModel !== null) {
-            $dataProvider = $searchModel->search([limit=>-1]);
+            $dataProvider = $searchModel->search(['limit'=>-1]);
             return $this->render('@app/views/base/translate', [
                 'columns' => $columns,
                 'messages' => $this->getMessages(),
