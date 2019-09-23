@@ -67,6 +67,7 @@ class Zone extends ActiveRecord
 		if(!$inclInvisible) {
 		   $zones = $zones->where(['visible' => true]);	
 		}
+		$zones = $zones->limit(-1);
         $zones = $zones->orderBy(['name'=>SORT_ASC]);
         return $zones->all();
 	}

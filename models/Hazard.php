@@ -67,6 +67,7 @@ class Hazard extends ActiveRecord
 		if(!$inclInvisible) {
 		   $hazards = $hazards->where(['visible' => true]);	
 		}
+		$hazards = $hazards->limit(-1);
         $hazards = $hazards->orderBy(['name'=>SORT_ASC]);
         return $hazards->all();
 	}

@@ -67,6 +67,7 @@ class Risk extends ActiveRecord
 		if(!$inclInvisible) {
 		   $risks = $risks->where(['visible' => true]);	
 		}
+		$risks = $risks->limit(-1);
         $risks = $risks->orderBy(['name'=>SORT_ASC]);
         return $risks->all();
 	}

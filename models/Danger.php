@@ -67,6 +67,7 @@ class Danger extends ActiveRecord
 		if(!$inclInvisible) {
 		   $dangers = $dangers->where(['visible' => true]);	
 		}
+		$dangers = $dangers->limit(-1);
         $dangers = $dangers->orderBy(['name'=>SORT_ASC]);
         return $dangers->all();
 	}
