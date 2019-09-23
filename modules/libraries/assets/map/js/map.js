@@ -516,7 +516,8 @@ var vueInfo = new Vue({
   data: {
     info: 'none',
 	infoVisible: false,
-	currHazard: ''
+	currHazard: '',
+	nearestStation: {}
   },
   methods: { 
     switchHazard(hazard) {
@@ -528,11 +529,15 @@ var vueInfo = new Vue({
 		var latitude = getCurrentLatitude();
 		var longitude = getCurrentLongitude();
 		if (latitude !== 0 && longitude !== 0) {
+		  var url = apiBaseUrl+'/station-data';
+	      url = url + '?latitude='+latitude+'&longitude='+longitude;
+          axios.get(url).then(response => {
+	         this.nearestStation = response.data; 
+	      });
 		  var epoch = vueSelect.getCurrentEpoch();
 		  var szenario = vueSelect.getCurrentSzenario();
 		  this.currHazard = vueSelect.getCurrentHazard();
 	      var url = apiBaseUrl+'/api/hazard-values';
-	         // url = 'https://gis.clim-ability.eu/index.php/api/hazard-values';
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+epoch+'&scenario='+szenario;
           axios.get(url).then(response => {
 	         this.info = response.data; 

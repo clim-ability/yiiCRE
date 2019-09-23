@@ -83,6 +83,7 @@ function tr($c, $m, $p = []) {
     </template>	
    
     <template v-if="info !== 'none'">
+	<p>{{nearestStation.name}}</p>
 	 <br/>
      <?php tr('main', 'Nearest City'); ?>: {{ info.nearest_city.name }}, <?php tr('main', 'Elevation'); ?>: {{ roundedElevation }} m <br/>
 	 <br/>
