@@ -90,20 +90,25 @@ function roundedValue(value, digits) {
         }
 	  } else {
 		var hazardTranslation = tr('Hazard:name', hazard);
+		var upto = tr('hazards', 'to');
 		div.innerHTML += hazardTranslation + '<br />';
 		var digits = (getDigitsGlobal()>1.2)?0:1;
+		var percents = '';
+		if (('rr_summer' == hazard) || ('rr_summer' == hazard)) {
+		  percents = ' %';
+		}
         for (var i = 0.0; i < 7.0; i++) {
 		  var d1 = getValueGlobal(i/7.0);
 		  var d2 = getValueGlobal((i+1)/7.0);
 		  if(d1*d2<0.0) {
-		  var label = ''+ roundedValue(d1,digits)+' to '+roundedValue(0.0,digits);
+		  var label = ''+ roundedValue(d1,digits)+' '+upto+' '+roundedValue(0.0,digits)+percents;
 		  var color = getStyleColor(d1);
           div.innerHTML += '<i style="background: '+color+'"></i><p><small>'+label+'</small></p>';
-		  var label = ''+ roundedValue(0.0,digits)+' to '+roundedValue(d2,digits);
+		  var label = ''+ roundedValue(0.0,digits)+' '+upto+' '+roundedValue(d2,digits)+percents;;
 		  var color = getStyleColor(0.0);
           div.innerHTML += '<i style="background: '+color+'"></i><p><small>'+label+'</small></p>';		  
 		  } else {
-		  var label = ''+ roundedValue(d1,digits)+' to '+roundedValue(d2,digits);
+		  var label = ''+ roundedValue(d1,digits)+' '+upto+' '+roundedValue(d2,digits)+percents;;
 		  var color = getStyleColor(d1);
           div.innerHTML += '<i style="background: '+color+'"></i><p><small>'+label+'</small></p>';
 		  }
