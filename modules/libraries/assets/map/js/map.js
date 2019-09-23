@@ -529,7 +529,7 @@ var vueInfo = new Vue({
 		var latitude = getCurrentLatitude();
 		var longitude = getCurrentLongitude();
 		if (latitude !== 0 && longitude !== 0) {
-		  var url = apiBaseUrl+'/station-data';
+		  var url = apiBaseUrl+'/api/station-data';
 	      url = url + '?latitude='+latitude+'&longitude='+longitude;
           axios.get(url).then(response => {
 	         this.nearestStation = response.data; 
