@@ -82,7 +82,7 @@ function tr($c, $m, $p = []) {
     </p>
     </template>	
    
-    <template v-if="info !== 'none'">
+    <template v-if="info === 'all'">
 	 <br/>	
 	 <table class="table">
 	  <tr>
