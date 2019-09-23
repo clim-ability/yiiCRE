@@ -144,16 +144,63 @@ function tr($c, $m, $p = []) {
 	<template v-if="((info !== 'none') && (currHazard === 'fd'))">
 	 <h2><?php tr('Hazard:Name', 'fd'); ?></h2>
 	 <p><?php tr('Hazard:description', 'fd'); ?></p>
-
-<p>
-  <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedFd.tendency}} um {{roundedFd.min}} bis {{roundedFd.max}} {Frosttagen} zu rechnen', 
-    ['Frosttagen' => \Yii::t('Hazard:plural', 'fd', [])]); ?>
-	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}} - {{currSzenario}}).'); ?>
-	<?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.'); ?>
-</p>
-
+     <p>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedFd.tendency}} {{roundedFd.min}} bis  {{roundedFd.max}} Frosttagen zu rechnen'); ?>
+	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
+  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.'); ?>
+     </p>
     </template>
 	
+	<template v-if="((info !== 'none') && (currHazard === 'sd'))">
+	 <h2><?php tr('Hazard:Name', 'sd'); ?></h2>
+	 <p><?php tr('Hazard:description', 'sd'); ?></p>
+     <p>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedSd.tendency}} {{roundedSd.min}} bis  {{roundedSd.max}} Sommertagen zu rechnen'); ?>
+	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
+  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.sd}} Tage pro Jahr.'); ?>
+     </p>
+    </template>
+
+	<template v-if="((info !== 'none') && (currHazard === 'tr'))">
+	 <h2><?php tr('Hazard:Name', 'tr'); ?></h2>
+	 <p><?php tr('Hazard:description', 'tr'); ?></p>
+     <p>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedTr.tendency}} {{roundedTr.min}} bis  {{roundedTr.max}} Tropennächten zu rechnen'); ?>
+	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
+  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.tr}} Nächte pro Jahr.'); ?>
+     </p>
+    </template>
+
+	<template v-if="((info !== 'none') && (currHazard === 'rr20'))">
+	 <h2><?php tr('Hazard:Name', 'rr20'); ?></h2>
+	 <p><?php tr('Hazard:description', 'rr20'); ?></p>
+     <p>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRr20.tendency}} {{roundedRr20.min}} bis  {{roundedRr20.max}} Starkregentagen zu rechnen'); ?>
+	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
+  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr20}} Tage pro Jahr'); ?>
+     </p>
+    </template>
+
+	<template v-if="((info !== 'none') && (currHazard === 'rr_winter'))">
+	 <h2><?php tr('Hazard:Name', 'rr_winter'); ?></h2>
+	 <p><?php tr('Hazard:description', 'rr_winter'); ?></p>
+     <p>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRw.tendency}} {{roundedRw.min}} bis  {{roundedRw.max}} % an Winterniederschlag zu rechnen'); ?>
+	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
+  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_winter}} mm für die Wintermonate.'); ?>
+     </p>
+    </template>
+
+	<template v-if="((info !== 'none') && (currHazard === 'rr_summer'))">
+	 <h2><?php tr('Hazard:Name', 'rr_summer'); ?></h2>
+	 <p><?php tr('Hazard:description', 'rr_summer'); ?></p>
+     <p>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRs.tendency}} {{roundedRs.min}} bis  {{roundedRs.max}} % an Sommerniederschlag zu rechnen'); ?>
+	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
+  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_sumer}} mm für die Sommermonate.'); ?>
+     </p>
+    </template>
+
 
 	</div> <!-- end #informationfield -->
    </div> <!-- end md-6 -->
