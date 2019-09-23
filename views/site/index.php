@@ -75,6 +75,11 @@ function tr($c, $m, $p = []) {
 	</div> 
 	
     <div id="informationfield">
+    <template v-if="info === 'none'">
+	<p><?php tr('hazard', 'To start choose your location by {clicking on the map} and/or change parameters.', 
+	    ['clicking on the map' => '<strong>'.yii::t('hazard', 'clicking on the map').'</strong>']); ?> 
+    </p>
+    </template>	
    
     <template v-if="info !== 'none'">
 	 <br/>
