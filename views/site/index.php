@@ -147,7 +147,7 @@ function tr($c, $m, $p = []) {
 
 <p>
   <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedFd.tendency}} um {{roundedFd.min}} bis{{roundedFd.max}} {Frosttagen} zu rechnen', 
-    ['Frosttagen' => \Yii::t('Hazard:plural', 'fd', []);]); ?>
+    ['Frosttagen' => \Yii::t('Hazard:plural', 'fd', [])]); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}} - {{currSzenario}}).'); ?>
 	<?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.'); ?>
 </p>
