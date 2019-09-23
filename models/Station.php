@@ -73,7 +73,7 @@ class Station extends ActiveRecord
         return $stations->all();
 	}
 	
-	public static function getNearestStation($latitude, $longitude)
+	public static function getNearestStation($latitude, $longitude, $language='en')
 	{
 	  $coordinate = ''.(float)$longitude.','.(float)$latitude.'';
 	  $connection = Station::getDb();
@@ -83,6 +83,7 @@ class Station extends ActiveRecord
            . " FROM public.station WHERE visible ORDER BY distance LIMIT 1;";
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
+	 $result['abbreviation'] = \Yii::t('Hazard:abbreviation', $result['name'], [], $language);
 	 return $result;		
 	}
 	
