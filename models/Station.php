@@ -76,8 +76,8 @@ class Station extends ActiveRecord
 	public static function getNearestStation($latitude, $longitude)
 	{
 	  $coordinate = ''.(float)$longitude.','.(float)$latitude.'';
-	  //$connection = Yii::$app->db2;
-      $connection = Yii::$app->pgsql_gisdata;
+	  $connection = this::getDb();
+      //$connection = Yii::$app->pgsql_gisdata;
 	  $sql = "SELECT st_distance(location, ST_SetSRID(ST_MakePoint(".$coordinate."),4326)) as distance, "
 	        ." ST_X(location) as longitude, ST_Y(location) as  latitude, *"
            . " FROM public.station ORDER BY distance LIMIT 1;";
