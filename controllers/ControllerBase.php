@@ -211,7 +211,7 @@ class ControllerBase extends Controller
         $columns = $this->getColumns();
         if ($searchModel !== null) {
             $dataProvider = $searchModel->search([]);
-			$dataProvider->setPagination(['limit'=>-1, 'defaultPageSize'=>-1]);
+			$dataProvider->setPagination(['defaultPageSize'=>-1]);
             return $this->render('@app/views/base/translate', [
                 'columns' => $columns,
                 'messages' => $this->getMessages(),
