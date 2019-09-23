@@ -94,7 +94,7 @@ function roundedValue(value, digits) {
 		div.innerHTML += hazardTranslation + '<br />';
 		var digits = (getDigitsGlobal()>1.2)?0:1;
 		var percents = '';
-		if (('rr_summer' == hazard) || ('rr_summer' == hazard)) {
+		if (('rr_summer' == hazard) || ('rr_winter' == hazard)) {
 		  percents = ' %';
 		}
         for (var i = 0.0; i < 7.0; i++) {
