@@ -90,7 +90,7 @@ function tr($c, $m, $p = []) {
 	   </tr>
 		  <tr>   
 	   <td><?php tr('main', 'Nearest Station'); ?>:</td><td>{{nearestStation.name}} ({{nearestStation.abbreviation}})</td>
-	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td><td>Distance: {{Math.round(nearestStation.elevation/1000)}} km</td>
+	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td><td>Distance: {{Math.round(parseFloat(nearestStation.elevation/1000)).toString()}} km</td>
 	  </tr>	
 	 </table>	
 	
