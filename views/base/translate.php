@@ -32,6 +32,8 @@ foreach($dataProvider->getModels() as $data) {
 	 tr($name.':description', $data['name']); 
 	echo '</li><li>Abbreviation: ';	
 	 tr($name.':abbreviation', $data['name']); 
+	echo '</li><li>Plural: ';	
+	 tr($name.':plural', $data['name']); 
     echo '</li>';
   } elseif (in_array('description', $columns)) {
 	echo $data['description'].'<li>Name: ';	  
