@@ -117,7 +117,7 @@ var geojsonLayerWells = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
 geojsonLayerWells.on('click', onMapClick);
 
-var pointLayer = new L.geoJSON(null, {
+var pointLayer = new L.GeoJSON(null, {
   pointToLayer: function(feature,latlng){
     label = String(feature.properties.abbreviation) // Must convert to string, .bindTooltip can't use straight 'feature.properties.attribute'
     return new L.CircleMarker(latlng, {
