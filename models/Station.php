@@ -80,7 +80,7 @@ class Station extends ActiveRecord
       //$connection = Yii::$app->pgsql_gisdata;
 	  $sql = "SELECT st_distance(location, ST_SetSRID(ST_MakePoint(".$coordinate."),4326)) as distance, "
 	        ." ST_X(location::geometry) as longitude, ST_Y(location::geometry) as  latitude, *"
-           . " FROM public.station ORDER BY distance LIMIT 1;";
+           . " FROM public.station WHERE visible ORDER BY distance LIMIT 1;";
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
 	 return $result;		
