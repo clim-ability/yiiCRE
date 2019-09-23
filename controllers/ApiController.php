@@ -219,6 +219,24 @@ class ApiController extends Controller
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    }
+
+   public function actionStationsGeojson()
+   {
+	   $result = [];
+       $stations = Station::inqAllStations();	   
+       foreach($stations as $station) {
+	   $station['abbreviation'] = $station['name'];	   
+ 	   $results[] = ['type'=>'Feature',
+			              'properties'=>['abbreviation' => $station['abbreviation']],
+			              'geometry'=>['type'=>'Point', 
+						    'coordinates'=>[floatval($station['longitude']),
+							                floatval($station['latitude'])]]
+			             ]; 
+	   }
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
+       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+       return $result;
+   }
   
    public function actionHazardValues($latitude, $longitude, $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {

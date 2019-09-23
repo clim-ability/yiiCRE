@@ -14,14 +14,6 @@ addCategoryToTranslationPool('Hazard:description');
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-/*
- var tmo_region = L.tileLayer.wms("http://climability.uni-landau.de/cgi-bin/qgis_mapserv.fcgi?map=/var/www/html/climability/cgi-bin/climability_TMO.qgs", {
-    layers: 'tmo_region',
-    format: 'image/png',
-    transparent: true,
-    attribution: "climability"
-  }).addTo(map);
-*/
 
 {
 var marker = new L.marker([0,0], {id:'uni', draggable:'true'});
@@ -124,6 +116,26 @@ function roundedValue(value, digits) {
 var geojsonLayerWells = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
 geojsonLayerWells.on('click', onMapClick);
+
+var pointLayer = L.geoJSON(null, {
+  pointToLayer: function(feature,latlng){
+    label = String(feature.properties.name) // Must convert to string, .bindTooltip can't use straight 'feature.properties.attribute'
+    return new L.CircleMarker(latlng, {
+      radius: 1,
+    }).bindTooltip(label, {permanent: true, opacity: 0.7}).openTooltip();
+    }
+  });
+map.addLayer(pointLayer);
+
+function initStationData() 
+{
+  var url = apiBaseUrl+'/api/stations-geojson';
+  axios.get(url).then(response => {
+	pointLayer.addData(response.data);
+  });
+  
+	
+}
 
 function interpolateColor(a, b, amount) { 
     var ah = parseInt(a.replace('#', '0x'), 16),
@@ -364,7 +376,8 @@ var statisticOptions = {
 	function redrawParameters() {
 	  if('all' == defaultParameters.hazard) {
         geojsonLayerWells.clearLayers();
-		if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }	
+		if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }
+        if (map.hasLayer(pointLayer)) { map.removeLayer(pointLayer); }		
         statisticLayer = new L.PieChartDataLayer(statisticData,statisticOptions);
 		//statisticLayer.unbindTooltip();
 		//statisticLayer.off('mouseover');
@@ -372,6 +385,7 @@ var statisticOptions = {
         map.addLayer(statisticLayer);
 		statisticLayer.on('click', onMapClick);
       } else {	
+        if (!map.hasLayer(pointLayer)) { map.addLayer(pointLayer); }					
         if (map.hasLayer(imageAdded)) { map.removeLayer(imageAdded); }
         if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }			
         var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
@@ -411,7 +425,7 @@ L.control.layers(baseMaps,{
 }
 
 redrawParameters();
-
+initStationData();
 
 var vueEventBus = new Vue({ });
 	  
