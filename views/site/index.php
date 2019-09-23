@@ -83,15 +83,19 @@ function tr($c, $m, $p = []) {
     </template>	
    
     <template v-if="info !== 'none'">
-	 <br/>	
 	 <table class="table">
 	  <tr>
 	   <td><?php tr('main', 'Nearest City'); ?>:</td><td>{{ info.nearest_city.name }}</td>
-	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{ roundedElevation }} m </td>
-	   <td><?php tr('main', 'Nearest Station'); ?>:</td><td>{{nearestStation.name}} </td><td>({{nearestStation.abbreviation}})</td>
-	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td><td></td>
-	  </tr>
-	  
+	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{ roundedElevation }} m </td><td></td>
+	   </tr>
+		  <tr>   
+	   <td><?php tr('main', 'Nearest Station'); ?>:</td><td>{{nearestStation.name}} ({{nearestStation.abbreviation}})</td>
+	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td><td>Distance: {{Math.round(nearestStation.elevation/1000)}} km</td>
+	  </tr>	
+	 </table>	
+	
+	 <br/>	
+	 <table class="table">
 	  <tr>
 	   <td><span class='inactive' v-on:click="switchHazard('fd')" title='<?php echo \Yii::t('Hazard:description', 'fd', []); ?>' > <?php tr('Hazard:Name', 'fd'); ?></span></td>
 	   <td>{{roundedFd.tendency}}</td><td>{{roundedFd.min}}</td><td>{{roundedFd.to}}</td><td>{{roundedFd.max}}</td>
