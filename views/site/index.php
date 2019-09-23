@@ -141,7 +141,7 @@ function tr($c, $m, $p = []) {
      </p>	
     </template>	
 	
-	<template v-if="(info !== 'none') && (currHazard === 'fd'))">
+	<template v-if="((info !== 'none') && (currHazard === 'fd'))">
 	 <h2><?php tr('Hazard:Name', 'fd'); ?></h2>
 	 <p><?php tr('Hazard:description', 'fd'); ?></p>
 
