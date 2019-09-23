@@ -23,13 +23,15 @@ foreach($dataProvider->getModels() as $data) {
 	echo $data['name'].'<li>Name: ';
 	tr($name.':name', $data['name']); 
 	echo '</li><li>Description: ';
-	tr('hazard:description', $data['description']); 
+	tr($name.':description', $data['description']); 
     echo '</li>';
   } elseif (in_array('name', $columns))	{
 	echo $data['name'].'<li>Name: ';
     tr($name.':name', $data['name']); 
 	echo '</li><li>Description: ';	
 	 tr($name.':description', $data['name']); 
+	echo '</li><li>Abbreviation: ';	
+	 tr($name.':abbreviation', $data['name']); 
     echo '</li>';
   } elseif (in_array('description', $columns)) {
 	echo $data['description'].'<li>Name: ';	  

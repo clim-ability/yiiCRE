@@ -11,6 +11,7 @@ use app\models\Epoch;
 use app\models\Hazard;
 use app\models\Parameter;
 use app\models\Scenario;
+use app\models\Station;
 use app\models\Gis;
 use app\modules\translation\models\Language;
 //use yii\web\NotFoundHttpException;
@@ -93,8 +94,8 @@ class ApiController extends Controller
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
-   
-   
+  
+ 
    public function actionHazardValue($latitude, $longitude, $hazard='', $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
 	   $result = [];
@@ -209,7 +210,16 @@ class ApiController extends Controller
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       return $result;	  
    }
-   
+  
+   public function actionStationData($latitude, $longitude)
+   {
+	   $result = [];	  	   
+       $result = Station::getNearestStation($latitude, $longitude);
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
+       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+       return $result;
+   }
+  
    public function actionHazardValues($latitude, $longitude, $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
 	   $result = [];
