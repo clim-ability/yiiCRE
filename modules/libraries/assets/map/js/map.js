@@ -558,9 +558,11 @@ var vueInfo = new Vue({
 		var increase = tr('hazards', 'Increase by');
 		var upto = tr('hazards', 'to');
 		if(parseFloat(para.value) < 0.0) {
-		   return decrease+' <b>'+(0.0-plus)+' '+upto+' '+(0.0-minus)+'</b>';		   
+		   var allText = decrease+' <b>'+(0.0-plus)+' '+upto+' '+(0.0-minus)+'</b>';	
+           return {'allText':allText, 'tendency':decrease, 'min':(0.0-plus), 'max':(0.0-minus), 'to':upto};		   
 		} else {
-           return increase+' <b>'+minus+' '+upto+' '+plus+'</b>';
+           var allText = increase+' <b>'+minus+' '+upto+' '+plus+'</b>';
+		   return {'allText':allText, 'tendency':increase, 'min':minus, 'max':plus, 'to':upto};	
 		}
 	  }
 	  return '';
