@@ -38,18 +38,6 @@ function tr($c, $m, $p = []) {
         <small><?php tr('main', 'at the Upper Rhine'); ?></small>
       </h1>
 
-    <div class="row">
- 	  <div class="col-md-4">
-         <?php tr('hazard', 'Klima-Parameter'); ?>
-	  </div>	
- 	  <div class="col-md-4">
-         <?php tr('hazard', 'Zeithorizont'); ?>
-	  </div>	
- 	  <div class="col-md-4">
-         <?php tr('hazard', 'Szenario'); ?>
-	  </div>		 
-	</div> 
-
     <div class="row" id="selectionrow">
  	  <div class="col-md-4">
 	   <?php tr('hazard', 'Klima-Parameter'); ?><br/>
@@ -60,6 +48,7 @@ function tr($c, $m, $p = []) {
        </select>
 	  </div>	
  	  <div class="col-md-4">
+	    <?php tr('hazard', 'Zeithorizont'); ?><br/>
        <select v-model="epoch" v-on:change="updateParameters" class="form-control">
         <option v-for="epoch in epochs" v-bind:value="epoch.name">
          {{ epoch.label }} 
@@ -67,6 +56,7 @@ function tr($c, $m, $p = []) {
        </select>
 	  </div>	
  	  <div class="col-md-4">
+	   <?php tr('hazard', 'Szenario'); ?><br/>
        <select v-model="scenario" v-on:change="updateParameters" class="form-control">
         <option v-for="scenario in scenarios" v-bind:value="scenario.name">
          {{ scenario.label }} 
