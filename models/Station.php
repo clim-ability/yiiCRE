@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
-use yii\db\Expression
+use yii\db\Expression;
 
 
 
