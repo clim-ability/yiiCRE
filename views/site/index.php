@@ -139,6 +139,13 @@ function tr($c, $m, $p = []) {
       <?php tr('hazard', 'Alle Änderungen beziehen sich auf den Bezugszeitraum von 1971-2000.'); ?> 
      </p>	
     </template>	
+	
+	<template v-if="((info !== 'none') && (currHazard === 'fd'))">
+	 <h2><?php tr('Hazard:Name', 'fd'); ?></h2>
+	 <p><?php tr('Hazard:description', 'fd'); ?></p>
+
+    </template>
+	
 	</div> <!-- end #informationfield -->
    </div> <!-- end md-6 -->
 
