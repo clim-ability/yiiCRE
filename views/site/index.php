@@ -52,6 +52,7 @@ function tr($c, $m, $p = []) {
 
     <div class="row" id="selectionrow">
  	  <div class="col-md-4">
+	   <?php tr('hazard', 'Klima-Parameter'); ?><br/>
        <select v-model="hazard" v-on:change="updateParameters" class="form-control">
         <option v-for="hazard in hazards" v-bind:value="hazard.name">
          {{ hazard.label }} 
