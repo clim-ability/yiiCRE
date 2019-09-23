@@ -57,7 +57,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; University Freiburg <?= date('Y') ?></p>
+        <p class="pull-left">&copy; University Freiburg, University Koblenz-Landau <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
