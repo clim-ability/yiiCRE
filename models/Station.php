@@ -7,7 +7,7 @@ use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
 
 
-class Zone extends ActiveRecord 
+class Station extends ActiveRecord 
 {
 //    public $id;
 //    public $name;
