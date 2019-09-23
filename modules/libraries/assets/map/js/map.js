@@ -517,6 +517,8 @@ var vueInfo = new Vue({
     info: 'none',
 	infoVisible: false,
 	currHazard: '',
+	currEpoch: '',
+	currSzenario: '',
 	nearestStation: {}
   },
   methods: { 
@@ -534,11 +536,11 @@ var vueInfo = new Vue({
           axios.get(url).then(response => {
 	         this.nearestStation = response.data; 
 	      });
-		  var epoch = vueSelect.getCurrentEpoch();
-		  var szenario = vueSelect.getCurrentSzenario();
+		  this.currEpoch = vueSelect.getCurrentEpoch();
+		  this.currSzenario = vueSelect.getCurrentSzenario();
 		  this.currHazard = vueSelect.getCurrentHazard();
 	      var url = apiBaseUrl+'/api/hazard-values';
-	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+epoch+'&scenario='+szenario;
+	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario;
           axios.get(url).then(response => {
 	         this.info = response.data; 
 	         this.infoVisible = true;
