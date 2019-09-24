@@ -135,13 +135,16 @@ var extraOptions = {icon: 'fa-coffee',
 
 var pointLayer = new L.GeoJSON(null, {
 	pointToLayer: function (feature, latlng) {
-		//return L.circleMarker(latlng, geojsonMarkerOptions);   // geht- kein label
+		return L.circleMarker(latlng, geojsonMarkerOptions);   // geht- kein label
 		//return L.circleMarker(latlng, geojsonMarkerOptions).bindTooltip("my tooltip text").openTooltip()
-		return L.marker(latlng, {icon: L.ExtraMarkers.icon(extraOptions)});
+		//return L.marker(latlng, {icon: L.ExtraMarkers.icon(extraOptions)});
 	}
 }).addTo(map);  
   
 map.addLayer(pointLayer);
+
+var markerGroup = L.layerGroup();
+map.addLayer( markerGroup );
 
 function initStationData() 
 {
@@ -149,6 +152,14 @@ function initStationData()
   var url = apiBaseUrl+'/api/stations-geojson';
   axios.get(url).then(response => {
 	pointLayer.addData(response.data);
+	for ( var i = 0; i < response.data.features.length; ++i )
+	{
+		var feature =  response.data.features[i];
+		var label = feature.properties.abbreviation;
+        var m = L.marker( [feature.properties.latitude, feature.properties.longitude], {icon: L.ExtraMarkers.icon(extraOptions) )
+                  .bindPopup( popup ); 
+        markerGroup.addLayer( m );		
+	}
   });
  
 	
