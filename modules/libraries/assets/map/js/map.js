@@ -122,7 +122,7 @@ var pointLayer = new L.GeoJSON(null, {
     label = String(feature.properties.abbreviation) // Must convert to string, .bindTooltip can't use straight 'feature.properties.attribute'
     return new L.CircleMarker(latlng, {
       radius: 1,
-    }).bindTooltip(label, {permanent: true, opacity: 0.7}).openTooltip();
+    }).addTo(map).bindTooltip(label, {permanent: true, opacity: 0.7}).openTooltip();
     }
   });
 map.addLayer(pointLayer);
