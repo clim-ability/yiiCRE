@@ -20,6 +20,8 @@ class Station extends ActiveRecord
       public $label;
       public $description;
       public $abbreviation;
+      public $longitude;
+      public $latitude;	  
 	  
     public static function getDb() 
 	{
