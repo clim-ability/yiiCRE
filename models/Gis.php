@@ -162,7 +162,11 @@ class Gis extends ActiveRecord
       $epoch = Epoch::findBy($epoch);
       $scenario = Scenario::findBy($scenario);	  
 	  foreach($hazards as $hazard) {
-        $name = $hazard['name'];	  
+        $name = $hazard['name'];	
+        var_dump($hazard);
+        var_dump($parameter);
+        var_dump($epoch);
+        var_dump($scenario);		
         $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
 		var_dump($tableRel);
 		$valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
