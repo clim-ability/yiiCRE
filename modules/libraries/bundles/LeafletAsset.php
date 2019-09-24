@@ -34,5 +34,5 @@ class LeafletAsset extends AssetBundle
 		'js/jsts.min.js',
 		'js/leaflet-dvf.js',
     ];
-    public $depends = [];
+    public $depends = []; 
 }

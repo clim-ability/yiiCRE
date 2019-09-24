@@ -74,12 +74,18 @@ return [
             'sourcePath' => null, // do not publish the bundle
             'css' => [
                 'leaflet.css',
+				YII_ENV_DEV ? 'icon.css' : 'icon.min.css',
+				'css/leaflet.extra-markers.css',
+				'css/MarkerCluster.Default.css',				
+				'css/MarkerCluster.css',
             ],
             'js' => [
                 YII_ENV_DEV ? 'leaflet.js' : 'leaflet.min.js',
-				'javascript.util.min.js',
-				'jsts.min.js',
-				'leaflet-dvf.js',
+	        	'js/leaflet.markercluster.js',
+                YII_ENV_DEV ? 'leaflet.extra-markers.js' : 'leaflet.extra-markers.min.js',
+		        'js/javascript.util.min.js',
+		        YII_ENV_DEV ? 'jsts.js' : 'jsts.min.js',
+		        YII_ENV_DEV ? 'leaflet-dvf.js' : 'leaflet-dvf.min.js',				
             ],
         ],
         'app\modules\libraries\bundles\OpenlayersAsset' => [
