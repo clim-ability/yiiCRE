@@ -114,7 +114,6 @@ class Gis extends ActiveRecord
 		    $sql .= "SELECT '".$hazard."' as hazard, (rel.".$hazard."+abs.".$hazard.") as value "
 		        . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "
 				. " WHERE rel.id = abs.id ";		  
-			  
 		  } else {
 		    $sql .= "SELECT '".$hazard."' as hazard, ".$hazard." as value "
 		        . " FROM public.\"".$table."\" ";
@@ -127,8 +126,56 @@ class Gis extends ActiveRecord
 	   $connection = Yii::$app->pgsql_gisdata;	   
 	   $command = $connection->createCommand($sql);
        $result = $command->queryAll();
-	   return $result;	   
+	   $result2 = [];
+	   foreach($result as $res) {
+		   $result2[$res['hazard']] = $res; 
+	   }
+	   return $result2;	   
 	}
+
+    public static function getNormalizedHazards($latitude, $longitude, $epoch, $scenario)
+	{
+	  $result = [];
+      $hazardsList = [];
+	  $inclInvisible = false;
+	  $parameter = Parameter::findBy('mean');
+	  $hazards = Hazard::inqAllHazards($inclInvisible);	
+	  $epochs = Epoch::inqAllEpochs( $inclInvisible);
+	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
+	  foreach($hazards as $hazard)
+	   {
+	    foreach($epochs as $epoch)
+	    {
+	     foreach($scenarios as $scenario)
+	     {
+	       $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);	
+           $hazardsList[$table] = $hazard['name'];
+	     }
+	    }
+	  } 
+	  $normAbs = Gis::getHazardNorm($hazardsList, true);
+	  $normRel = Gis::getHazardNorm($hazardsList, false);
+      $elevation = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
+	  $river = Gis::getDistanceToRiver($latitude, $longitude);
+	  $city = Gis::getDistanceToCity($latitude, $longitude);
+	  $refEpoch = Epoch::findBy('1970-2000');
+      $epoch = Epoch::findBy($epoch);
+      $scenario = Scenario::findBy($scenario);	  
+	  foreach($hazards as $hazard) {
+        $name = $hazard['name'];	  
+        $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
+		$valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
+		$rel = ($valueRel[$name]['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
+	    $tableAbs = Gis::getRasterTable($hazard, $parameter, $refEpoch, null);		
+		$valueAbs = Gis::getCalculatedValue($tableAbs, $name, $latitude, $longitude);
+		$abs = ($valueAbs[$name]['value']  - $normAbs[$name]['avg'])/$normAbs[$name]['stddev'];
+		$result[$name] = ['abs_pos' => max(0.0, $abs), 'abs_neg' => min(0.0, $abs),'rel_pos' => max(0.0, $rel),'rel_neg' => min(0.0, $rel)];
+	  }  
+	     /// add river, distance, elevation,...
+      return $result;	  
+	}
+
+
 
     public static function getHazardsStatistic($hazards, $absolute=false)
 	{
