@@ -135,9 +135,9 @@ var extraOptions = {icon: 'fa-coffee',
 
 var pointLayer = new L.GeoJSON(null, {
 	pointToLayer: function (feature, latlng) {
-		return L.circleMarker(latlng, geojsonMarkerOptions);   // geht- kein label
+		//return L.circleMarker(latlng, geojsonMarkerOptions);   // geht- kein label
 		//return L.circleMarker(latlng, geojsonMarkerOptions).bindTooltip("my tooltip text").openTooltip()
-		//return L.marker(latlng, {icon: L.ExtraMarkers.icon(extraOptions)});
+		return L.marker( latlng, {icon: L.ExtraMarkers.icon(extraOptions)} );
 	}
 }).addTo(map);  
   
