@@ -238,8 +238,10 @@ return [
 		'MarkerCluster.css' => '//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css',		
 		'leaflet.markercluster.js' => '//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js',
         'leaflet.extra-markers.min.js' => '//cdn.jsdelivr.net/npm/leaflet-extra-markers@1.1.0/dist/js/leaflet.extra-markers.min.js',
+		'leaflet.extra-markers.js' => '//cdn.jsdelivr.net/npm/leaflet-extra-markers@1.1.0/dist/js/leaflet.extra-markers.js',
 		'javascript.util.min.js' => '//cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js',
 		'jsts.min.js' => '//cdnjs.cloudflare.com/ajax/libs/jsts/2.0.4/jsts.min.js',
+		'jsts.js' => '//cdnjs.cloudflare.com/ajax/libs/jsts/2.0.4/jsts.js',
 		'leaflet-dvf.js' => '//cdnjs.cloudflare.com/ajax/libs/leaflet-dvf/0.2.6/leaflet-dvf.js',
 	    //
         // ol3 - http://openlayers.org/
