@@ -73,13 +73,13 @@ class Station extends ActiveRecord
 		$longitude = new Expression('ST_X(location::geometry) AS longitude'); 
 		$latitude = new Expression('ST_Y(location::geometry) AS latitude');
 		$stations = $stations->select(['*', $longitude, $latitude]);
-		if(!$inclInvisible) {
-		   $stations = $stations->where(['visible' => true]);	
-		}
+		//if(!$inclInvisible) {
+		//   $stations = $stations->where(['visible' => true]);	
+		//}
 		$stations = $stations->limit(-1);
         $stations = $stations->orderBy(['name'=>SORT_ASC]);
 		
-		var_dump($stations->createCommand()->sql);
+		//var_dump($stations->createCommand()->sql);
 		
         return $stations->all();
 	}
