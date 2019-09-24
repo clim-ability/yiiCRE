@@ -227,7 +227,7 @@ class ApiController extends Controller
        foreach($stations as $station) {
 	   $station['abbreviation'] = $station['name'];	   
  	   $results[] = ['type'=>'Feature',
-			              'properties'=>['abbreviation' => $station['abbreviation']],
+			              'properties'=>['abbreviation' => yii::t('Station:abbreviation', $station['name'])],
 			              'geometry'=>['type'=>'Point', 
 						    'coordinates'=>[floatval($station['longitude']),
 							                floatval($station['latitude'])]]

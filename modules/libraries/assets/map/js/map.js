@@ -127,17 +127,22 @@ var geojsonMarkerOptions = {
 	fillOpacity: 0.6
 };
 
-var extraOptions = {icon: 'fa-coffee',
-    markerColor: 'red',
+function getMarkerOptions(label) {
+  var extraOptions = {icon: 'fa-number',
+    markerColor: 'yellow',
     shape: 'square',
-    prefix: 'fa'
+    prefix: 'fa',
+	number: label
+	
   };
+  return extraOptions;
+}  
 
 var pointLayer = new L.GeoJSON(null, {
 	pointToLayer: function (feature, latlng) {
 		//return L.circleMarker(latlng, geojsonMarkerOptions);   // geht- kein label
 		//return L.circleMarker(latlng, geojsonMarkerOptions).bindTooltip("my tooltip text").openTooltip()
-		return L.marker( latlng, {icon: L.ExtraMarkers.icon(extraOptions)} );
+		return L.marker( latlng, {icon: L.ExtraMarkers.icon(getMarkerOptions(feature.properties.abbreviation))} );
 	}
 }).addTo(map);  
   
@@ -152,6 +157,7 @@ function initStationData()
   var url = apiBaseUrl+'/api/stations-geojson';
   axios.get(url).then(response => {
 	pointLayer.addData(response.data);
+	/*
 	for ( var i = 0; i < response.data.length; ++i )
 	{
 		var feature =  response.data[i];
@@ -159,6 +165,7 @@ function initStationData()
         var m = L.marker( [feature.properties.latitude, feature.properties.longitude], {icon: L.ExtraMarkers.icon(extraOptions)} ); 
         markerGroup.addLayer( m );		
 	}
+	*/
   });
  
 	
