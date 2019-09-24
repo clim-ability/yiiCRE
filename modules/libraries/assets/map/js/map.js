@@ -119,17 +119,18 @@ geojsonLayerWells.on('click', onMapClick);
 
  
 var geojsonMarkerOptions = {
-	radius: 8,
-	fillColor: "#ff7800",
+	radius: 10,
+	fillColor: "#ffFF00",
 	color: "#000",
 	weight: 1,
 	opacity: 1,
-	fillOpacity: 0.8
+	fillOpacity: 0.6
 };
 
 var pointLayer = new L.GeoJSON(null, {
 	pointToLayer: function (feature, latlng) {
-		return L.circleMarker(latlng, geojsonMarkerOptions).bindTooltip("my tooltip text").openTooltip();
+		return L.circleMarker(latlng, geojsonMarkerOptions);
+		//return L.circleMarker(latlng, geojsonMarkerOptions).bindTooltip("my tooltip text").openTooltip()
 	}
 }).addTo(map);  
   
