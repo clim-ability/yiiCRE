@@ -155,6 +155,7 @@ class Gis extends ActiveRecord
 	  } 
 	  $normAbs = Gis::getHazardNorm($hazardsList, true);
 	  $normRel = Gis::getHazardNorm($hazardsList, false);
+return $normRel;	  
       $elevation = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
 	  $river = Gis::getDistanceToRiver($latitude, $longitude);
 	  $city = Gis::getDistanceToCity($latitude, $longitude);
