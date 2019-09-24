@@ -28,6 +28,11 @@ class LeafletAsset extends AssetBundle
     // List of js-files can also be defined in config/assets.php!
     public $js = [
         'js/leaflet.min.js',
+		'js/leaflet.markercluster.js',
+        'js/leaflet.extra-markers.min.js',
+		'js/javascript.util.min.js',
+		'js/jsts.min.js',
+		'js/leaflet-dvf.js',
     ];
     public $depends = [];
 }
