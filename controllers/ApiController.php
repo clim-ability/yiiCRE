@@ -222,7 +222,7 @@ class ApiController extends Controller
 
    public function actionStationsGeojson($mode='visible-only', $language='en')
    {
-	   $result = [];
+	   $results = [];
        $stations = Station::inqAllStations('invisible'==$mode);	   
        foreach($stations as $station) {
 	   $station['abbreviation'] = $station['name'];	   
@@ -235,7 +235,7 @@ class ApiController extends Controller
 	   }
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-       return $result;
+       return $results;
    }
   
    public function actionHazardValues($latitude, $longitude, $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
