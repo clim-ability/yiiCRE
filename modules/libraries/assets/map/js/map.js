@@ -130,6 +130,7 @@ var geojsonMarkerOptions = {
 function getMarkerOptions(label) {
   var extraOptions = {icon: 'fa-number',
     markerColor: 'yellow',
+	iconColor: 'black',
     shape: 'square',
     prefix: 'fa',
 	number: label
