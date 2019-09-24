@@ -101,7 +101,7 @@ class Gis extends ActiveRecord
 	   return $result;	   
 	}
 
-    public static function getHazardsNorm($hazards, $absolute=false)
+    public static function getHazardNorm($hazards, $absolute=false)
 	{
 	   $sql = "SELECT hazard, AVG(value) as avg, STDDEV(value) as stddev FROM (";
 	   $first = true;
