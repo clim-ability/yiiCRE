@@ -152,9 +152,9 @@ function initStationData()
   var url = apiBaseUrl+'/api/stations-geojson';
   axios.get(url).then(response => {
 	pointLayer.addData(response.data);
-	for ( var i = 0; i < response.data.features.length; ++i )
+	for ( var i = 0; i < response.data.length; ++i )
 	{
-		var feature =  response.data.features[i];
+		var feature =  response.data[i];
 		var label = feature.properties.abbreviation;
         var m = L.marker( [feature.properties.latitude, feature.properties.longitude], {icon: L.ExtraMarkers.icon(extraOptions)} ); 
         markerGroup.addLayer( m );		
