@@ -113,7 +113,7 @@ class Gis extends ActiveRecord
 	        $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);	
 		    $sql .= "SELECT '".$hazard."' as hazard, (rel.".$hazard."+abs.".$hazard.") as value "
 		        . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "
-				. " WHERE rel.id = abs.id GROUP BY hazard ";		  
+				. " WHERE rel.id = abs.id ";		  
 			  
 		  } else {
 		    $sql .= "SELECT '".$hazard."' as hazard, ".$hazard." as value "
