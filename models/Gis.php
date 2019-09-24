@@ -163,13 +163,10 @@ class Gis extends ActiveRecord
       $scenario3 = Scenario::findBy($scenario);	  
 	  foreach($hazards as $hazard) {
         $name = $hazard['name'];	
-        var_dump($hazard);
-        var_dump($parameter);
-        var_dump($epoch3);
-        var_dump($scenario3);		
+
         $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch3, $scenario3);
-		var_dump($tableRel);
 		$valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
+  var_dump($valueRel);		
 		$rel = ($valueRel[$name]['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
 	    $tableAbs = Gis::getRasterTable($hazard, $parameter, $refEpoch, null);		
 		$valueAbs = Gis::getCalculatedValue($tableAbs, $name, $latitude, $longitude);
