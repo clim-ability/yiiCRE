@@ -144,11 +144,11 @@ class Gis extends ActiveRecord
 	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
 	  foreach($hazards as $hazard)
 	   {
-	    foreach($epochs as $epoch)
+	    foreach($epochs as $epoch2)
 	    {
-	     foreach($scenarios as $scenario)
+	     foreach($scenarios as $scenario2)
 	     {
-	       $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);	
+	       $table = Gis::getRasterTable($hazard, $parameter, $epoch2, $scenario2);	
            $hazardsList[$table] = $hazard['name'];
 	     }
 	    }
@@ -159,15 +159,15 @@ class Gis extends ActiveRecord
 	  $river = Gis::getDistanceToRiver($latitude, $longitude);
 	  $city = Gis::getDistanceToCity($latitude, $longitude);
 	  $refEpoch = Epoch::findBy('1970-2000');
-      $epoch = Epoch::findBy($epoch);
-      $scenario = Scenario::findBy($scenario);	  
+      $epoch3 = Epoch::findBy($epoch);
+      $scenario3 = Scenario::findBy($scenario);	  
 	  foreach($hazards as $hazard) {
         $name = $hazard['name'];	
         var_dump($hazard);
         var_dump($parameter);
-        var_dump($epoch);
-        var_dump($scenario);		
-        $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
+        var_dump($epoch3);
+        var_dump($scenario3);		
+        $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch3, $scenario3);
 		var_dump($tableRel);
 		$valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
 		$rel = ($valueRel[$name]['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
