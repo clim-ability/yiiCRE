@@ -127,7 +127,7 @@ var geojsonMarkerOptions = {
 	fillOpacity: 0.8
 };
 
-var pointLayer = new L.geoJSON(null, {
+var pointLayer = L.geoJSON(null, {
 	pointToLayer: function (feature, latlng) {
 		return L.circleMarker(latlng, geojsonMarkerOptions);
 	}
