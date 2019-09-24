@@ -234,6 +234,8 @@ return [
         'leaflet.css' => '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css',
 		'icon.css' => '//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.css',
 		'icon.min.css' => '//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/icon.min.css',
+		'leaflet.extra-markers.css' => 'https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.1.0/dist/css/leaflet.extra-markers.min.css',
+		'leaflet.extra-markers.min.css' => 'https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.1.0/dist/css/leaflet.extra-markers.min.css',
 		'MarkerCluster.Default.css' => '//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.Default.css',				
 		'MarkerCluster.css' => '//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css',		
 		'leaflet.markercluster.js' => '//cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js',

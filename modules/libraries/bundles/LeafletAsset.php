@@ -24,6 +24,10 @@ class LeafletAsset extends AssetBundle
     // List of css-files can also be defined in config/assets.php!
     public $css = [
         'css/leaflet.css',
+		'css/leaflet.extra-markers.min.css',
+		'css/MarkerCluster.Default.css',
+		'css/MarkerCluster.css',
+		'css/icon.min.css'
     ];
     // List of js-files can also be defined in config/assets.php!
     public $js = [
