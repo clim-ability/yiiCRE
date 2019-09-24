@@ -117,7 +117,7 @@ class Gis extends ActiveRecord
 			  
 		  } else {
 		    $sql .= "SELECT '".$hazard."' as hazard, ".$hazard." as value "
-		        . " FROM public.\"".$table."\" GROUP BY hazard ";
+		        . " FROM public.\"".$table."\" ";
 		  }		
 		  $first = false;
 		   //var_dump($sql);
