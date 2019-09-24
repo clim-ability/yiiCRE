@@ -220,10 +220,10 @@ class ApiController extends Controller
        return $result;
    }
 
-   public function actionStationsGeojson()
+   public function actionStationsGeojson($mode='visible-only', $language='en')
    {
 	   $result = [];
-       $stations = Station::inqAllStations();	   
+       $stations = Station::inqAllStations('invisible'==$mode);	   
        foreach($stations as $station) {
 	   $station['abbreviation'] = $station['name'];	   
  	   $results[] = ['type'=>'Feature',
