@@ -101,6 +101,35 @@ class Gis extends ActiveRecord
 	   return $result;	   
 	}
 
+    public static function getHazardsNorm($hazards, $absolute=false)
+	{
+	   $sql = "SELECT hazard, AVG(value) as avg, STDDEV(value) as stddev FROM (";
+	   $first = true;
+	   foreach($hazards as $table=>$hazard) {
+		  if(!$first) { $sql .= " UNION ";}
+		  if($absolute) {
+		    $refEpoch = Epoch::findBy('1970-2000');
+	        $refParameter = Parameter::findBy('mean');
+	        $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);	
+		    $sql .= "SELECT '".$hazard."' as hazard, (rel.".$hazard."+abs.".$hazard.") as value "
+		        . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "
+				. " WHERE rel.id = abs.id GROUP BY hazard ";		  
+			  
+		  } else {
+		    $sql .= "SELECT '".$hazard."' as hazard, ".$hazard." as value "
+		        . " FROM public.\"".$table."\" GROUP BY hazard ";
+		  }		
+		  $first = false;
+		   //var_dump($sql);
+	   }	   
+	   $sql .= " ) as foo GROUP BY hazard ";
+	   //var_dump($sql);
+	   $connection = Yii::$app->pgsql_gisdata;	   
+	   $command = $connection->createCommand($sql);
+       $result = $command->queryAll();
+	   return $result;	   
+	}
+
     public static function getHazardsStatistic($hazards, $absolute=false)
 	{
 	    $sql = "SELECT ST_X(ST_Centroid(ST_Transform(geom, 4326))) as longitude, ST_Y(ST_Centroid(ST_Transform(geom, 4326))) as  latitude ";
