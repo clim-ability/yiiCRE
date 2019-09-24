@@ -155,7 +155,7 @@ class Gis extends ActiveRecord
 	  } 
 	  $normAbs = Gis::getHazardNorm($hazardsList, true);
 	  $normRel = Gis::getHazardNorm($hazardsList, false);
-return $normRel;	  
+//return $normRel;	  
       $elevation = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
 	  $river = Gis::getDistanceToRiver($latitude, $longitude);
 	  $city = Gis::getDistanceToCity($latitude, $longitude);
@@ -167,6 +167,7 @@ return $normRel;
 
         $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch3, $scenario3);
 		$valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
+		return $valueRel;
   var_dump($valueRel);	
   var_dump($normRel);
 echo('xx');  
