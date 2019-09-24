@@ -78,6 +78,9 @@ class Station extends ActiveRecord
 		}
 		$stations = $stations->limit(-1);
         $stations = $stations->orderBy(['name'=>SORT_ASC]);
+		
+		var_dump($stations->createCommand()->sql);
+		
         return $stations->all();
 	}
 	
