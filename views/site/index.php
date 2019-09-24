@@ -68,9 +68,28 @@ function tr($c, $m, $p = []) {
     <div id="informationfield">
     <template v-if="info === 'none'">
 	<br/>
-	<p><?php tr('hazard', 'To start choose your location by {clicking on the map} and/or change parameters.', 
+	<h3><?php tr('hazard', 'To start choose your location by {clicking on the map} and/or change parameters.', 
 	    ['clicking on the map' => '<strong>'.yii::t('hazard', 'clicking on the map').'</strong>']); ?> 
-    </p>
+    </h3>
+	<br/>
+	<p>
+	<?php tr('hazard', 'Die Karte zeigt den Klimawandel in der transnationalen Oberrheinregion, illustriert an {6 klimatischen Parametern}, deren projizierte Änderungen statistisch ausgewertet wurden.', 
+	    ['6 klimatischen Parametern' => '<strong>'.yii::t('hazard', '6 klimatischen Parametern').'</strong>']); ?> 
+	<?php tr('hazard', 'Jedes {Tortendiagramm} steht für eine Rasterzelle mit den Ausmaßen 18*18 km, für die die klimatischen Änderungen errechnet wurden.', 
+	    ['Tortendiagramm' => '<strong>'.yii::t('hazard', 'Tortendiagramm').'</strong>']); ?> 
+	<?php tr('hazard', 'Die Farben stehen für die einzelnen untersuchten Parameter.'); ?> 
+	<?php tr('hazard', 'Die kräftigen Farbtöne bedeuten eine im regionalen Vergleich besonders starke, die hellen Farbtöne eine besonders schwache erwartete Änderung.'); ?> 
+	<?php tr('hazard', 'Hat ein Tortendiagramm z. B. einen dunkelroten Anteil, dann werden sich dort die Tropennächte besonders stark erhöhen ({oberstes Quartil} = oberste 25% innerhalb der Oberrheinregion). ', 
+	    ['oberstes Quartil' => '<strong>'.yii::t('hazard', 'oberstes Quartil').'</strong>'); ?> 
+	<?php tr('hazard', 'Hat es hingegen einen schwachroten Anteil dann werden dort die Tropennächte eher wenig zunehmen ({unterstes Quartil} = untere 25% innerhalb der Oberrheinregion).', 
+	    ['unterstes Quartil' => '<strong>'.yii::t('hazard', 'unterstes Quartil').'</strong>']); ?> 
+	</p>
+	
+	<p>
+	<?php tr('hazard', 'Wichtig: Die Bewertungen beziehen sich auf den statistischen Vergleich der Rasterzellen innerhalb der Region und machen {keine Aussage zu absoluten Änderungswerten}.', 
+	    ['keine Aussage zu absoluten Änderungswerten' => '<strong>'.yii::t('hazard', 'keine Aussage zu absoluten Änderungswerten').'</strong>']); ?> 
+	<?php tr('hazard', 'Wir empfehlen daher, auf jeden Fall auch die Werte zu den einzelnen Parametern abzurufen.'); ?> 
+	</p>
     </template>	
    
     <template v-if="info !== 'none'">

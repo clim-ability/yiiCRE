@@ -1,0 +1,13 @@
+https://vuejs.org
+https://github.com/vuejs/vue
+https://www.npmjs.com/package/vue
+https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js
+https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.min.js
+2.5.22
+2019
+
+--
+https://router.vuejs.org/  # single page router
+https://vuex.vuejs.org/    # state managment
+(https://vue-loader.vuejs.org) # single file webpacks
+(https://github.com/vuejs/vue-rx)
