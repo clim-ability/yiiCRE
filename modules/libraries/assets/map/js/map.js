@@ -117,14 +117,22 @@ var geojsonLayerWells = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
 geojsonLayerWells.on('click', onMapClick);
 
-var pointLayer = new L.GeoJSON(null, {
-  pointToLayer: function(feature,latlng){
-    label = String(feature.properties.abbreviation) // Must convert to string, .bindTooltip can't use straight 'feature.properties.attribute'
-    return new L.CircleMarker(latlng, {
-      radius: 1,
-    }).addTo(map).bindTooltip(label, {permanent: true, opacity: 0.7}).openTooltip();
-    }
-  });
+ 
+var geojsonMarkerOptions = {
+	radius: 8,
+	fillColor: "#ff7800",
+	color: "#000",
+	weight: 1,
+	opacity: 1,
+	fillOpacity: 0.8
+};
+
+var pointLayer = new L.geoJSON(null, {
+	pointToLayer: function (feature, latlng) {
+		return L.circleMarker(latlng, geojsonMarkerOptions);
+	}
+}).addTo(map);  
+  
 map.addLayer(pointLayer);
 
 function initStationData() 
