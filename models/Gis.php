@@ -164,6 +164,7 @@ class Gis extends ActiveRecord
 	  foreach($hazards as $hazard) {
         $name = $hazard['name'];	  
         $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
+		var_dump($tableRel);
 		$valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
 		$rel = ($valueRel[$name]['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
 	    $tableAbs = Gis::getRasterTable($hazard, $parameter, $refEpoch, null);		
