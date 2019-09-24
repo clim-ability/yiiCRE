@@ -156,8 +156,7 @@ function initStationData()
 	{
 		var feature =  response.data.features[i];
 		var label = feature.properties.abbreviation;
-        var m = L.marker( [feature.properties.latitude, feature.properties.longitude], {icon: L.ExtraMarkers.icon(extraOptions) )
-                  .bindPopup( popup ); 
+        var m = L.marker( [feature.properties.latitude, feature.properties.longitude], {icon: L.ExtraMarkers.icon(extraOptions)} ); 
         markerGroup.addLayer( m );		
 	}
   });
