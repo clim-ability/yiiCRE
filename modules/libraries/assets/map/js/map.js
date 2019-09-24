@@ -129,7 +129,7 @@ var geojsonMarkerOptions = {
 
 var pointLayer = new L.GeoJSON(null, {
 	pointToLayer: function (feature, latlng) {
-		return L.circleMarker(latlng, geojsonMarkerOptions);
+		return L.circleMarker(latlng, geojsonMarkerOptions).bindTooltip('x', {permanent: true, opacity: 0.7}).openTooltip();
 	}
 }).addTo(map);  
   
