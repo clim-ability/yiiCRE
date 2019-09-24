@@ -129,12 +129,12 @@ map.addLayer(pointLayer);
 
 function initStationData() 
 {
-	/*
+
   var url = apiBaseUrl+'/api/stations-geojson';
   axios.get(url).then(response => {
 	pointLayer.addData(response.data);
   });
-*/  
+ 
 	
 }
 
