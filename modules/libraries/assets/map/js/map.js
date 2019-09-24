@@ -127,10 +127,17 @@ var geojsonMarkerOptions = {
 	fillOpacity: 0.6
 };
 
+var extraOptions = {icon: 'fa-coffee',
+    markerColor: 'red',
+    shape: 'square',
+    prefix: 'fa'
+  };
+
 var pointLayer = new L.GeoJSON(null, {
 	pointToLayer: function (feature, latlng) {
-		return L.circleMarker(latlng, geojsonMarkerOptions);
+		//return L.circleMarker(latlng, geojsonMarkerOptions);   // geht- kein label
 		//return L.circleMarker(latlng, geojsonMarkerOptions).bindTooltip("my tooltip text").openTooltip()
+		return L.marker(latlng, {icon: L.ExtraMarkers.icon(extraOptions)});
 	}
 }).addTo(map);  
   
