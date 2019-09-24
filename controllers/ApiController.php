@@ -129,39 +129,9 @@ class ApiController extends Controller
        
    }
    
-   public function actionHazardNormals($hazard='', $epoch='', $scenario='', $mode='relative')
+   public function actionHazardNormals($latitude, $longitude, $epoch='', $scenario='')
    {
-      $hazardsList = [];
-	  $inclInvisible = false;
-	  $parameters = ['mean'];
-	  $hazards = Hazard::inqAllHazards($inclInvisible);
-	  if ('' != $hazard) {
-	    $hazards = [Hazard::findBy($hazard)];
-	  }
-	  $epochs = Epoch::inqAllEpochs( $inclInvisible);
-	  if ('' != $epoch) {
-	    $epochs = [Epoch::findBy($epoch)];
-	  }
-	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
-	  if ('' != $scenario) {
-	    $scenarios = [Scenario::findBy($scenario)];
-	  }
-      foreach($parameters as $parameter)
-	  {	 
-	   $parameter = Parameter::findBy($parameter);
-	   foreach($hazards as $hazard)
-	   {
-	    foreach($epochs as $epoch)
-	    {
-	     foreach($scenarios as $scenario)
-	     {
-	       $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);	
-           $hazardsList[$table] = $hazard['name'];
-	     }
-	    }
-	   }
-	  } 
-	  $result = Gis::getHazardNorm($hazardsList, 'absolute'==$mode);
+	  $result = Gis::getNormalizedHazards($latitude, $longitude, $epoch, $scenario);
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       return $result;		   
