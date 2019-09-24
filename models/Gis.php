@@ -155,7 +155,7 @@ class Gis extends ActiveRecord
 	  } 
 	  $normAbs = Gis::getHazardNorm($hazardsList, true);
 	  $normRel = Gis::getHazardNorm($hazardsList, false);
-//return $normRel;	  
+  
       $elevation = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
 	  $river = Gis::getDistanceToRiver($latitude, $longitude);
 	  $city = Gis::getDistanceToCity($latitude, $longitude);
@@ -167,14 +167,11 @@ class Gis extends ActiveRecord
 
         $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch3, $scenario3);
 		$valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
-		return $valueRel;
-  var_dump($valueRel);	
-  var_dump($normRel);
-echo('xx');  
-		$rel = ($valueRel[$name]['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
+
+		$rel = ($valueRel['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
 	    $tableAbs = Gis::getRasterTable($hazard, $parameter, $refEpoch, null);		
 		$valueAbs = Gis::getCalculatedValue($tableAbs, $name, $latitude, $longitude);
-		$abs = ($valueAbs[$name]['value']  - $normAbs[$name]['avg'])/$normAbs[$name]['stddev'];
+		$abs = ($valueAbs['value']  - $normAbs[$name]['avg'])/$normAbs[$name]['stddev'];
 		$result[$name] = ['abs_pos' => max(0.0, $abs), 'abs_neg' => min(0.0, $abs),'rel_pos' => max(0.0, $rel),'rel_neg' => min(0.0, $rel)];
 	  }  
 	     /// add river, distance, elevation,...
