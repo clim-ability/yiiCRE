@@ -208,6 +208,44 @@ class Gis extends ActiveRecord
         return $results;		
 	}
 
+    public static function adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $danger, $value)
+	{
+		$connection = Yii::$app->pgsql_cre;
+		$results = [];
+		$hazards = Gis::getNormalizedHazards($latitude, $longitude, $epoch, $scenario);
+		$inclInvisible = false;
+		$dangers = Danger::inqAllDangers($inclInvisible);
+		foreach($dangers as $danger) {
+			$results[$danger['name']] = 0.0;	
+		    foreach($hazards as $hazardName=>$values) {
+			   $hazardId = Hazard::findBy($hazardName)['id'];
+			   $sql = 'SELECT abs_pos, abs_neg, rel_pos, rel_neg FROM public.hazard_danger WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger['id'];
+               $command = $connection->createCommand($sql);
+               $factors = $command->queryOne();
+			   $corrFactors = [];
+			   $corrOffsets = [];
+               $sql2 = 'UPDATE public.hazard_danger SET updated_at=now() ';
+			   foreach(['abs_pos', 'abs_neg', 'rel_pos', 'rel_neg'] as $key) {
+				  if (($value*$factors[$key]) > 0.0) {
+					  $corrFactors[$key] = ($hazardName == $hazard) ? 1.1 : 0.99;
+					  $corrOffsets[$key] = ($hazardName == $hazard) ? +0.01 : -0.001;
+				  } else {
+					  $corrFactors[$key] = ($hazardName == $hazard) ? 0.9 : 1.01;
+					  $corrOffsets[$key] = ($hazardName == $hazard) ? -0.01 : +0.001;
+				  }
+				  $corrOffsets[$key] += 0.001*(rand(0,1000)/1000-0.5)
+				  $sql2 += ','.$key.'='.($factors[$key]*$corrFactors[$key]+$corrOffsets[$key]).' '
+			   }
+			   $sql2 = 'WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger['id'];
+               $command = $connection->createCommand($sql);	
+			   $command->execute();
+		    }
+            		
+		}
+		return true;
+		
+	}
+
     public static function getHazardsStatistic($hazards, $absolute=false)
 	{
 	    $sql = "SELECT ST_X(ST_Centroid(ST_Transform(geom, 4326))) as longitude, ST_Y(ST_Centroid(ST_Transform(geom, 4326))) as  latitude ";

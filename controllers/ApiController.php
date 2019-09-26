@@ -13,6 +13,7 @@ use app\models\Parameter;
 use app\models\Scenario;
 use app\models\Station;
 use app\models\Gis;
+use app\models\User;
 use app\modules\translation\models\Language;
 //use yii\web\NotFoundHttpException;
 //use yii\data\ActiveDataProvider;
@@ -139,6 +140,16 @@ class ApiController extends Controller
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       return $results;		   
+   }
+   
+   public function actionAdaptDangers($latitude, $longitude, $epoch='', $scenario='', $hazard='all', $danger='', $value=0.0)
+   {
+	   if(User::hasRole('sysadmin')) {
+		   Gis::adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $danger);
+	   }
+	//  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	   return true;
    }
    
    public function actionHazardExtremes($hazard='', $epoch='', $scenario='')
