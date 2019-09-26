@@ -626,7 +626,7 @@ var vueInfo = new Vue({
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
 		  url = url + '&danger='+danger+'&value='+value.toString();
           axios.get(url).then(response => {
-			 console.log('Adapted?');
+			 console.log('Adapted?:'+response.data.danger+' '+response.data.value);
 	      });
 		}		  
 	}

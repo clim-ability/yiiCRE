@@ -157,7 +157,7 @@ class ApiController extends Controller
 	   }
 	//  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-	   return true;
+	   return ['danger' => $danger, 'value'=>$value*1.1];
    }
    
    public function actionHazardExtremes($hazard='', $epoch='', $scenario='')
