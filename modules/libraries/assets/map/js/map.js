@@ -589,7 +589,7 @@ var vueInfo = new Vue({
              for (var i = 0; i < response.data.length; i++) {
                var danger = response.data[i];
 			   if(danger.value > 0.0) {
-                  this.dangerText += danger.name+', ';
+                  this.dangerText += danger.label+', ';
 			   }
 			 }			   
 	      });		  
@@ -627,6 +627,11 @@ var vueInfo = new Vue({
 		  url = url + '&danger='+danger+'&value='+value.toString();
           axios.get(url).then(response => {
 			 console.log('Adapted?:'+response.data.danger+' '+response.data.value);
+             for (var i = 0; i < this.dangers.length; i++) {
+               if(this.dangers[i].name == response.data.danger) {
+				   this.dangers[i].value += response.data.value/10.0;
+			   }
+			 }
 	      });
 		}		  
 	}

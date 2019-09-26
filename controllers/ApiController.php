@@ -143,7 +143,7 @@ class ApiController extends Controller
 	  $results = []; 
 	  $dangers = Gis::getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard);
 	  foreach($dangers as $danger=>$value) {
-		 $results[] = ['value'=> $value, 'name'=> yii::t('Danger:name', $danger)];
+		 $results[] = ['value'=> $value, 'name'=>$danger, 'label'=> yii::t('Danger:name', $danger)];
 	  }
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

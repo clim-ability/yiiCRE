@@ -218,7 +218,7 @@ function tr($c, $m, $p = []) {
 	     tr('hazards', 'Dabei können die Naturgefahren {{dangerText}} auftreten.'); 
 	     echo '<br/><table class="table">';
 		 echo '<tr v-for="danger in dangers">';
-		   echo '<td>{{danger.name}}</td><td>{{danger.value}}</td>';
+		   echo '<td>{{danger.label}}</td><td>{{danger.value}}</td>';
 		   echo '<td><button v-on:click="voteDanger(danger.name, 1.0)">'; 
 		     tr('Danger:name', 'Mehr'); 
 		   echo '</button></td>';
