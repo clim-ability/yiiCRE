@@ -584,14 +584,10 @@ var vueInfo = new Vue({
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
           axios.get(url).then(response => {
 			 this.dangers = '';
-			 for (var key in response.data) {
-              // check if the property/key is defined in the object itself, not in parent
-               if (response.data.hasOwnProperty(key)) {           
-                  var danger = response.data[key];
-                  this.dangers += danger.name+', ';				  
-               }
-             }
-		   
+             for (var i = 0; i < response.data.length; i++) {
+               var danger = response.data[i];
+               this.dangers += danger.name+', ';
+			 }			   
 	      });		  
 	    }
 	},
