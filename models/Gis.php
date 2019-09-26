@@ -231,11 +231,11 @@ class Gis extends ActiveRecord
 		$hazards = Gis::getNormalizedHazards($latitude, $longitude, $epoch, $scenario);
 		$inclInvisible = false;
 		$dangers = Danger::inqAllDangers($inclInvisible);
-		foreach($dangers as $danger) {
-			$results[$danger['name']] = 0.0;	
+		foreach($dangers as $danger2) {
+			$results[$danger2['name']] = 0.0;	
 		    foreach($hazards as $hazardName=>$values) {
 			   $hazardId = Hazard::findBy($hazardName)['id'];
-			   $sql = 'SELECT abs_pos, abs_neg, rel_pos, rel_neg FROM public.hazard_danger WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger['id'];
+			   $sql = 'SELECT abs_pos, abs_neg, rel_pos, rel_neg FROM public.hazard_danger WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger2['id'];
                $command = $connection->createCommand($sql);
                $factors = $command->queryOne();
 			   $corrFactors = [];
@@ -243,16 +243,20 @@ class Gis extends ActiveRecord
                $sql2 = 'UPDATE public.hazard_danger SET updated_at=now() ';
 			   foreach(['abs_pos', 'abs_neg', 'rel_pos', 'rel_neg'] as $key) {
 				  if (($value*$factors[$key]) > 0.0) {
-					  $corrFactors[$key] = ($hazardName == $hazard) ? 1.1 : 0.99;
-					  $corrOffsets[$key] = ($hazardName == $hazard) ? +0.01 : -0.001;
+					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1.1 : 0.99;           
+					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? +0.01 : -0.001;
 				  } else {
-					  $corrFactors[$key] = ($hazardName == $hazard) ? 0.9 : 1.01;
-					  $corrOffsets[$key] = ($hazardName == $hazard) ? -0.01 : +0.001;
+					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 0.9 : 1.01;
+					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? -0.01 : +0.001;
+				  }
+				  if($hazardName == $hazard) {
+					 $corrFactors[$key] = $corrFactors[$key]*$corrFactors[$key];
+					 $corrOffsets[$key] = 2.0*$corrOffsets[$key];
 				  }
 				  $corrOffsets[$key] += 0.001*(rand(0,1000)/1000-0.5);
 				  $sql2 .= ','.$key.'='.($factors[$key]*$corrFactors[$key]+$corrOffsets[$key]).' ';
 			   }
-			   $sql2 .= 'WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger['id'];
+			   $sql2 .= 'WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger2['id'];
 			   //var_dump($sql2);
                $command2 = $connection->createCommand($sql2);	
 			   $command2->execute();
