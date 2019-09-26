@@ -184,7 +184,26 @@ class Gis extends ActiveRecord
       return $result;	  
 	}
 
-
+    public static function getNormalizedDangers($latitude, $longitude, $epoch, $scenario)
+	{
+		$connection = Yii::$app->pgsql_cre;
+		$results = [];
+		$hazards = Gis::getNormalizedHazards($latitude, $longitude, $epoch, $scenario);
+		$dangers = Danger::inqAllDangers($inclInvisible);
+		foreach($dangers as $danger) {
+			$results[$danger['name']] = 0.0;	
+		    foreach($hazards as $hazard=>$values) {
+			   $hazardId = Hazard::findBy($hazard);
+			   $sql = 'SELECT abs_pos, abs_neg, rel_pos, rel_neg FROM public.hazard_danger WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger['id'];
+               $command = $connection->createCommand($sql);
+               $factors = $command->queryAll();
+			   foreach(['abs_pos', 'abs_neg', 'rel_pos', 'rel_neg'] as $key) {
+	              $results[$danger['name']] += $factors[$key] * $values[$key];
+			   }
+		    }			
+		}
+        return $results;		
+	}
 
     public static function getHazardsStatistic($hazards, $absolute=false)
 	{
