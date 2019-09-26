@@ -145,7 +145,7 @@ class ApiController extends Controller
    public function actionAdaptDangers($latitude, $longitude, $epoch='', $scenario='', $hazard='all', $danger='', $value=0.0)
    {
 	   if(User::hasRole('sysadmin')) {
-		   Gis::adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $danger);
+		   Gis::adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $danger, $value);
 	   }
 	//  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
