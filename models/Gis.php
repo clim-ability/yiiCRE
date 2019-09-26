@@ -179,7 +179,7 @@ class Gis extends ActiveRecord
       $river = Gis::getDistanceToRiver($latitude, $longitude);	  
 	  $riverRel = $river['catchment']/($river['distance']+1.0);	
       $riverAbs = $river['length']/($river['distance']+100.0)/10;		  
-	  $result['hq'] = ['abs_pos' => $riverAbs, 'abs_neg' => (200.0+$river['distance'])/1000.0, 'rel_pos' => $riverRel,'rel_neg' => $river['distance']/100.0];
+	  $result['hq'] = ['abs_pos' => $riverAbs, 'abs_neg' => (200.0+$river['distance'])/1000.0, 'rel_pos' => $riverRel,'rel_neg' => $river['distance']/500.0];
 	  /// add city
       return $result;	  
 	}
