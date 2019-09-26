@@ -581,7 +581,7 @@ var vueInfo = new Vue({
 	         this.infoVisible = true;
 	      });
 	      var url = apiBaseUrl+'/api/rated-dangers';
-	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard'=this.currHazard;
+	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
           axios.get(url).then(response => {
 	         this.dangers = response.data; 
 	      });		  
