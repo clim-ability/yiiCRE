@@ -173,9 +173,9 @@ class Gis extends ActiveRecord
         $name = $hazard['name'];	
         $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch3, $scenario3);
 	    $tableAbs = Gis::getRasterTable($hazard, $parameter, $refEpoch, null);
-		var_dump($tableRel)
+		var_dump($tableRel);
         var_dump(Layer::findByName($tableRel));
-		var_dump($tableAbs)
+		var_dump($tableAbs);
         var_dump(Layer::findByName($tableAbs));		
         if(Layer::findByName($tableRel) and Layer::findByName($tableAbs)) {		
 		  $valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
