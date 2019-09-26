@@ -2,6 +2,8 @@
 use app\modules\libraries\bundles\MapAsset;
 use yii\helpers\Url;
 use app\modules\translation\widgets\LanguageTranslate;
+use app\models\User;
+
 $assets = MapAsset::register($this);
 
 header('Access-Control-Allow-Origin: *');
@@ -211,7 +213,13 @@ function tr($c, $m, $p = []) {
      </p>
     </template>
 
-    <p><?php tr('hazards', 'Dabei muss man vermehrt mit den Naturgefahren {{dangers}} rechnen.'); ?></p>
+    <p><?php 
+	   if(User::hasRole('sysadmin')) {
+	     tr('hazards', 'Dabei können die Naturgefahren {{dangers}} auftreten.'); 
+	  
+
+	   }	  
+	   ?></p>
 
 	</div> <!-- end #informationfield -->
    </div> <!-- end md-6 -->
