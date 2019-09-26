@@ -197,8 +197,10 @@ class Gis extends ActiveRecord
 			   $hazardId = Hazard::findBy($hazard)['id'];
 			   $sql = 'SELECT abs_pos, abs_neg, rel_pos, rel_neg FROM public.hazard_danger WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger['id'];
                $command = $connection->createCommand($sql);
-               $factors = $command->queryAll();
+               $factors = $command->queryOne();
 			   foreach(['abs_pos', 'abs_neg', 'rel_pos', 'rel_neg'] as $key) {
+				   $a = $factors[$key];
+				   $b = $values[$key];
 	              $results[$danger['name']] += $factors[$key] * $values[$key];
 			   }
 		    }			
