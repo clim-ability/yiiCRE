@@ -106,6 +106,7 @@ class Gis extends ActiveRecord
 	   $sql = "SELECT hazard, AVG(value) as avg, STDDEV(value) as stddev FROM (";
 	   $first = true;
 	   foreach($hazards as $table=>$hazard) {
+		 if(Layer::findByName($table)) {		   
 		  if(!$first) { $sql .= " UNION ";}
 		  if($absolute) {
 		    $refEpoch = Epoch::findBy('1970-2000');
@@ -120,6 +121,7 @@ class Gis extends ActiveRecord
 		  }		
 		  $first = false;
 		   //var_dump($sql);
+		 }
 	   }	   
 	   $sql .= " ) as foo GROUP BY hazard ";
 	   //var_dump($sql);
