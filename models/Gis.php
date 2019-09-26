@@ -233,8 +233,8 @@ class Gis extends ActiveRecord
 					  $corrFactors[$key] = ($hazardName == $hazard) ? 0.9 : 1.01;
 					  $corrOffsets[$key] = ($hazardName == $hazard) ? -0.01 : +0.001;
 				  }
-				  $corrOffsets[$key] += 0.001*(rand(0,1000)/1000-0.5)
-				  $sql2 += ','.$key.'='.($factors[$key]*$corrFactors[$key]+$corrOffsets[$key]).' '
+				  $corrOffsets[$key] += 0.001*(rand(0,1000)/1000-0.5);
+				  $sql2 += ','.$key.'='.($factors[$key]*$corrFactors[$key]+$corrOffsets[$key]).' ';
 			   }
 			   $sql2 = 'WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger['id'];
                $command = $connection->createCommand($sql);	
