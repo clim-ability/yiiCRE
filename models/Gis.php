@@ -173,7 +173,7 @@ class Gis extends ActiveRecord
    
 	  $elevationRel = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
 	  $elevationExt = Gis::getHazardExtremes(['elevation_mean' => 'elev'])[0];
-	  $elev = ($elevationRel - $elevationExt['min']) / ($elevationExt['max']- $elevationExt['min']);
+	  $elev = ($elevationRel['value'] - $elevationExt['min']) / ($elevationExt['max']- $elevationExt['min']);
 	  $result['height'] = ['abs_pos' => $elev, 'abs_neg' => 1.0-$elev, 'rel_pos' => max(0.0, ($elev-0.5)),'rel_neg' => 0.0 - min(0.0, ($elev-0.5))];
 	  $result['const'] = ['abs_pos' => 1.0, 'abs_neg' => 1.0, 'rel_pos' => 1.0,'rel_neg' => 1.0];
       $river = Gis::getDistanceToRiver($latitude, $longitude);	  
