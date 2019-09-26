@@ -214,7 +214,7 @@ class Gis extends ActiveRecord
 			   $sql = 'SELECT abs_pos, abs_neg, rel_pos, rel_neg FROM public.hazard_danger WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger['id'];
                $command = $connection->createCommand($sql);
                $factors = $command->queryOne();
-			   $factor = ($hazardName == $hazard) ? 2.0 : 1.0;
+			   $factor = ($hazardName == $hazard) ? 1.2 : 1.0;
 			   foreach(['abs_pos', 'abs_neg', 'rel_pos', 'rel_neg'] as $key) {
 	              $results[$danger['name']] += $factors[$key] * $values[$key] * $factor;
 			   }
