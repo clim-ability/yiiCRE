@@ -151,7 +151,9 @@ class Gis extends ActiveRecord
 	     foreach($scenarios as $scenario2)
 	     {
 	       $table = Gis::getRasterTable($hazard, $parameter, $epoch2, $scenario2);	
-           $hazardsList[$table] = $hazard['name'];
+		   if(Layer::findByName($table)) {
+             $hazardsList[$table] = $hazard['name'];
+		   }
 	     }
 	    }
 	  } 
@@ -165,12 +167,15 @@ class Gis extends ActiveRecord
 	  foreach($hazards as $hazard) {
         $name = $hazard['name'];	
         $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch3, $scenario3);
-		$valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
-		$rel = ($valueRel['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
-	    $tableAbs = Gis::getRasterTable($hazard, $parameter, $refEpoch, null);		
-		$valueAbs = Gis::getCalculatedValue($tableAbs, $name, $latitude, $longitude);
-		$abs = ($valueAbs['value']  - $normAbs[$name]['avg'])/$normAbs[$name]['stddev'];
-		$result[$name] = ['abs_pos' => max(0.0, $abs), 'abs_neg' => 0.0 - min(0.0, $abs),'rel_pos' => max(0.0, $rel),'rel_neg' => 0.0 - min(0.0, $rel)];
+	    $tableAbs = Gis::getRasterTable($hazard, $parameter, $refEpoch, null);			
+        if(Layer::findByName($tableRel) && Layer::findByName($tableAbs)) {		
+		  $valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
+		  $rel = ($valueRel['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
+	
+		  $valueAbs = Gis::getCalculatedValue($tableAbs, $name, $latitude, $longitude);
+		  $abs = ($valueAbs['value']  - $normAbs[$name]['avg'])/$normAbs[$name]['stddev'];
+		  $result[$name] = ['abs_pos' => max(0.0, $abs), 'abs_neg' => 0.0 - min(0.0, $abs),'rel_pos' => max(0.0, $rel),'rel_neg' => 0.0 - min(0.0, $rel)];
+		}
 	  }  
    
 	  $elevationRel = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
