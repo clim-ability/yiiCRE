@@ -105,8 +105,10 @@ class Gis extends ActiveRecord
 	{
 	   $sql = "SELECT hazard, AVG(value) as avg, STDDEV(value) as stddev FROM (";
 	   $first = true;
+	   $somethingFound=false;
 	   foreach($hazards as $table=>$hazard) {
-		 if(Layer::findByName($table)) {		   
+		 if(Layer::findByName($table)) {
+          $somethingFound=true;			 
 		  if(!$first) { $sql .= " UNION ";}
 		  if($absolute) {
 		    $refEpoch = Epoch::findBy('1970-2000');
@@ -125,12 +127,15 @@ class Gis extends ActiveRecord
 	   }	   
 	   $sql .= " ) as foo GROUP BY hazard ";
 	   //var_dump($sql);
-	   $connection = Yii::$app->pgsql_gisdata;	   
-	   $command = $connection->createCommand($sql);
-       $result = $command->queryAll();
-	   $result2 = [];
-	   foreach($result as $res) {
+	   $result2 = [];	   
+	   if(somethingFound) {
+	    $connection = Yii::$app->pgsql_gisdata;	   
+	    $command = $connection->createCommand($sql);
+        $result = $command->queryAll();
+
+	    foreach($result as $res) {
 		   $result2[$res['hazard']] = $res; 
+	    }
 	   }
 	   return $result2;	   
 	}
