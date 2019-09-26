@@ -139,7 +139,7 @@ class Gis extends ActiveRecord
       $hazardsList = [];
 	  $inclInvisible = false;
 	  $parameter = Parameter::findBy('mean');
-	  $hazards = Hazard::inqAllHazards($inclInvisible);	
+	  $hazards = Hazard::inqAllHazards(true);	//$inclInvisible
 	  $epochs = Epoch::inqAllEpochs( $inclInvisible);
 	  $scenarios = Scenario::inqAllScenarios( $inclInvisible);
 	  foreach($hazards as $hazard)
