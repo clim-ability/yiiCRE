@@ -586,7 +586,9 @@ var vueInfo = new Vue({
 			 this.dangers = '';
              for (var i = 0; i < response.data.length; i++) {
                var danger = response.data[i];
-               this.dangers += danger.name+', ';
+			   if(danger.value > 0.0) {
+                  this.dangers += danger.name+', ';
+			   }
 			 }			   
 	      });		  
 	    }
