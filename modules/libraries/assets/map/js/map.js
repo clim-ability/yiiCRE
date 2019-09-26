@@ -619,12 +619,16 @@ var vueInfo = new Vue({
 	},
 	voteDanger(danger, value) {
 		console.log(danger+': '+value.toString());
-		var url = apiBaseUrl+'/api/adapt-dangers';
+		var latitude = getCurrentLatitude();
+		var longitude = getCurrentLongitude();
+		if (latitude !== 0 && longitude !== 0) {
+		  var url = apiBaseUrl+'/api/adapt-dangers';
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
 		  url = url + '&danger='+danger+'&value='+value.toString();
           axios.get(url).then(response => {
 			 console.log('Adapted?');
-	      });	
+	      });
+		}		  
 	}
   },
   computed: {
