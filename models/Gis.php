@@ -184,7 +184,7 @@ class Gis extends ActiveRecord
       return $result;	  
 	}
 
-    public static function getNormalizedDangers($latitude, $longitude, $epoch, $scenario)
+    public static function getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard='any')
 	{
 		$connection = Yii::$app->pgsql_cre;
 		$results = [];
@@ -193,19 +193,18 @@ class Gis extends ActiveRecord
 		$dangers = Danger::inqAllDangers($inclInvisible);
 		foreach($dangers as $danger) {
 			$results[$danger['name']] = 0.0;	
-		    foreach($hazards as $hazard=>$values) {
-			   $hazardId = Hazard::findBy($hazard)['id'];
+		    foreach($hazards as $hazardName=>$values) {
+			   $hazardId = Hazard::findBy($hazardName)['id'];
 			   $sql = 'SELECT abs_pos, abs_neg, rel_pos, rel_neg FROM public.hazard_danger WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger['id'];
                $command = $connection->createCommand($sql);
                $factors = $command->queryOne();
+			   $factor = ($hazardName == $hazard) ? 2.0 : 1.0;
 			   foreach(['abs_pos', 'abs_neg', 'rel_pos', 'rel_neg'] as $key) {
-				   $a = $factors[$key];
-				   $b = $values[$key];
-	              $results[$danger['name']] += $factors[$key] * $values[$key];
+	              $results[$danger['name']] += $factors[$key] * $values[$key] * $factor;
 			   }
 		    }			
 		}
-        return $results;		
+        return arsort($results);		
 	}
 
     public static function getHazardsStatistic($hazards, $absolute=false)
