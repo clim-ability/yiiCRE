@@ -204,7 +204,8 @@ class Gis extends ActiveRecord
 			   }
 		    }			
 		}
-        return arsort($results);		
+		arsort($results);
+        return $results;		
 	}
 
     public static function getHazardsStatistic($hazards, $absolute=false)
