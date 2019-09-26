@@ -554,7 +554,7 @@ var vueInfo = new Vue({
 	currEpoch: '',
 	currSzenario: '',
 	nearestStation: {},
-	dangers: {}
+	dangers: ''
   },
   methods: { 
     switchHazard(hazard) {
@@ -583,7 +583,11 @@ var vueInfo = new Vue({
 	      var url = apiBaseUrl+'/api/rated-dangers';
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
           axios.get(url).then(response => {
-	         this.dangers = response.data; 
+			  this.dangers = '';
+             for (var i = 0; i < response.data.length; i++) {
+               var danger = response.data[i];
+               this.dangers += danger.name+', ';
+			 }			   
 	      });		  
 	    }
 	},

@@ -211,6 +211,7 @@ function tr($c, $m, $p = []) {
      </p>
     </template>
 
+    <p><?php tr('hazards', 'Dabei muss man vermehrt mit den Naturgefahren {{dangers}} rechnen.'); ?></p>
 
 	</div> <!-- end #informationfield -->
    </div> <!-- end md-6 -->
