@@ -155,26 +155,32 @@ class Gis extends ActiveRecord
 	  } 
 	  $normAbs = Gis::getHazardNorm($hazardsList, true);
 	  $normRel = Gis::getHazardNorm($hazardsList, false);
-  
-      $elevation = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
-	  $river = Gis::getDistanceToRiver($latitude, $longitude);
+
 	  $city = Gis::getDistanceToCity($latitude, $longitude);
 	  $refEpoch = Epoch::findBy('1970-2000');
       $epoch3 = Epoch::findBy($epoch);
       $scenario3 = Scenario::findBy($scenario);	  
 	  foreach($hazards as $hazard) {
         $name = $hazard['name'];	
-
         $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch3, $scenario3);
 		$valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
-
 		$rel = ($valueRel['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
 	    $tableAbs = Gis::getRasterTable($hazard, $parameter, $refEpoch, null);		
 		$valueAbs = Gis::getCalculatedValue($tableAbs, $name, $latitude, $longitude);
 		$abs = ($valueAbs['value']  - $normAbs[$name]['avg'])/$normAbs[$name]['stddev'];
-		$result[$name] = ['abs_pos' => max(0.0, $abs), 'abs_neg' => min(0.0, $abs),'rel_pos' => max(0.0, $rel),'rel_neg' => min(0.0, $rel)];
+		$result[$name] = ['abs_pos' => max(0.0, $abs), 'abs_neg' => 0.0 - min(0.0, $abs),'rel_pos' => max(0.0, $rel),'rel_neg' => 0.0 - min(0.0, $rel)];
 	  }  
-	     /// add river, distance, elevation,...
+   
+	  $elevationRel = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
+	  $elevationExt = Gis::getHazardExtremes(['elevation_mean' => 'elev'])[0];
+	  $elev = ($elevationRel - $elevationExt['min']) / ($elevationExt['max']- $elevationExt['min']);
+	  $result['height'] = ['abs_pos' => $elev, 'abs_neg' => 1.0-$elev, 'rel_pos' => max(0.0, ($elev-0.5)),'rel_neg' => 0.0 - min(0.0, ($elev-0.5))];
+	  $result['const'] = ['abs_pos' => 1.0, 'abs_neg' => 1.0, 'rel_pos' => 1.0,'rel_neg' => 1.0];
+      $river = Gis::getDistanceToRiver($latitude, $longitude);	  
+	  $riverRel = $river['catchment']/($river['distance']+1.0)	
+      $riverAbs = $river['length']/($river['distance']+1.0)		  
+	  $result['hq'] = ['abs_pos' => $riverAbs, 'abs_neg' => (200.0+$river['distance'])/100.0, 'rel_pos' => $riverRel,'rel_neg' => $river['distance']/100.0];
+	  /// add city
       return $result;	  
 	}
 
