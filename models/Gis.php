@@ -173,7 +173,7 @@ class Gis extends ActiveRecord
         $name = $hazard['name'];	
         $tableRel = Gis::getRasterTable($hazard, $parameter, $epoch3, $scenario3);
 	    $tableAbs = Gis::getRasterTable($hazard, $parameter, $refEpoch, null);			
-        if(Layer::findByName($tableRel) && Layer::findByName($tableAbs)) {		
+        if(Layer::findByName($tableRel) and Layer::findByName($tableAbs)) {		
 		  $valueRel = Gis::getCalculatedValue($tableRel, $name, $latitude, $longitude);
 		  $rel = ($valueRel['value']  - $normRel[$name]['avg'])/$normRel[$name]['stddev'];		 
 	

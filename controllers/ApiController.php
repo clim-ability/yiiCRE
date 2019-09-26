@@ -129,6 +129,14 @@ class ApiController extends Controller
        return $result;
        
    }
+
+   public function actionNormalizedHazards($latitude, $longitude, $epoch='', $scenario='')
+   {
+	  $hazards = Gis::getNormalizedHazards($latitude, $longitude, $epoch, $scenario);
+	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      return $hazards;		   
+   }
    
    public function actionRatedDangers($latitude, $longitude, $epoch='', $scenario='', $hazard='all')
    {
