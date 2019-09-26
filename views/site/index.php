@@ -213,6 +213,7 @@ function tr($c, $m, $p = []) {
      </p>
     </template>
 
+    <template v-if="((info !== 'none'))">
     <p><?php 
 	   if(User::hasRole('sysadmin')) {
 	     tr('hazards', 'Dabei können die Naturgefahren {{dangerText}} auftreten.'); 
@@ -229,7 +230,8 @@ function tr($c, $m, $p = []) {
          echo '</table>';
 	   }	  
 	   ?></p>
-
+    </template>
+	
 	</div> <!-- end #informationfield -->
    </div> <!-- end md-6 -->
 
