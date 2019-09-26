@@ -236,12 +236,13 @@ class Gis extends ActiveRecord
 		    foreach($hazards as $hazardName=>$values) {
 			   $hazardId = Hazard::findBy($hazardName)['id'];
 			   $sql = 'SELECT abs_pos, abs_neg, rel_pos, rel_neg FROM public.hazard_danger WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger2['id'];
-               $command = $connection->createCommand($sql);
-               $factors = $command->queryOne();
-			   $corrFactors = [];
-			   $corrOffsets = [];
-               $sql2 = 'UPDATE public.hazard_danger SET updated_at=now() ';
+                           $command = $connection->createCommand($sql);
+                           $factors = $command->queryOne();
+			   $corrFactors = ['abs_pos'=>1.0, 'abs_neg'=>1.0, 'rel_pos'=>1.0, 'rel_neg'=>1.0];
+			   $corrOffsets = ['abs_pos'=>0.0, 'abs_neg'=>0.0, 'rel_pos'=>0.0, 'rel_neg'=>0.0];
+                           $sql2 = 'UPDATE public.hazard_danger SET updated_at=now() ';
 			   foreach(['abs_pos', 'abs_neg', 'rel_pos', 'rel_neg'] as $key) {
+                              if($values[$key]>0.001) {
 				  if (($value*$factors[$key]) > 0.0) {
 					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1.1 : 0.99;           
 					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? +0.01 : -0.001;
@@ -253,12 +254,13 @@ class Gis extends ActiveRecord
 					 $corrFactors[$key] = $corrFactors[$key]*$corrFactors[$key];
 					 $corrOffsets[$key] = 2.0*$corrOffsets[$key];
 				  }
-				  $corrOffsets[$key] += 0.001*(rand(0,1000)/1000-0.5);
-				  $sql2 .= ','.$key.'='.($factors[$key]*$corrFactors[$key]+$corrOffsets[$key]).' ';
+                               }
+			       $corrOffsets[$key] += 0.001*(rand(0,1000)/1000-0.5);
+			       $sql2 .= ','.$key.'='.($factors[$key]*$corrFactors[$key]+$corrOffsets[$key]).' ';
 			   }
 			   $sql2 .= 'WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger2['id'];
 			   //var_dump($sql2);
-               $command2 = $connection->createCommand($sql2);	
+                           $command2 = $connection->createCommand($sql2);	
 			   $command2->execute();
 		    }
             		
