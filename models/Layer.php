@@ -27,26 +27,26 @@ class Layer extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'year_begin', 'year_end'], 'required'],
+            [['name', 'variable', 'hazard_id', 'parameter_id', 'epoch_id', 'scenario_id', 'layer'], 'required'],
             [['visible'], 'boolean'],
-            [['name', 'description'], 'string'],
-            [['year_begin', 'year_end'], 'integer']
+            [['name', 'description', 'layer', 'variable'], 'string'],
+            [['hazard_id', 'parameter_id', 'epoch_id', 'scenario_id'], 'integer']
 
         ];
     }
 	
 	public function inqAllEpochs( $inclInvisible = false ) {
-	    $epochs = Epoch::find();
+	    $epochs = Layer::find();
 		if(!$inclInvisible) {
 		   $epochs = $epochs->where(['visible' => true]);	
 		}
-        $epochs = $epochs->orderBy(['year_begin'=>SORT_ASC, 'year_end'=>SORT_ASC]);
+        $epochs = $epochs->orderBy(['name'=>SORT_ASC]);
         return $epochs->all();
 	}
 	
 	public static function findById($id)
     {
-        $epoch = Epoch::find()
+        $epoch = Layer::find()
             ->where(['id' => $id])
             ->one();
         return $epoch;
@@ -54,7 +54,7 @@ class Layer extends ActiveRecord
 	
 	public static function findByName($name)
     {
-        $epoch = Epoch::find()
+        $epoch = Layer::find()
             ->where(['name' => $name])
 			->orderBy(['id'=>SORT_DESC])
             ->one();
@@ -66,11 +66,11 @@ class Layer extends ActiveRecord
 		$epoch = NULL;
 		if(is_numeric($idOrName))
 		{
-		   $epoch = Epoch::findById((int)$idOrName);	
+		   $epoch = Layer::findById((int)$idOrName);	
 		} 
 		elseif(is_string($idOrName)) 
 		{
-		   $epoch = Epoch::findByName($idOrName);
+		   $epoch = Layer::findByName($idOrName);
 		}
 		return $epoch;
 	}	
