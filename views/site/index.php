@@ -216,7 +216,7 @@ function tr($c, $m, $p = []) {
     <p><?php 
 	   if(User::hasRole('sysadmin')) {
 	     tr('hazards', 'Dabei können die Naturgefahren {{dangerText}} auftreten.'); 
-	     echo '<br/><table class='table'>';
+	     echo '<br/><table class="table">';
 		 echo '<row v-for="danger in dangers">';
 		   echo '<td>danger.name</td><td>danger.value</td>';
 		   echo '<td><button v-on:click="voteDanger(danger.name, 1.0)">'; 
