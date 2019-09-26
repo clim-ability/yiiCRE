@@ -189,6 +189,7 @@ class Gis extends ActiveRecord
 		$connection = Yii::$app->pgsql_cre;
 		$results = [];
 		$hazards = Gis::getNormalizedHazards($latitude, $longitude, $epoch, $scenario);
+		$inclInvisible = false;
 		$dangers = Danger::inqAllDangers($inclInvisible);
 		foreach($dangers as $danger) {
 			$results[$danger['name']] = 0.0;	
