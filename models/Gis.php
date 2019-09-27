@@ -331,7 +331,7 @@ class Gis extends ActiveRecord
 	   return $result;	  
 	}	
 
-	public static function getHazardGeometry($table, $variable, $bbox, , $absolute=false)
+	public static function getHazardGeometry($table, $variable, $bbox, $absolute=false)
 	{
 	if($absolute) {
 	 $refEpoch = Epoch::findBy('1970-2000');
