@@ -308,7 +308,7 @@ class ApiController extends Controller
        
    }    
    
-   public function actionHazardGeom($hazard='', $epoch='', $scenario='', $parameter='mean', $resolution=0.1, $bbox='') 
+   public function actionHazardGeom($hazard='', $epoch='', $scenario='', $parameter='mean', $resolution=0.1, $bbox='', $absolute='') 
    {
 	   $hazard = Hazard::findBy($hazard);
        $epoch = Epoch::findBy($epoch);
@@ -317,7 +317,7 @@ class ApiController extends Controller
 	   $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
 	   $features = [];
 	   if(is_string($table)) {
-		  $rows = Gis::getHazardGeometry($table, $hazard['name'], $bbox);
+		  $rows = Gis::getHazardGeometry($table, $hazard['name'], $bbox, !empty($absolute));
           foreach($rows as $row) {
 		     $feature = ['type' => 'Feature', 'geometry' => json_decode($row['geojson'], true), 'properties' => ['value' => $row['value']]];
              $features[] = $feature;

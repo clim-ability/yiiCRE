@@ -386,6 +386,7 @@ var statisticOptions = {
         hazard: hazard,
         epoch: epoch,
         scenario: scenario,
+		absolute: absMode
         };
 	  redrawParameters();
     }	

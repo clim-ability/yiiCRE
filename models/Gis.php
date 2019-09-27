@@ -331,16 +331,26 @@ class Gis extends ActiveRecord
 	   return $result;	  
 	}	
 
-	public static function getHazardGeometry($table, $variable, $bbox)
+	public static function getHazardGeometry($table, $variable, $bbox, , $absolute=false)
 	{
+	if($absolute) {
+	 $refEpoch = Epoch::findBy('1970-2000');
+	 $refParameter = Parameter::findBy('mean');
+	 $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);		
+	 $sql =  "SELECT (rel.".$variable."+abs.".$variable.") AS value, "
+	  . "ST_AsGeoJSON(ST_Transform((geom),4326),6) AS geojson "
+      . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "		
+	  . " WHERE rel.id = abs.id ";
+	} else {
 	 $sql =  "SELECT ".$variable." AS value, "
 	  . "ST_AsGeoJSON(ST_Transform((geom),4326),6) AS geojson "
-      . " FROM public.\"".$table."\" ";
-
+      . " FROM public.\"".$table."\" "
+	  . " WHERE 1==1 ";
+	}
      if (is_string($bbox) && (strlen($bbox) > 6)) {
        $bbox = explode(',', $bbox);
 	   if (4 == sizeof($bbox)) {
-         $sql = $sql . " WHERE ST_Transform(geom, 4326) && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].", ".$bbox[1]."), ST_Point(".$bbox[2].", ".$bbox[3].")),4326);";
+         $sql = $sql . " AND ST_Transform(geom, 4326) && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].", ".$bbox[1]."), ST_Point(".$bbox[2].", ".$bbox[3].")),4326);";
        }
      }	
      //$connection = Yii::$app->db2;
