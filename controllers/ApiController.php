@@ -160,7 +160,7 @@ class ApiController extends Controller
 	   return ['danger' => $danger, 'value'=>$value*1.1];
    }
    
-   public function actionHazardExtremes($hazard='', $epoch='', $scenario='')
+   public function actionHazardExtremes($hazard='', $epoch='', $scenario='', $absolute='')
    {
       $hazardsList = [];
 	  $inclInvisible = false;
@@ -203,7 +203,7 @@ class ApiController extends Controller
 	  }
       var_dump($hazardsList);
       */	  
-	  $result = Gis::getHazardExtremes($hazardsList);
+	  $result = Gis::getHazardExtremes($hazardsList, !empty($absolute));
 	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       return $result;	  

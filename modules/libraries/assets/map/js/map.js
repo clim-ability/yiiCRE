@@ -472,17 +472,23 @@ var vueSelect = new Vue({
 	    }
 	    if('all' != this.hazard) {
 		  //mk// updateChartData();
+		  var url = apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard;
+          if('abs' == absMode) {
+            url += '&absolute=true';
+		  }			  
   		  axios
-            .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
-		    //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
+            .get(url)
             .then(response => { 
 		      setExtremeValuesGlobal(response.data[0].min, response.data[0].max);
               setParametersOnMap(this.hazard, this.epoch, this.scenario);	
 		      updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);				
 	    	});	
+		  var url = apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario;
+          if('abs' == absMode) {
+            url += '&absolute=true';
+		  }	
   		  axios
-            //.get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard)
-		    .get(apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard+'&epoch='+this.epoch+'&scenario='+this.scenario)
+		    .get(url)
             .then(response => { 
 		      setExtremeValuesLocal(response.data[0].min, response.data[0].max);
               setParametersOnMap(this.hazard, this.epoch, this.scenario);	

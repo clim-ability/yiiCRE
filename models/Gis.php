@@ -81,15 +81,24 @@ class Gis extends ActiveRecord
 	 return $result;
 	}
 
-    public static function getHazardExtremes($hazards)
+    public static function getHazardExtremes($hazards, $absolute=false)
 	{
 	   $sql = "SELECT hazard, MIN(min) as min, MAX(max) as max FROM (";
 	   $first = true;
 	   foreach($hazards as $table=>$hazard) {
 		  if(!$first) { $sql .= " UNION ";}
+          if($absolute) {
+		    $refEpoch = Epoch::findBy('1970-2000');
+	        $refParameter = Parameter::findBy('mean');
+	        $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);		  
+			  { 
+		  $sql .= "SELECT '".$hazard."' as hazard, MIN(rel.".$hazard."+abs.".$hazard.") as min, MAX(rel.".$hazard."+abs.".$hazard.") as max "
+		        . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "
+				. " WHERE rel.id = abs.id ";		  
+	   } else {
 		  $sql .= "SELECT '".$hazard."' as hazard, MIN(".$hazard.") as min, MAX(".$hazard.") as max "
-		  //$sql .= "SELECT '".$hazard."' as hazard, (AVG(".$hazard.") - 1.0*STDDEV(".$hazard.")) as min, (AVG(".$hazard.") + 1.0*STDDEV(".$hazard.")) as max "
-		        . " FROM public.\"".$table."\" GROUP BY hazard ";
+		         . " FROM public.\"".$table."\" GROUP BY hazard ";
+	   }
 		  $first = false;
 		   //var_dump($sql);
 	   }	   
