@@ -123,7 +123,7 @@ class Gis extends ActiveRecord
 	        $refParameter = Parameter::findBy('mean');
 	        $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);	
             if(('rr_summer'==$hazard) or ('rr_winter'==$hazard))	 {
-                 $sql .= "SELECT '".$hazard."' as hazard, ((100.0+rel.".$hazard.")*abs.".$hazard."/100.0) AS value as value ";		 
+                 $sql .= "SELECT '".$hazard."' as hazard, ((100.0+rel.".$hazard.")*abs.".$hazard."/100.0) AS value ";		 
         	 } else {
 	             $sql .= "SELECT '".$hazard."' as hazard, (rel.".$hazard."+abs.".$hazard.") as value ";
 	        }			
