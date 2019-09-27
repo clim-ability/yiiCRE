@@ -317,7 +317,7 @@ class ApiController extends Controller
 	   $table = Gis::getRasterTable($hazard, $parameter, $epoch, $scenario);
 	   $features = [];
 	   if(is_string($table)) {
-		  $rows = Gis::getHazardGeometry($table, $hazard['name'], $bbox, !empty($absolute));
+		  $rows = Gis::getHazardGeometry($table, $hazard['name'], $bbox, ('abs' == $absolute));
           foreach($rows as $row) {
 		     $feature = ['type' => 'Feature', 'geometry' => json_decode($row['geojson'], true), 'properties' => ['value' => $row['value']]];
              $features[] = $feature;

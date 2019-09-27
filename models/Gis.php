@@ -122,8 +122,12 @@ class Gis extends ActiveRecord
 		    $refEpoch = Epoch::findBy('1970-2000');
 	        $refParameter = Parameter::findBy('mean');
 	        $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);	
-		    $sql .= "SELECT '".$hazard."' as hazard, (rel.".$hazard."+abs.".$hazard.") as value "
-		        . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "
+            if(('rr_summer'==$hazard) or ('rr_winter'==$hazard))	 {
+                 $sql .= "SELECT '".$hazard."' as hazard, ((100.0+rel.".$hazard.")*abs.".$hazard."/100.0) AS value as value ";		 
+        	 } else {
+	             $sql .= "SELECT '".$hazard."' as hazard, (rel.".$hazard."+abs.".$hazard.") as value ";
+	        }			
+		    $sql .= " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "
 				. " WHERE rel.id = abs.id ";		  
 		  } else {
 		    $sql .= "SELECT '".$hazard."' as hazard, ".$hazard." as value "
@@ -336,9 +340,13 @@ class Gis extends ActiveRecord
 	if($absolute) {
 	 $refEpoch = Epoch::findBy('1970-2000');
 	 $refParameter = Parameter::findBy('mean');
-	 $refTable = Gis::getRasterTable(Hazard::findBy($variable), $refParameter, $refEpoch, null);		
-	 $sql =  "SELECT (rel.".$variable."+abs.".$variable.") AS value, "
-	  . "ST_AsGeoJSON(ST_Transform((rel.geom),4326),6) AS geojson "
+	 $refTable = Gis::getRasterTable(Hazard::findBy($variable), $refParameter, $refEpoch, null);
+     if(('rr_summer'==$variable) or ('rr_winter'==$variable))	 {
+         $sql =  "SELECT ((100.0+rel.".$variable.")*abs.".$variable."/100.0) AS value, ";		 
+	 } else {
+	     $sql =  "SELECT (rel.".$variable."+abs.".$variable.") AS value, ";
+	 }
+	 $sql = $sql + " ST_AsGeoJSON(ST_Transform((rel.geom),4326),6) AS geojson "
       . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "		
 	  . " WHERE rel.id = abs.id ";
 	} else {
