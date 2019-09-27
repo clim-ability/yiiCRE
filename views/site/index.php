@@ -11,11 +11,16 @@ header('Access-Control-Allow-Origin: *');
 function tr($c, $m, $p = []) {
     echo LanguageTranslate::widget(['category' => $c, 'message' => $m, 'params' => $p]);
 }
+
+function md() {
+	return ('abs' == Yii::$app->getRequest()->getQueryParam('mode'));
+}
 ?>
 
 <script>
     var mapBaseUrl = "<?php echo $assets->baseUrl; ?>";
 	var apiBaseUrl = "<?php echo Url::home('https'); ?>";
+	var absMode = "<?php echo md()?'abs':'rel'; ?>";
 </script>
 
 <div id="climateinspector">
@@ -71,7 +76,7 @@ function tr($c, $m, $p = []) {
     <template v-if="info === 'none'">
 	<br/>
 	<h3 style="display:inline;"><?php tr('hazard', 'To start choose your location by'); ?> </h3>
-	<button class="btn-lg" style="display:inline;" v-on:click="getGeoLocation()"><?php tr('hazard', 'clicking on the map'); ?></button>
+	<button class="btn-lg" style="display:inline;" v-on:click="getGeoLocation()"><b><?php tr('hazard', 'clicking on the map'); ?></b></button>
 	<h3 style="display:inline;"><?php tr('hazard', 'and/or change parameters.'); ?></h3>
 	<br/>
 	<p>
