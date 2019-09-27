@@ -336,7 +336,7 @@ class Gis extends ActiveRecord
 	if($absolute) {
 	 $refEpoch = Epoch::findBy('1970-2000');
 	 $refParameter = Parameter::findBy('mean');
-	 $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);		
+	 $refTable = Gis::getRasterTable(Hazard::findBy($variable), $refParameter, $refEpoch, null);		
 	 $sql =  "SELECT (rel.".$variable."+abs.".$variable.") AS value, "
 	  . "ST_AsGeoJSON(ST_Transform((geom),4326),6) AS geojson "
       . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "		
@@ -345,7 +345,7 @@ class Gis extends ActiveRecord
 	 $sql =  "SELECT ".$variable." AS value, "
 	  . "ST_AsGeoJSON(ST_Transform((geom),4326),6) AS geojson "
       . " FROM public.\"".$table."\" "
-	  . " WHERE 1==1 ";
+	  . " WHERE 1=1 ";
 	}
      if (is_string($bbox) && (strlen($bbox) > 6)) {
        $bbox = explode(',', $bbox);
