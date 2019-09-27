@@ -70,8 +70,8 @@ function tr($c, $m, $p = []) {
     <div id="informationfield">
     <template v-if="info === 'none'">
 	<br/>
-	<h3><?php tr('hazard', 'To start choose your location by {clicking on the map} and/or change parameters.', 
-	    ['clicking on the map' => '<strong v-on:mousedown="getGeoLocation()">'.yii::t('hazard', 'clicking on the map').'</strong>']); ?> 
+	<h3 style="display:inline;"><?php tr('hazard', 'To start choose your location by {clicking on the map} and/or change parameters.', 
+	    ['clicking on the map' => '</h3><button v-on:mousedown="getGeoLocation()"><h3 style="display:inline;"><strong>'.yii::t('hazard', 'clicking on the map').'</strong></h3></button><h3 style="display:inline;">']); ?> 
     </h3><button v-on:click="getGeoLocation()">test</button>
 	<br/>
 	<p>
