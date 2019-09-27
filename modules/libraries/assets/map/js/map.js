@@ -596,8 +596,11 @@ var vueInfo = new Vue({
 	    }
 	},
 	getGeoLocation() {
+	  console.log('geo clicked');	
 	  if (navigator.geolocation) { 
+	    console.log('geo available');
         navigator.geolocation.getCurrentPosition(function(position) {
+		  console.log('geo got');
           let latitude = position.coords.latitude;
           let longitude = position.coords.longitude;
 	      var e = {'latlng': {'lat': latitude, 'lng': longitude}};
