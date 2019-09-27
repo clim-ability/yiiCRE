@@ -489,9 +489,12 @@ var vueSelect = new Vue({
 	    	  updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);				
 	  	  });		
         } else {
+	      var url = apiBaseUrl+'/api/hazards-statistic?epoch='+this.epoch+'&scenario='+this.scenario;
+          if('abs' == absMode) {
+            url += '&absolute=true';
+		  }			  
   		  axios
-            // .get(apiBaseUrl+'/api/hazards-statistic?epoch='+this.epoch+'&scenario='+this.scenario+'&absolute=true')
-			.get(apiBaseUrl+'/api/hazards-statistic?epoch='+this.epoch+'&scenario='+this.scenario)
+			.get(url)
             .then(response => { 
               setStatisticData(response.data);		
 		      setParametersOnMap(this.hazard, this.epoch, this.scenario);		
