@@ -338,19 +338,19 @@ class Gis extends ActiveRecord
 	 $refParameter = Parameter::findBy('mean');
 	 $refTable = Gis::getRasterTable(Hazard::findBy($variable), $refParameter, $refEpoch, null);		
 	 $sql =  "SELECT (rel.".$variable."+abs.".$variable.") AS value, "
-	  . "ST_AsGeoJSON(ST_Transform((geom),4326),6) AS geojson "
+	  . "ST_AsGeoJSON(ST_Transform((rel.geom),4326),6) AS geojson "
       . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "		
 	  . " WHERE rel.id = abs.id ";
 	} else {
 	 $sql =  "SELECT ".$variable." AS value, "
-	  . "ST_AsGeoJSON(ST_Transform((geom),4326),6) AS geojson "
-      . " FROM public.\"".$table."\" "
+	  . "ST_AsGeoJSON(ST_Transform((rel.geom),4326),6) AS geojson "
+      . " FROM public.\"".$table."\" AS rel "
 	  . " WHERE 1=1 ";
 	}
      if (is_string($bbox) && (strlen($bbox) > 6)) {
        $bbox = explode(',', $bbox);
 	   if (4 == sizeof($bbox)) {
-         $sql = $sql . " AND ST_Transform(geom, 4326) && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].", ".$bbox[1]."), ST_Point(".$bbox[2].", ".$bbox[3].")),4326);";
+         $sql = $sql . " AND ST_Transform(rel.geom, 4326) && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].", ".$bbox[1]."), ST_Point(".$bbox[2].", ".$bbox[3].")),4326);";
        }
      }	
      //$connection = Yii::$app->db2;
