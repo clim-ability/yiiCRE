@@ -595,6 +595,16 @@ var vueInfo = new Vue({
 	      });		  
 	    }
 	},
+	getGeoLocation() {
+	  if (navigator.geolocation) { 
+        navigator.geolocation.getCurrentPosition(function(position) {
+          let latitude = position.coords.latitude;
+          let longitude = position.coords.longitude;
+	      var e = {latlng: {lat:latitude lng: longitude}};
+	      onMapClick(e);
+	    });
+      }		
+	},
 	roundedValue(value, digits) {
 	   var pot = Math.pow(10.0, digits);
 	   return Math.round(pot*parseFloat(value))/pot;
