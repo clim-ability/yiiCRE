@@ -600,7 +600,7 @@ var vueInfo = new Vue({
         navigator.geolocation.getCurrentPosition(function(position) {
           let latitude = position.coords.latitude;
           let longitude = position.coords.longitude;
-	      var e = {latlng: {lat:latitude lng: longitude}};
+	      var e = {'latlng': {'lat': latitude, 'lng': longitude}};
 	      onMapClick(e);
 	    });
       }		
