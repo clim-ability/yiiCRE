@@ -72,7 +72,7 @@ function tr($c, $m, $p = []) {
 	<br/>
 	<h3><?php tr('hazard', 'To start choose your location by {clicking on the map} and/or change parameters.', 
 	    ['clicking on the map' => '<strong v-on:mousedown="getGeoLocation()">'.yii::t('hazard', 'clicking on the map').'</strong>']); ?> 
-    </h3>
+    </h3><button v-on:click="getGeoLocation()">test</button>
 	<br/>
 	<p>
 	<?php tr('hazard', 'Die Karte zeigt den Klimawandel in der transnationalen Oberrheinregion, illustriert an {6 klimatischen Parametern}, deren projizierte Änderungen statistisch ausgewertet wurden.', 
