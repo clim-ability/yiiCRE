@@ -71,7 +71,7 @@ function tr($c, $m, $p = []) {
     <template v-if="info === 'none'">
 	<br/>
 	<h3><?php tr('hazard', 'To start choose your location by {clicking on the map} and/or change parameters.', 
-	    ['clicking on the map' => '<strong v-on:click="getGeoLocation()">'.yii::t('hazard', 'clicking on the map').'</strong>']); ?> 
+	    ['clicking on the map' => '<button v-on:click="getGeoLocation()">'.yii::t('hazard', 'clicking on the map').'</button>']); ?> 
     </h3>
 	<br/>
 	<p>
