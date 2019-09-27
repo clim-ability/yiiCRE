@@ -91,8 +91,7 @@ class Gis extends ActiveRecord
 		    $refEpoch = Epoch::findBy('1970-2000');
 	        $refParameter = Parameter::findBy('mean');
 	        $refTable = Gis::getRasterTable(Hazard::findBy($hazard), $refParameter, $refEpoch, null);		  
-			  { 
-		  $sql .= "SELECT '".$hazard."' as hazard, MIN(rel.".$hazard."+abs.".$hazard.") as min, MAX(rel.".$hazard."+abs.".$hazard.") as max "
+		    $sql .= "SELECT '".$hazard."' as hazard, MIN(rel.".$hazard."+abs.".$hazard.") as min, MAX(rel.".$hazard."+abs.".$hazard.") as max "
 		        . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "
 				. " WHERE rel.id = abs.id ";		  
 	   } else {
