@@ -346,7 +346,7 @@ class Gis extends ActiveRecord
 	 } else {
 	     $sql =  "SELECT (rel.".$variable."+abs.".$variable.") AS value, ";
 	 }
-	 $sql = $sql + " ST_AsGeoJSON(ST_Transform((rel.geom),4326),6) AS geojson "
+	 $sql = $sql . " ST_AsGeoJSON(ST_Transform((rel.geom),4326),6) AS geojson "
       . " FROM public.\"".$table."\" AS rel, public.\"".$refTable."\" as abs "		
 	  . " WHERE rel.id = abs.id ";
 	} else {
