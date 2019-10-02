@@ -1,6 +1,7 @@
 <?php
 use app\modules\libraries\bundles\MapAsset;
 use yii\helpers\Url;
+use yii\bootstrap\Tabs;
 use app\modules\translation\widgets\LanguageTranslate;
 use app\models\User;
 
@@ -221,7 +222,22 @@ function md() {
     <template v-if="((info !== 'none'))">
     <p><?php 
 	   if(User::hasRole('sysadmin')) {
+
+		   
 	     tr('hazards', 'Dabei können die Naturgefahren {{dangerText}} auftreten.'); 
+ 
+        echo Tabs::widget([ 
+           'items' => [
+		      [ 'label' => 'Dangers',
+			    'content' => 'no d',
+			    'active' => true
+			  ],
+			  [ 'label' => 'Risks',
+			    'content' => 'no r',
+			  ]
+		   ]
+        ]);		
+
 	     echo '<br/><table class="table">';
 		 echo '<tr v-for="danger in dangers">';
 		   echo '<td>{{danger.label}}</td><td>{{danger.value}}</td>';
