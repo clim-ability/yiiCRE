@@ -10,7 +10,8 @@ class m191002_110843_create_sector_risk_table extends Migration {
             'id' => Schema::TYPE_PK,
 			'sector_id' => 'integer NOT NULL REFERENCES sector(id) ON DELETE CASCADE',
             'risk_id' => 'integer NOT NULL REFERENCES risk(id) ON DELETE CASCADE',			
-            'impact' => Schema::TYPE_DOUBLE . ' DEFAULT 0.5',
+            'factor' => Schema::TYPE_DOUBLE . ' DEFAULT 0.5',
+			'offset' => Schema::TYPE_DOUBLE . ' DEFAULT 0.5',
             'created_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
             'updated_at' => 'timestamp with time zone NOT NULL DEFAULT now()',
         ]);
@@ -19,7 +20,8 @@ class m191002_110843_create_sector_risk_table extends Migration {
         foreach([1,2,3,4,5,6,7,8,9,10,11,12] as $section_id) {
 			foreach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45] as $risk_id) {
 				$r1 = 0.5+0.1*(rand(0, 1000)/1000.0);
-		        $this->insert('sector_risk', [ 'risk_id' => $risk_id, 'sector_id' => $section_id, 'impact' => $r1]);
+				$r2 = 0.5+0.1*(rand(0, 1000)/1000.0);
+		        $this->insert('sector_risk', [ 'risk_id' => $risk_id, 'sector_id' => $section_id, 'factor' => $r1, 'offset' => $r2]);
 		    }
 		}
 		$this->updateRisk(1, [4,6,8,12], 0.9);
@@ -101,7 +103,8 @@ class m191002_110843_create_sector_risk_table extends Migration {
 	private function updateRisk($risk_id, $sections, $impact) {
 		foreach($sections as $section_id) {
 		   $r1 = $impact+0.0001*(rand(0, 1000)/1000.0);
-		   $this->update('sector_risk', ['impact' => $r1], ['risk_id' => $risk_id, 'sector_id' => $section_id]);
+		   $r2 = $impact+0.0001*(rand(0, 1000)/1000.0);
+		   $this->update('sector_risk', ['factor' => $r1, 'offset' => $r2], ['risk_id' => $risk_id, 'sector_id' => $section_id]);
 		}
 	}
 
