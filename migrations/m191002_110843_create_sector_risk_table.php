@@ -95,7 +95,7 @@ class m191002_110843_create_sector_risk_table extends Migration {
     }
 
     public function safeDown() {
-        $this->dropTable('section_risk');
+        $this->dropTable('sector_risk');
     }
 	
 	private function updateRisk($risk_id, $sections, $impact) {
