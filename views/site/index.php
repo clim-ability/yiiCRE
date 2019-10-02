@@ -253,11 +253,11 @@ function md() {
 		 
         echo Tabs::widget([ 
            'items' => [
-		      [ 'label' => yii::t('Danger:name', 'Dangers')],
+		      [ 'label' => yii::t('Danger:name', 'Dangers'),
 			    'content' => $dangers,
 			    'active' => true
 			  ],
-			  [ 'label' => yii::t('Risk:name', 'Risks')],
+			  [ 'label' => yii::t('Risk:name', 'Risks'),
 			    'content' => $risks,
 			  ]
 		   ]
