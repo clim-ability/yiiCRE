@@ -17,8 +17,8 @@ class m191002_100843_create_danger_risk_table extends Migration {
 		$this->insert('risk', [ 'name' => 'Finanzierungsrisiken', 'zone_id' => 11,'visible' => true]);
 		
 		// initialize each combination
-        foreach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25] in $danger_id) {
-			foreach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45] in $risk_id) {
+        foreach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25] as $danger_id) {
+			foreach([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45] as $risk_id) {
 				$r1 = 0.00001+0.0001*(rand(0, 1000)/1000.0);
 		        $this->insert('danger_risk', [ 'risk_id' => $risk_id, 'danger_id' => $danger_id, 'impact' => $r1]);
 		    }
@@ -79,7 +79,7 @@ class m191002_100843_create_danger_risk_table extends Migration {
     }
 	
 	public function updateRisk($risk_id, $dangers, $impact) {
-		foreach($dangers in $danger_id) {
+		foreach($dangers as $danger_id) {
 		   $r1 = $impact+0.0001*(rand(0, 1000)/1000.0);
 		   $this->update('danger_risk', ['impact' => $r1], ['risk_id' => $risk_id, 'danger_id' => $danger_id]);
 		}

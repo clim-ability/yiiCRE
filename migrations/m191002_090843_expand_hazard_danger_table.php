@@ -8,8 +8,8 @@ class m191002_090843_expand_hazard_danger_table extends Migration {
     public function safeUp() {
 		
 		// unknowns
-		foreach([13,14,15] in $danger_id) {
-		  foreach([51,52,53,54,55,56,57,58,59,61,62] in $hazard_id) {	
+		foreach([13,14,15] as $danger_id) {
+		  foreach([51,52,53,54,55,56,57,58,59,61,62] as $hazard_id) {	
 		    $r1 = 0.001*((rand(0, 2000)/1000.0)-1.0);
 			$r2 = 0.001*((rand(0, 2000)/1000.0)-1.0);
 			$r3 = 0.001*((rand(0, 2000)/1000.0)-1.0);
@@ -19,8 +19,8 @@ class m191002_090843_expand_hazard_danger_table extends Migration {
 		  }
         } 
 		// hazards
-		foreach([16,17,18,19,20,21,22,23,24,25] in $danger_key => $danger_id) {
-		  foreach([51,52,53,54,55,56,57,58,59,61,62] in $hazard_key => $hazard_id) {	
+		foreach([16,17,18,19,20,21,22,23,24,25] as $danger_key => $danger_id) {
+		  foreach([51,52,53,54,55,56,57,58,59,61,62] as $hazard_key => $hazard_id) {	
 		    $r1 = 0.001*((rand(0, 2000)/1000.0)-1.0);
 			$r2 = 0.001*((rand(0, 2000)/1000.0)-1.0);
 			$r3 = 0.001*((rand(0, 2000)/1000.0)-1.0);
@@ -38,7 +38,7 @@ class m191002_090843_expand_hazard_danger_table extends Migration {
     }
 
     public function safeDown() {
-		foreach([13,14,15,16,17,18,19,20,21,22,23,24,25] in $danger_id) {
+		foreach([13,14,15,16,17,18,19,20,21,22,23,24,25] as $danger_id) {
 		   $this->delete('hazard_danger', ['danger_id' => $danger_id]);
 		}
     }
