@@ -218,7 +218,7 @@ class Gis extends ActiveRecord
 		$results = [];
 		$allDangers = Gis::getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard, true);
 		$allRisks = Risk::inqAllRisks($inclInvisible);
-		foreach($risks as $risk) {
+		foreach($allRisks as $risk) {
 			$results[$risk['name']] = 0.0;
 			$sql = 'SELECT danger.name as danger, danger_risk.impact as impact '
 			      . ' FROM public.danger_risk, danger '
