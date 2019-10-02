@@ -230,10 +230,10 @@ function md() {
 		 $dangers .= '<tr v-for="danger in dangers">';
 		 $dangers .= '<td>{{danger.label}}</td><td>{{danger.value}}</td>';
 		 $dangers .= '<td><button v-on:click="voteDanger(danger.name, 1.0)">'; 
-		 $dangers .=  yii::t('Danger:name', 'Mehr')];
+		 $dangers .=  yii::t('Danger:name', 'Mehr');
 		 $dangers .= '</button></td>';
 		 $dangers .= '<td><button v-on:click="voteDanger(danger.name, -1.0)">';
-		 $dangers .=  yii::t('Danger:name', 'Weniger')];  
+		 $dangers .=  yii::t('Danger:name', 'Weniger');  
 		 $dangers .= '</button></td>';
 		 $dangers .= '</tr>';
          $dangers .= '</table>';
@@ -243,10 +243,10 @@ function md() {
 		 $risks .= '<tr v-for="risk in risks">';
 		 $risks .= '<td>{{risk.label}}</td><td>{{risk.value}}</td>';
 		 $risks .= '<td><button v-on:click="voteRisk(risk.name, 1.0)">'; 
-		 $risks .=  yii::t('Risk:name', 'Mehr')];
+		 $risks .=  yii::t('Risk:name', 'Mehr');
 		 $risks .= '</button></td>';
 		 $risks .= '<td><button v-on:click="voteRisk(risk.name, -1.0)">';
-		 $risks .=  yii::t('Risk:name', 'Weniger')];
+		 $risks .=  yii::t('Risk:name', 'Weniger');
 		 $risks .= '</button></td>';
 		 $risks .= '</tr>';
          $risks .= '</table>';
