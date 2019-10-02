@@ -212,12 +212,32 @@ class Gis extends ActiveRecord
       return $result;	  
 	}
 
-    public static function getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard='any')
+    public static function getRatedRisks($latitude, $longitude, $epoch, $scenario, $hazard='any', sector='all', $inclInvisible = false)
+	{
+		$connection = Yii::$app->pgsql_cre;
+		$results = [];
+		$allDangers = Gis::getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard, true);
+		$allRisks = inqAllRisks($inclInvisible);
+		foreach($risks as $risk) {
+			$results[$risk['name']] = 0.0;
+			$sql = 'SELECT danger.name as danger, danger_risk.impact as impact '
+			      . ' FROM public.danger_risk, danger '
+				  . ' WHERE danger_risk.danger_id = danger.id '
+				  . ' AND risk_id ='.$risk['id'];
+            $command = $connection->createCommand($sql);
+            $result = $command->queryAll();
+  	        foreach($result as $res) {
+		      $results[$risk['name']] += $allDangers[$res['danger']] * $res['impact']; 
+	        }			   
+		}
+		return $results;
+	}
+
+    public static function getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard='any', $inclInvisible = false)
 	{
 		$connection = Yii::$app->pgsql_cre;
 		$results = [];
 		$hazards = Gis::getNormalizedHazards($latitude, $longitude, $epoch, $scenario);
-		$inclInvisible = false;
 		$dangers = Danger::inqAllDangers($inclInvisible);
 		foreach($dangers as $danger) {
 			$results[$danger['name']] = 0.0;	
