@@ -222,52 +222,49 @@ function md() {
     <template v-if="((info !== 'none'))">
     <p><?php 
 	   if(User::hasRole('sysadmin')) {
-
 		   
 	     tr('hazards', 'Dabei können die Naturgefahren {{dangerText}} auftreten.'); 
- 
+
+         // table of dangers 
+	     $dangers  = '<br/><table class="table">';
+		 $dangers .= '<tr v-for="danger in dangers">';
+		 $dangers .= '<td>{{danger.label}}</td><td>{{danger.value}}</td>';
+		 $dangers .= '<td><button v-on:click="voteDanger(danger.name, 1.0)">'; 
+		 $dangers .=  yii::t('Danger:name', 'Mehr')];
+		 $dangers .= '</button></td>';
+		 $dangers .= '<td><button v-on:click="voteDanger(danger.name, -1.0)">';
+		 $dangers .=  yii::t('Danger:name', 'Weniger')];  
+		 $dangers .= '</button></td>';
+		 $dangers .= '</tr>';
+         $dangers .= '</table>';
+
+         // table of risks
+	     $risks  = '<br/><table class="table">';
+		 $risks .= '<tr v-for="risk in risks">';
+		 $risks .= '<td>{{risk.label}}</td><td>{{risk.value}}</td>';
+		 $risks .= '<td><button v-on:click="voteRisk(risk.name, 1.0)">'; 
+		 $risks .=  yii::t('Risk:name', 'Mehr')];
+		 $risks .= '</button></td>';
+		 $risks .= '<td><button v-on:click="voteRisk(risk.name, -1.0)">';
+		 $risks .=  yii::t('Risk:name', 'Weniger')];
+		 $risks .= '</button></td>';
+		 $risks .= '</tr>';
+         $risks .= '</table>';
+		 
         echo Tabs::widget([ 
            'items' => [
-		      [ 'label' => 'Dangers',
-			    'content' => 'no d',
+		      [ 'label' => yii::t('Danger:name', 'Dangers')],
+			    'content' => $dangers,
 			    'active' => true
 			  ],
-			  [ 'label' => 'Risks',
-			    'content' => 'no r',
+			  [ 'label' => yii::t('Risk:name', 'Risks')],
+			    'content' => $risks,
 			  ]
 		   ]
         ]);		
 
-	     echo '<br/><table class="table">';
-		 echo '<tr v-for="danger in dangers">';
-		   echo '<td>{{danger.label}}</td><td>{{danger.value}}</td>';
-		   echo '<td><button v-on:click="voteDanger(danger.name, 1.0)">'; 
-		     tr('Danger:name', 'Mehr'); 
-		   echo '</button></td>';
-		   echo '<td><button v-on:click="voteDanger(danger.name, -1.0)">';
-		     tr('Danger:name', 'Weniger');
-		   echo '</button></td>';
-		 echo '</tr>';
-         echo '</table>';
 	   }	  
 	   ?></p>
-	   
-    <p><?php 
-	   if(User::hasRole('sysadmin')) {
-	     echo '<h3>Risks</h3>';
-	     echo '<br/><table class="table">';
-		 echo '<tr v-for="risk in risks">';
-		   echo '<td>{{risk.label}}</td><td>{{risk.value}}</td>';
-		   echo '<td><button v-on:click="voteRisk(risk.name, 1.0)">'; 
-		     tr('Risk:name', 'Mehr'); 
-		   echo '</button></td>';
-		   echo '<td><button v-on:click="voteRisk(risk.name, -1.0)">';
-		     tr('Risk:name', 'Weniger');
-		   echo '</button></td>';
-		 echo '</tr>';
-         echo '</table>';
-	   }	  
-	   ?></p>	   
 	   
     </template>
 	
