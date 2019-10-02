@@ -212,7 +212,7 @@ class Gis extends ActiveRecord
       return $result;	  
 	}
 
-    public static function getRatedRisks($latitude, $longitude, $epoch, $scenario, $hazard='any', sector='all', $inclInvisible = false)
+    public static function getRatedRisks($latitude, $longitude, $epoch, $scenario, $hazard='any', $sector='all', $inclInvisible = false)
 	{
 		$connection = Yii::$app->pgsql_cre;
 		$results = [];
