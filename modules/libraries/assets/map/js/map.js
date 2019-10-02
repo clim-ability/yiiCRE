@@ -565,7 +565,8 @@ var vueInfo = new Vue({
 	currSzenario: '',
 	nearestStation: {},
 	dangerText: '',
-	dangers: {}
+	dangers: {},
+	risks: {}
   },
   methods: { 
     switchHazard(hazard) {
@@ -602,6 +603,11 @@ var vueInfo = new Vue({
                   this.dangerText += danger.label+', ';
 			   }
 			 }			   
+	      });
+	      var url = apiBaseUrl+'/api/rated-risks';
+	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;  // add sector later
+          axios.get(url).then(response => {
+			 this.risks = response.data;
 	      });		  
 	    }
 	},
@@ -638,7 +644,6 @@ var vueInfo = new Vue({
 	  return '';
 	},
 	voteDanger(danger, value) {
-		console.log(danger+': '+value.toString());
 		var latitude = getCurrentLatitude();
 		var longitude = getCurrentLongitude();
 		if (latitude !== 0 && longitude !== 0) {
@@ -654,6 +659,9 @@ var vueInfo = new Vue({
 			 }
 	      });
 		}		  
+	},
+	voteRisk(risk, value) {
+	   console.log(risk+': '+value.toString());	
 	}
   },
   computed: {

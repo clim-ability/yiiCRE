@@ -235,6 +235,24 @@ function md() {
          echo '</table>';
 	   }	  
 	   ?></p>
+	   
+    <p><?php 
+	   if(User::hasRole('sysadmin')) {
+	     echo '<h3>Risks</h3>';
+	     echo '<br/><table class="table">';
+		 echo '<tr v-for="risk in risks">';
+		   echo '<td>{{risk.label}}</td><td>{{risk.value}}</td>';
+		   echo '<td><button v-on:click="voteRisk(risk.name, 1.0)">'; 
+		     tr('Risk:name', 'Mehr'); 
+		   echo '</button></td>';
+		   echo '<td><button v-on:click="voteRisk(risk.name, -1.0)">';
+		     tr('Risk:name', 'Weniger');
+		   echo '</button></td>';
+		 echo '</tr>';
+         echo '</table>';
+	   }	  
+	   ?></p>	   
+	   
     </template>
 	
 	</div> <!-- end #informationfield -->

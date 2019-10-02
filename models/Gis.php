@@ -230,6 +230,7 @@ class Gis extends ActiveRecord
 		      $results[$risk['name']] += $allDangers[$res['danger']] * $res['impact']; 
 	        }			   
 		}
+		arsort($results);
 		return $results;
 	}
 
