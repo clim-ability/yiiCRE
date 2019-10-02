@@ -217,7 +217,7 @@ class Gis extends ActiveRecord
 		$connection = Yii::$app->pgsql_cre;
 		$results = [];
 		$allDangers = Gis::getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard, true);
-		$allRisks = inqAllRisks($inclInvisible);
+		$allRisks = Risk::inqAllRisks($inclInvisible);
 		foreach($risks as $risk) {
 			$results[$risk['name']] = 0.0;
 			$sql = 'SELECT danger.name as danger, danger_risk.impact as impact '
