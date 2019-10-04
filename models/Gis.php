@@ -231,7 +231,8 @@ class Gis extends ActiveRecord
     public static function adaptRisks($latitude, $longitude, $epoch, $scenario, $hazard, $sector, $risk, $value)
 	{
 		$connection = Yii::$app->pgsql_cre;
-		$allDangers = Gis::getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard, true);
+		$inclInvisible = true;
+		$allDangers = Gis::getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard, $inclInvisible);
 		$allRisks = Risk::inqAllRisks($inclInvisible);
 		$sectorFactors = null;
 		if($sector != 'all') {
@@ -244,11 +245,11 @@ class Gis extends ActiveRecord
 		   if($sectorFactors) {
 		       $factor = $sectorFactors[$risk2['id']];
 		       if($value > 0.0) {
-					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1+$value/10.0 : 1-$value/100.0;           
-					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? $value/100.0 : 0.0-$value/1000.0;
+					  $cFactor = ($risk2['name'] == $risk) ? 1+$value/10.0 : 1-$value/100.0;           
+					  $cOffset = ($risk2['name'] == $risk) ? $value/100.0 : 0.0-$value/1000.0;
 				  } else {
-					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1-$value/10.0 : 1+$value/100.0;
-					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? 0.0-$value/100.0 : $value/1000.0;		   
+					  $cFactor = ($risk2['name'] == $risk) ? 1-$value/10.0 : 1+$value/100.0;
+					  $cOffset = ($risk2['name'] == $risk) ? 0.0-$value/100.0 : $value/1000.0;		   
 			   }
 		        $sql2 = 'UPDATE public.sector_risk SET updated_at=now(), ';
 				$cOffset += $value*0.001*(rand(0,1000)/1000-0.5);
@@ -265,11 +266,11 @@ class Gis extends ActiveRecord
               $command = $connection->createCommand($sql3);
               $oldImpact = $command->queryOne();			  
 			  if($impact*$value > 0.0) {
-					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1+$value/10.0 : 1-$value/100.0;           
-					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? $value/100.0 : 0.0-$value/1000.0;
+					  $cFactor = ($risk2['name'] == $risk) ? 1+$value/10.0 : 1-$value/100.0;           
+					  $cOffset = ($risk2['name'] == $risk) ? $value/100.0 : 0.0-$value/1000.0;
 				  } else {
-					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1-$value/10.0 : 1+$value/100.0;
-					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? 0.0-$value/100.0 : $value/1000.0;	
+					  $cFactor = ($risk2['name'] == $risk) ? 1-$value/10.0 : 1+$value/100.0;
+					  $cOffset = ($risk2['name'] == $risk) ? 0.0-$value/100.0 : $value/1000.0;	
 			  }	
 			  $cOffset += $value*0.001*(rand(0,1000)/1000-0.5);
 		      $sql4 = 'UPDATE public.danger_risk SET updated_at=now(), ';
@@ -277,6 +278,7 @@ class Gis extends ActiveRecord
 			  $sql4 .= ' WHERE danger_id = '.$dangerItem['id'].' AND risk_id='.$risk2['id'];
 			  $command4 = $connection->createCommand($sql4);	
 			  $command4->execute();
+			  if($dangerItem['invisible']) { $cOffset *= 2.5; }
               Gis::adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $dangerItem['name'], 10*$cOffset);			  
 		   }
   	    }
