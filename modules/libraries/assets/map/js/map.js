@@ -566,7 +566,9 @@ var vueInfo = new Vue({
 	nearestStation: {},
 	dangerText: '',
 	dangers: {},
-	risks: {}
+	risks: {},
+    sector: 'none',
+    sectors: [ { label: '', name: 'none' } ]
   },
   methods: { 
     switchHazard(hazard) {
@@ -574,6 +576,11 @@ var vueInfo = new Vue({
 		vueSelect.updateParameters();
 		this.currHazard = vueSelect.getCurrentHazard(); 
 	},	 
+	updateSector() {
+		// should get risks only...
+		// for know all
+		this.clickOnMap();
+	},
     clickOnMap() {
 		var latitude = getCurrentLatitude();
 		var longitude = getCurrentLongitude();
@@ -605,7 +612,7 @@ var vueInfo = new Vue({
 			 }			   
 	      });
 	      var url = apiBaseUrl+'/api/rated-risks';
-	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;  // add sector later
+	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard+'&sector='+this.sector; 
           axios.get(url).then(response => {
 			 this.risks = response.data;
 	      });		  
@@ -693,5 +700,14 @@ var vueInfo = new Vue({
   mounted () {
     vueEventBus.$on('updatedParameters', e => { this.clickOnMap();})
 	//addCategoryToTranslationPool('hazards');
+	axios
+      .get(apiBaseUrl+'/api/sectors?language='+currentLanguage)
+      .then(response => { 
+	    this.sectors = response.data; 
+		var allTranslate = tr('Sector:name', 'all');
+		this.sectors.unshift({name: 'all', label: allTranslate});
+		this.sector = this.sectors[0].name;
+		this.updateSectors();
+		});
   }
 })

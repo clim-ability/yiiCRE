@@ -212,12 +212,37 @@ class Gis extends ActiveRecord
       return $result;	  
 	}
 
+    public static function getSectorRiskFactors($sectorId)
+	{
+		$connection = Yii::$app->pgsql_cre;
+		$results = [];
+        $sql = 'SELECT sector_risk.risk_id as risk_id, sector_risk.factor as factor, sector_risk.offset as offset '
+             . ' FROM public.sector_risk, risk '
+             . ' WHERE sector_risk.risk_id = risk.id '
+             . ' AND sector_id = '.$sectorId;
+        $command = $connection->createCommand($sql);
+        $result = $command->queryAll();
+  	    foreach($result as $res) {
+		    $dangerImpact = $allDangers[$res['danger']];
+			$dangerImpact = exp($dangerImpact);
+		    $results[$res['risk_id']] =  ['factor' => $res['factor'], 'offset' => $res['offset']]; 
+	    }	 
+        return $results;       		
+	}
+
     public static function getRatedRisks($latitude, $longitude, $epoch, $scenario, $hazard='any', $sector='all', $inclInvisible = false)
 	{
 		$connection = Yii::$app->pgsql_cre;
 		$results = [];
 		$allDangers = Gis::getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard, true);
 		$allRisks = Risk::inqAllRisks($inclInvisible);
+		$sectorFactors = null;
+		if($sector != 'all') {
+			$sect = Sector::findByName($sector);
+			if($sect) {
+			   $sectorFactors = getSectorRiskFactors($sect['id'])
+			}			
+		}
 		foreach($allRisks as $risk) {
 			$results[$risk['name']] = 0.0;
 			$sql = 'SELECT danger.name as danger, danger_risk.impact as impact '
@@ -230,7 +255,14 @@ class Gis extends ActiveRecord
 				$dangerImpact = $allDangers[$res['danger']];
 				$dangerImpact = exp($dangerImpact);
 		        $results[$risk['name']] +=  $dangerImpact * $res['impact']; 
-	        }			   
+	        }
+            if($sectorFactors) {
+                $results[$risk['name']] *= $sectorFactors['factor'];
+				$results[$risk['name']] += $sectorFactors['offset'];
+			} else {
+                $results[$risk['name']] *= 0.5;
+                $results[$risk['name']] += 0.5;
+			}				
 		}
 		arsort($results);
 		return $results;

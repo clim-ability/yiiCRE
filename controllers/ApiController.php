@@ -95,7 +95,19 @@ class ApiController extends Controller
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
    } 
-  
+ 
+	public function actionSectors($mode='visible-only', $language='en') {
+       // returns list of all Scenarios.
+	   $result = Sector::inqAllSectors('invisible'==$mode);
+	   $result = array_map(function($e) use ($language) { 
+	      $e->label = \Yii::t('Sector:name', $e->name, [], $language);
+		  $e->description = \Yii::t('Sector:description', $e->name, [], $language);
+		  return $e; 
+		  } ,$result); 
+	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+       \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+       return $result;
+   }  
  
    public function actionHazardValue($latitude, $longitude, $hazard='', $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
