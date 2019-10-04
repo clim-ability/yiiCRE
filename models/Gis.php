@@ -253,9 +253,9 @@ class Gis extends ActiveRecord
 			   }
 		        $sql2 = 'UPDATE public.sector_risk SET updated_at=now(), ';
 				$cOffset += $value*0.001*(rand(0,1000)/1000-0.5);
-				$sql2 .= ' factor = '. $factor['factor']*$cFactor+$cOffset.', ';
+				$sql2 .= ' factor = '. ($factor['factor']*$cFactor+$cOffset).', ';
 				$cOffset += $value*0.001*(rand(0,1000)/1000-0.5);
-				$sql2 .= ' offset = '. $factor['offset']*$cFactor+$cOffset.' ';
+				$sql2 .= ' offset = '. ($factor['offset']*$cFactor+$cOffset).' ';
 				$sql2 .= ' WHERE sector_id = '.$sect['id'].' AND risk_id='.$risk2['id'];
 				$command2 = $connection->createCommand($sql2);	
 			    $command2->execute();
