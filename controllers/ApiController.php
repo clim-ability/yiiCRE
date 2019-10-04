@@ -12,6 +12,7 @@ use app\models\Hazard;
 use app\models\Parameter;
 use app\models\Scenario;
 use app\models\Station;
+use app\models\Sector;
 use app\models\Gis;
 use app\models\User;
 use app\modules\translation\models\Language;
