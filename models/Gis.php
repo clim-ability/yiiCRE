@@ -227,7 +227,9 @@ class Gis extends ActiveRecord
             $command = $connection->createCommand($sql);
             $result = $command->queryAll();
   	        foreach($result as $res) {
-		      $results[$risk['name']] += $allDangers[$res['danger']] * $res['impact']; 
+				$dangerImpact = $allDangers[$res['danger']];
+				$dangerImpact = exp($dangerImpact);
+		        $results[$risk['name']] +=  $dangerImpact * $res['impact']; 
 	        }			   
 		}
 		arsort($results);
