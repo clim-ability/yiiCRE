@@ -274,8 +274,7 @@ class Gis extends ActiveRecord
 			  }	
 			  $cOffset += $value*0.001*(rand(0,1000)/1000-0.5);
 			  var_dump($oldImpact*$cFactor+$cOffset);
-		      $sql4 = 'UPDATE public.danger_risk SET updated_at=now(), ';
-			  $sql4 .= ' impact='. $oldImpact*$cFactor+$cOffset.' ';
+		      $sql4 = 'UPDATE public.danger_risk SET updated_at=now(), impact='. $oldImpact*$cFactor+$cOffset;
 			  $sql4 .= ' WHERE danger_id = '.$dangerItem['id'].' AND risk_id='.$risk2['id'];
 			  var_dump($sql4);
 			  $command4 = $connection->createCommand($sql4);	
