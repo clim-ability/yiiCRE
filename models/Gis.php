@@ -240,7 +240,7 @@ class Gis extends ActiveRecord
 		if($sector != 'all') {
 			$sect = Sector::findByName($sector);
 			if($sect) {
-			   $sectorFactors = getSectorRiskFactors($sect['id']);
+			   $sectorFactors = Gis::getSectorRiskFactors($sect['id']);
 			}			
 		}
 		foreach($allRisks as $risk) {
