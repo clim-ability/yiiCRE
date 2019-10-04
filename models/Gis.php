@@ -278,7 +278,7 @@ class Gis extends ActiveRecord
 			  var_dump($cOffset);			  
 			  var_dump($oldImpact*$cFactor+$cOffset);
 		      $sql4 = 'UPDATE public.danger_risk SET updated_at=now(), '
-			        . ' impact='. $oldImpact*$cFactor+$cOffset.' '
+			        . ' abc='. $oldImpact*$cFactor+$cOffset.' '
 			        . ' WHERE danger_id = '.$dangerItem['id'].' AND risk_id='.$risk2['id'];
 			  var_dump($sql4);
 			  exit();
