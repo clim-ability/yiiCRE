@@ -279,7 +279,7 @@ class Gis extends ActiveRecord
 			  $command4 = $connection->createCommand($sql4);	
 			  $command4->execute();
 			  if(!$dangerItem['visible']) { $cOffset *= 2.5; }
-              Gis::adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $dangerItem['name'], 10*$cOffset);			  
+              //Gis::adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $dangerItem['name'], 10*$cOffset);	
 		   }
   	    }
 		
