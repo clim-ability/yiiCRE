@@ -707,7 +707,7 @@ var vueInfo = new Vue({
 		var allTranslate = tr('Sector:name', 'all');
 		this.sectors.unshift({name: 'all', label: allTranslate});
 		this.sector = this.sectors[0].name;
-		this.updateSectors();
+		//this.updateSector();
 		});
   }
 })
