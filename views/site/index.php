@@ -225,15 +225,7 @@ function md() {
 		   
 	     tr('hazards', 'Dabei können die Naturgefahren {{dangerText}} auftreten.'); 
 
-    echo '<div class="row">';
- 	echo   '<div class="col-md-4">';
-	         tr('sector', 'Sector'); 
-    echo    '<select v-model="sector" v-on:change="updateSector" class="form-control">';
-    echo     '<option v-for="sector in sectors" v-bind:value="sector.name">';
-    echo     ' {{ sector.label }} ';
-    echo     '</option>';
-    echo    '</select>';
-	echo   '</div>';	
+	
  
 	echo '</div>';          
 
@@ -251,7 +243,18 @@ function md() {
          $dangers .= '</table>';
 
          // table of risks
-	     $risks  = '<br/><table class="table">';
+		 
+		$risks  = '<div class="row">';
+ 	    $risks .=    '<div class="col-md-4">';
+	    $risks .=       yii::t('sector', 'Sector');
+        $risks .=     '<select v-model="sector" v-on:change="updateSector" class="form-control">';
+        $risks .=      '<option v-for="sector in sectors" v-bind:value="sector.name">';
+        $risks .=      ' {{ sector.label }} ';
+        $risks .=     '</option>';
+        $risks .=     '</select>';
+	    $risks .= '</div><br/>';
+		 
+	     $risks .= '<br/><table class="table">';
 		 $risks .= '<tr v-for="risk in risks">';
 		 $risks .= '<td>{{risk.label}}</td><td>{{risk.value}}</td>';
 		 $risks .= '<td><button v-on:click="voteRisk(risk.name, 1.0)">'; 
