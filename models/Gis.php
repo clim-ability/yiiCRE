@@ -254,13 +254,12 @@ class Gis extends ActiveRecord
 				$dangerImpact = exp($dangerImpact);
 		        $results[$risk['name']] +=  $dangerImpact * $res['impact']; 
 	        }
+			$factors = ['factor' => 0.5, 'offset' => 0.5];
             if($sectorFactors) {
-                $results[$risk['name']] *= $sectorFactors['factor'];
-				$results[$risk['name']] += $sectorFactors['offset'];
-			} else {
-                $results[$risk['name']] *= 0.5;
-                $results[$risk['name']] += 0.5;
-			}				
+                $factors = $sectorFactors[$risk['id']];
+			} 
+            $results[$risk['name']] *= $factors['factor'];
+			$results[$risk['name']] += $factors['offset'];			
 		}
 		arsort($results);
 		return $results;
