@@ -658,7 +658,6 @@ var vueInfo = new Vue({
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
 		  url = url + '&danger='+danger+'&value='+value.toString();
           axios.get(url).then(response => {
-			 console.log('Adapted?:'+response.data.danger+' '+response.data.value);
              for (var i = 0; i < this.dangers.length; i++) {
                if(this.dangers[i].name == response.data.danger) {
 				   this.dangers[i].value += response.data.value/10.0;
@@ -669,6 +668,23 @@ var vueInfo = new Vue({
 	},
 	voteRisk(risk, value) {
 	   console.log(risk+': '+value.toString());	
+	   var latitude = getCurrentLatitude();
+		var longitude = getCurrentLongitude();
+		if (latitude !== 0 && longitude !== 0) {
+		  var url = apiBaseUrl+'/api/adapt-risks';
+	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
+		  url = url + '&sector='+this.sector+'&risk='+risk+'&value='+value.toString();
+          axios.get(url).then(response => {
+			 console.log('Adapted?:'+response.data.danger+' '+response.data.value);
+             for (var i = 0; i < this.risks.length; i++) {
+               if(this.risks[i].name == response.data.risk) {
+				   this.risks[i].value += response.data.value/10.0;
+			   }
+			 }
+	      });
+		}
+	   
+	   
 	}
   },
   computed: {
