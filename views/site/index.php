@@ -225,17 +225,17 @@ function md() {
 		   
 	     tr('hazards', 'Dabei können die Naturgefahren {{dangerText}} auftreten.'); 
 
-    <div class="row">
- 	  <div class="col-md-4">
-	   <?php tr('sector', 'Sector'); ?><br/>
-       <select v-model="sector" v-on:change="updateSector" class="form-control">
-        <option v-for="sector in sectors" v-bind:value="sector.name">
-         {{ sector.label }} 
-        </option>
-       </select>
-	  </div>	
+    echo '<div class="row">';
+ 	echo   '<div class="col-md-4">';
+	         tr('sector', 'Sector'); 
+    echo    '<select v-model="sector" v-on:change="updateSector" class="form-control">';
+    echo     '<option v-for="sector in sectors" v-bind:value="sector.name">';
+    echo     ' {{ sector.label }} ';
+    echo     '</option>';
+    echo    '</select>';
+	echo   '</div>';	
  
-	</div>           
+	echo '</div>';          
 
          // table of dangers 
 	     $dangers  = '<br/><table class="table">';
