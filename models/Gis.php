@@ -228,6 +228,62 @@ class Gis extends ActiveRecord
         return $results;       		
 	}
 
+    public static function adaptRisks($latitude, $longitude, $epoch, $scenario, $hazard, $sector, $risk, $value)
+	{
+		$connection = Yii::$app->pgsql_cre;
+		$allDangers = Gis::getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard, true);
+		$allRisks = Risk::inqAllRisks($inclInvisible);
+		$sectorFactors = null;
+		if($sector != 'all') {
+			$sect = Sector::findByName($sector);
+			if($sect) {
+			   $sectorFactors = Gis::getSectorRiskFactors($sect['id']);
+			}			
+		}
+	    foreach($allRisks as $risk2) {
+		   if($sectorFactors) {
+		       $factor = $sectorFactors[$risk2['id']];
+		       if($value > 0.0) {
+					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1+$value/10.0 : 1-$value/100.0;           
+					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? $value/100.0 : 0.0-$value/1000.0;
+				  } else {
+					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1-$value/10.0 : 1+$value/100.0;
+					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? 0.0-$value/100.0 : $value/1000.0;		   
+			   }
+		        $sql2 = 'UPDATE public.sector_risk SET updated_at=now(), ';
+				$cOffset += $value*0.001*(rand(0,1000)/1000-0.5);
+				$sql2 .= ' factor = '. $factor['factor']*$cFactor+$cOffset.', ';
+				$cOffset += $value*0.001*(rand(0,1000)/1000-0.5);
+				$sql2 .= ' offset = '. $factor['offset']*$cFactor+$cOffset.' ';
+				$sql2 .= ' WHERE sector_id = '.$sect['id'].' AND risk_id='.$risk2['id'];
+				$command2 = $connection->createCommand($sql2);	
+			    $command2->execute();
+		   }
+		   foreach($allDangers as $danger => $impact) {
+			  $dangerItem = Danger::findByName($danger);
+			  $sql3 = 'SELECT impact FROM danger_risk WHERE danger_id='.$dangerItem['id'].' AND risk_id='.$risk2['id'];
+              $command = $connection->createCommand($sql3);
+              $oldImpact = $command->queryOne();			  
+			  if($impact*$value > 0.0) {
+					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1+$value/10.0 : 1-$value/100.0;           
+					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? $value/100.0 : 0.0-$value/1000.0;
+				  } else {
+					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1-$value/10.0 : 1+$value/100.0;
+					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? 0.0-$value/100.0 : $value/1000.0;	
+			  }	
+			  $cOffset += $value*0.001*(rand(0,1000)/1000-0.5);
+		      $sql4 = 'UPDATE public.danger_risk SET updated_at=now(), ';
+			  $sql4 .= ' impact = '. $oldImpact*$cFactor+$cOffset.' ';
+			  $sql4 .= ' WHERE danger_id = '.$dangerItem['id'].' AND risk_id='.$risk2['id'];
+			  $command4 = $connection->createCommand($sql4);	
+			  $command4->execute();
+              Gis::adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $dangerItem['name'], 10*$cOffset);			  
+		   }
+  	    }
+		
+		return true;		
+	}
+
     public static function getRatedRisks($latitude, $longitude, $epoch, $scenario, $hazard='any', $sector='all', $inclInvisible = false)
 	{
 		$connection = Yii::$app->pgsql_cre;
@@ -291,12 +347,10 @@ class Gis extends ActiveRecord
     public static function adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $danger, $value)
 	{
 		$connection = Yii::$app->pgsql_cre;
-		$results = [];
 		$hazards = Gis::getNormalizedHazards($latitude, $longitude, $epoch, $scenario);
 		$inclInvisible = false;
 		$dangers = Danger::inqAllDangers($inclInvisible);
 		foreach($dangers as $danger2) {
-			$results[$danger2['name']] = 0.0;	
 		    foreach($hazards as $hazardName=>$values) {
 			   $hazardId = Hazard::findBy($hazardName)['id'];
 			   $sql = 'SELECT abs_pos, abs_neg, rel_pos, rel_neg FROM public.hazard_danger WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger2['id'];
@@ -308,18 +362,18 @@ class Gis extends ActiveRecord
 			   foreach(['abs_pos', 'abs_neg', 'rel_pos', 'rel_neg'] as $key) {
                               if($values[$key]>0.001) {
 				  if (($value*$factors[$key]) > 0.0) {
-					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1.1 : 0.99;           
-					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? +0.01 : -0.001;
+					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1+$value/10.0 : 1-$value/100.0;           
+					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? $value/100.0 : 0.0-$value/1000.0;
 				  } else {
-					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 0.9 : 1.01;
-					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? -0.01 : +0.001;
+					  $corrFactors[$key] = ($danger2['name'] == $danger) ? 1-$value/10.0 : 1+$value/100.0;
+					  $corrOffsets[$key] = ($danger2['name'] == $danger) ? 0.0-$value/100.0 : $value/1000.0;
 				  }
 				  if($hazardName == $hazard) {
 					 $corrFactors[$key] = $corrFactors[$key]*$corrFactors[$key];
 					 $corrOffsets[$key] = 2.0*$corrOffsets[$key];
 				  }
                                }
-			       $corrOffsets[$key] += 0.001*(rand(0,1000)/1000-0.5);
+			       $corrOffsets[$key] += $value*0.001*(rand(0,1000)/1000-0.5);
 			       $sql2 .= ','.$key.'='.($factors[$key]*$corrFactors[$key]+$corrOffsets[$key]).' ';
 			   }
 			   $sql2 .= 'WHERE hazard_id = '.$hazardId.' AND danger_id = '.$danger2['id'];
