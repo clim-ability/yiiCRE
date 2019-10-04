@@ -675,7 +675,7 @@ var vueInfo = new Vue({
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
 		  url = url + '&sector='+this.sector+'&risk='+risk+'&value='+value.toString();
 		  axios.defaults.timeout = 0;
-          axios.get(url).then(response => {
+          axios.get(url, {timeout: 8000}).then(response => {
 			 console.log('Adapted?:'+response.data.danger+' '+response.data.value);
              for (var i = 0; i < this.risks.length; i++) {
                if(this.risks[i].name == response.data.risk) {
