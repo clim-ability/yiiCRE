@@ -281,6 +281,7 @@ class Gis extends ActiveRecord
 			        . ' impact='. $oldImpact*$cFactor+$cOffset.' '
 			        . ' WHERE danger_id = '.$dangerItem['id'].' AND risk_id='.$risk2['id'];
 			  var_dump($sql4);
+			  exit();
 			  $command4 = $connection->createCommand($sql4);	
 			  $command4->execute();
 			  if($dangerItem['invisible']) { $cOffset *= 2.5; }
