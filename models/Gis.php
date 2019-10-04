@@ -264,7 +264,7 @@ class Gis extends ActiveRecord
 			  $dangerItem = Danger::findByName($danger);
 			  $sql3 = 'SELECT impact FROM danger_risk WHERE danger_id='.$dangerItem['id'].' AND risk_id='.$risk2['id'];
               $command = $connection->createCommand($sql3);
-              $oldImpact = $command->queryScalar();			  
+              $oldImpact = floatval$command->queryScalar());			  
 			  if($impact*$value > 0.0) {
 					  $cFactor = ($risk2['name'] == $risk) ? 1+$value/10.0 : 1-$value/100.0;           
 					  $cOffset = ($risk2['name'] == $risk) ? $value/100.0 : 0.0-$value/1000.0;
