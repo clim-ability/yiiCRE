@@ -22,7 +22,7 @@
     "jspdf-autotable":"^2.0.24",
     "leaflet": "^1.0.0-beta.1",
     "lockr": "^0.8.4",
-    "lodash": "^3.10.0",
+    "lodash": "^4.17.15",
     "openlayers": "^3.15.1",
     "pdfjs":"^1.0.0-alpha.5",
     "pdfjs-dist":"^1.5.207",
