@@ -80,5 +80,26 @@ class Scenario extends ActiveRecord
 		}
 		return $scenario;
 	}	
+	
+public function search($params)
+    {
+        $query = Scenario::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        return $dataProvider;
+    }
+	
+	
    
 }
