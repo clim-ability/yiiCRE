@@ -39,7 +39,10 @@ $left =
                 ['label' => Language::t('p:menue', 'Translate Dangers'), 'url' => ['/danger/translate'], 'visible' => $special],
                 '<li class="divider'.($special ? '' : ' hidden').'"></li>',
                 ['label' => Language::t('p:menue', 'Manage Zones'), 'url' => ['/zone/index'], 'visible' => $special],
-                ['label' => Language::t('p:menue', 'Translate Zones'), 'url' => ['/zone/translate'], 'visible' => $special],              
+                ['label' => Language::t('p:menue', 'Translate Zones'), 'url' => ['/zone/translate'], 'visible' => $special],  
+                '<li class="divider'.($special ? '' : ' hidden').'"></li>',
+                //['label' => Language::t('p:menue', 'Manage Scenarios'), 'url' => ['/scenario/index'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Translate Scenarios'), 'url' => ['/scenario/translate'], 'visible' => $special],				
             ]
         ],
 
