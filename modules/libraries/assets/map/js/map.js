@@ -395,7 +395,12 @@ var statisticOptions = {
 	var statisticLayer = null;
 
 	function redrawParameters() {
-	  if('all' == defaultParameters.hazard) {
+	  if('none' == defaultParameters.hazard) {
+        geojsonLayerWells.clearLayers();
+		if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }
+        if (map.hasLayer(pointLayer)) { map.removeLayer(pointLayer); }	
+        if (map.hasLayer(imageAdded)) { map.removeLayer(imageAdded); }		
+	  } else if('all' == defaultParameters.hazard) {
         geojsonLayerWells.clearLayers();
 		if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }
         if (map.hasLayer(pointLayer)) { map.removeLayer(pointLayer); }		
@@ -464,14 +469,14 @@ var vueSelect = new Vue({
   },
   methods: {
     updateParameters() {
-	  if(this.hazard !== 'none' && this.epoch !== 'none' && this.scenario !== 'none' ) {
+	  if(this.hazard !== 'none' && this.hazard !== 'all' && this.epoch !== 'none' && this.scenario !== 'none' ) {
         for (var i = 0; i < this.hazards.length; i++) {
           if (this.hazard == this.hazards[i].name) {
 			setExtremeColors(this.hazards[i].color_min, this.hazards[i].color_max);  
 
 		  }	
 	    }
-	    if('all' != this.hazard) {
+	    if(('all' != this.hazard) && ('none' != this.hazard)) {
 		  //mk// updateChartData();
 		  var url = apiBaseUrl+'/api/hazard-extremes?hazard='+this.hazard;
           if('abs' == absMode) {
@@ -525,8 +530,10 @@ var vueSelect = new Vue({
       .then(response => { 
 	    this.hazards = response.data; 
 		initStatisticOptions(this.hazards);
+		var noneTranslate = tr('Hazard:name', 'none');
+		this.hazards.unshift({name: 'none', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
 		var allTranslate = tr('Hazard:name', 'all');
-		this.hazards.unshift({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
 		this.hazard = this.hazards[0].name;
 		this.updateParameters();
 		updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
