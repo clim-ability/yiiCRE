@@ -6,7 +6,7 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Hazard;
+use app\models\Scenario;
 use app\controllers\ControllerBase;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;

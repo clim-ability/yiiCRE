@@ -88,10 +88,15 @@ class ApiController extends Controller
        return $result;
    }     
     
-	public function actionScenarios($mode='visible-only') {
+	public function actionScenarios($mode='visible-only', $language='en') {
        // returns list of all Scenarios.
 	   $result = Scenario::inqAllScenarios('invisible'==$mode);
-	   $result = array_map(function($e) { $e->label = $e->name; return $e; },$result);
+//	   $result = array_map(function($e) { $e->label = $e->name; return $e; },$result);
+   	   $result = array_map(function($e) use ($language) { 
+	      $e->label = \Yii::t('Scenario:name', $e->name, [], $language);
+		  $e->description = \Yii::t('Scenario:description', $e->name, [], $language);
+		  return $e; 
+		  } ,$result); 
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;

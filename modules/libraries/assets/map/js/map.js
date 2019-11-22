@@ -4,6 +4,11 @@ addCategoryToTranslationPool('hazards');
 addCategoryToTranslationPool('Hazard:name');
 addCategoryToTranslationPool('Hazard:description');
 
+addCategoryToTranslationPool('scenarios');
+addCategoryToTranslationPool('Scenario:name');
+addCategoryToTranslationPool('Scenario:description');
+
+
     // initialize the map
   var map = L.map('map').setView([48.25, 8], 8);
 
@@ -549,7 +554,7 @@ var vueSelect = new Vue({
 		this.updateParameters();
 		 });
     axios
-      .get(apiBaseUrl+'/api/scenarios')
+      .get(apiBaseUrl+'/api/scenarios?language='+currentLanguage)
 	  //.get('https://gis.clim-ability.eu/index.php/api/scenarios')
       .then(response => { this.scenarios = response.data; 
 		this.scenario = this.scenarios[0].name;
