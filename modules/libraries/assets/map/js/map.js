@@ -67,9 +67,10 @@ function roundedValue(value, digits) {
   function updateLegend(hazard, epoch, szenario, parameters) {
    map.removeControl(legend);	
    // Function that runs when legend is added to map
-   if('off' !== hazard) {
+
     legend.onAdd = function (map) {
 	// Create Div Element and Populate it with HTML
+	 if('off' !== hazard) {
 	  var climateParameters = tr('hazards', 'Climate Parameters');
 	  var div = L.DomUtil.create('div', 'legend');		    
 	  div.innerHTML += '<b>'+climateParameters+'</b><br />';
@@ -109,9 +110,9 @@ function roundedValue(value, digits) {
       }		  
 	  // Return the Legend div containing the HTML content
 	  return div;
+	 }; 
     };
     legend.addTo(map);
-   };
   }
 }
 
