@@ -70,9 +70,9 @@ function roundedValue(value, digits) {
 
     legend.onAdd = function (map) {
 	// Create Div Element and Populate it with HTML
-	 //if('off' !== hazard) {
-	  var climateParameters = tr('hazards', 'Climate Parameters');
-	  var div = L.DomUtil.create('div', 'legend');		    
+	 var climateParameters = tr('hazards', 'Climate Parameters');
+	 var div = L.DomUtil.create('div', 'legend');	
+	 if('off' !== hazard) {
 	  div.innerHTML += '<b>'+climateParameters+'</b><br />';
 	  div.innerHTML += epoch + '; ' + szenario + '<br />';
 	  if ('all' == hazard) {
@@ -107,11 +107,11 @@ function roundedValue(value, digits) {
           div.innerHTML += '<i style="background: '+color+'"></i><p><small>'+label+'</small></p>';
 		  }
         }
-      }		  
+       }
+	  }	  
 	  // Return the Legend div containing the HTML content
 	  return div;
-	 //}; 
-    };
+	};
     legend.addTo(map);
   }
 }
