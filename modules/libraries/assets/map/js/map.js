@@ -65,8 +65,9 @@ function roundedValue(value, digits) {
   legend.onAdd = function (map) {return L.DomUtil.create('div', 'legend')};
   legend.addTo(map);
   function updateLegend(hazard, epoch, szenario, parameters) {
-    map.removeControl(legend);	
-    // Function that runs when legend is added to map
+   map.removeControl(legend);	
+   // Function that runs when legend is added to map
+   if('off' !== hazard) {
     legend.onAdd = function (map) {
 	// Create Div Element and Populate it with HTML
 	  var climateParameters = tr('hazards', 'Climate Parameters');
@@ -110,6 +111,7 @@ function roundedValue(value, digits) {
 	  return div;
     };
     legend.addTo(map);
+   };
   }
 }
 
@@ -398,7 +400,7 @@ var statisticOptions = {
 	  if('off' == defaultParameters.hazard) {
         geojsonLayerWells.clearLayers();
 		if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }
-        if (map.hasLayer(pointLayer)) { map.removeLayer(pointLayer); }	
+        if (!map.hasLayer(pointLayer)) { map.addLayer(pointLayer); }	
         if (map.hasLayer(imageAdded)) { map.removeLayer(imageAdded); }		
 	  } else if('all' == defaultParameters.hazard) {
         geojsonLayerWells.clearLayers();
