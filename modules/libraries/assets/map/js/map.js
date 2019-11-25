@@ -125,6 +125,42 @@ var geojsonLayerWells = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
 geojsonLayerWells.on('click', onMapClick);
 
+var geojsonLayerBorder = new L.GeoJSON();
+map.addLayer(geojsonLayerWells);
+//geojsonLayerWells.on('click', onMapClick);
+
+function LayerStyleBorder(feature) {
+    return {
+    //fillColor: getStyleColor(feature.properties.value),
+    weight: 0.9,
+    opacity: 0.8,
+    color: 'black',
+    dashArray: '0',
+    fillOpacity: 0 
+	};
+  }		
+
+function loadGeoJsonBorder(data) {
+    //console.log(data);
+	geojsonLayerBorder.clearLayers();
+    geojsonLayerBorder.addData(data);
+	geojsonLayerBorder.setStyle(LayerStyleBorder);
+	//map.removeLayer(geojsonLayerBorder);
+    //map.addLayer(geojsonLayerBorder);
+  };
+
+function initBorders() {
+    var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/borders'; 
+    //var parameters = L.Util.extend(defaultParameters, customParams);
+    $.ajax({
+          url: geoJsonUrl,  // + L.Util.getParamString(parameters),
+          datatype: 'json',
+          jsonCallback: 'getJson',
+          success: loadGeoJsonBorder
+    });
+}
+initBorders();
+
  
 var geojsonMarkerOptions = {
 	radius: 10,
@@ -451,8 +487,8 @@ map.on('moveend', function(){
 var baseMaps = {};    
 L.control.layers(baseMaps,{
 	   '<strong>Openstreetmap<strong/><br />':OpenStreetMap_DE, 
-   /*    '<strong>Indicator<strong/><br />': geojsonLayerWells,  
-	  '<strong>Statistics<strong/><br />':statisticLayer */
+       '<strong>Border<strong/><br />': geojsonLayerBorder,  
+	   '<strong>Stations<strong/><br />':pointLayer 
 }).addTo(map); 
 
 

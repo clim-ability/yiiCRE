@@ -498,7 +498,19 @@ class Gis extends ActiveRecord
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
 	 return $result;		
-	}	
+	}
+
+	public static function getCountryBorders()
+	{
+	 $connection = Yii::$app->pgsql_gisdata;
+	 $sql = "SELECT nuts0 AS country, ST_AsGeoJSON(ST_Transform(geom,4326),6) AS geojson FROM \"borders_dissolved_adminboundaries\" ";
+	 $command = $connection->createCommand($sql);
+     $result = $command->queryAll();
+	 return $result;		
+	}
+	
+"  "
+	
 	
 	public static function getDistanceToRiver($latitude, $longitude)
 	{

@@ -369,7 +369,21 @@ class ApiController extends Controller
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
-   }   
+   } 
+
+   public function actionBorders()
+   {
+        $features = [];
+	   	$rows = Gis::getCountryBorders();
+        foreach($rows as $row) {
+		    $feature = ['type' => 'Feature', 'geometry' => json_decode($row['geojson'], true), 'properties' => ['country' => $row['country']]];
+            $features[] = $feature;
+		}
+	    $result = ['type' => 'FeatureCollection', 'features'  => $features];
+	    \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $result;
+   }	   
  
    public function actionHazardsStatistic($epoch='', $scenario='', $absolute='')
    {
