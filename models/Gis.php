@@ -508,9 +508,7 @@ class Gis extends ActiveRecord
      $result = $command->queryAll();
 	 return $result;		
 	}
-	
-"  "
-	
+
 	
 	public static function getDistanceToRiver($latitude, $longitude)
 	{
