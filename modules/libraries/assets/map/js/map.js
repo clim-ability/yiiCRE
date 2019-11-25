@@ -145,6 +145,7 @@ function loadGeoJsonBorder(data) {
 	geojsonLayerBorder.clearLayers();
     geojsonLayerBorder.addData(data);
 	geojsonLayerBorder.setStyle(LayerStyleBorder);
+	geojsonLayerBorder.on('click', onMapClick);
 	//map.removeLayer(geojsonLayerBorder);
     //map.addLayer(geojsonLayerBorder);
   };
@@ -159,8 +160,6 @@ function initBorders() {
           success: loadGeoJsonBorder
     });
 }
-initBorders();
-
  
 var geojsonMarkerOptions = {
 	radius: 10,
@@ -487,7 +486,7 @@ map.on('moveend', function(){
 var baseMaps = {};    
 L.control.layers(baseMaps,{
 	   '<strong>Openstreetmap<strong/><br />':OpenStreetMap_DE, 
-       '<strong>Border<strong/><br />': geojsonLayerBorder,  
+       '<strong>Border<strong/><br />':geojsonLayerBorder,  
 	   '<strong>Stations<strong/><br />':pointLayer 
 }).addTo(map); 
 
@@ -496,6 +495,7 @@ L.control.layers(baseMaps,{
 
 redrawParameters();
 initStationData();
+initBorders();
 
 var vueEventBus = new Vue({ });
 	  
