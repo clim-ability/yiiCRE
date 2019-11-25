@@ -127,13 +127,13 @@ geojsonLayerWells.on('click', onMapClick);
 
 var geojsonLayerBorder = new L.GeoJSON();
 map.addLayer(geojsonLayerWells);
-geojsonLayerWells.on('click', onMapClick);
+geojsonLayerBorder.on('click', onMapClick);
 
 function LayerStyleBorder(feature) {
     return {
     //fillColor: getStyleColor(feature.properties.value),
-    weight: 0.9,
-    opacity: 0.8,
+    weight: 1.5,
+    opacity: 1.0,
     color: 'black',
     dashArray: '0',
     fillOpacity: 0 
