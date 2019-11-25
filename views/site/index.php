@@ -80,6 +80,8 @@ function md() {
 	<button class="btn-lg" style="display:inline;" v-on:click="getGeoLocation()"><b><?php tr('hazard', 'clicking on the map'); ?></b></button>
 	<h3 style="display:inline;"><?php tr('hazard', 'and/or change parameters.'); ?></h3>
 	<br/>
+	</template>
+	<template v-if="info === 'all'">
 	<p>
 	<?php tr('hazard', 'Die Karte zeigt den Klimawandel in der transnationalen Oberrheinregion, illustriert an {6 klimatischen Parametern}, deren projizierte Änderungen statistisch ausgewertet wurden.', 
 	    ['6 klimatischen Parametern' => '<strong>'.yii::t('hazard', '6 klimatischen Parametern').'</strong>']); ?> 
