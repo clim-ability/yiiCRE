@@ -81,6 +81,24 @@ function md() {
 	<h3 style="display:inline;"><?php tr('hazard', 'and/or change parameters.'); ?></h3>
 	<br/>
 	</template>
+
+   
+    <template v-if="info !== 'none'">
+	 <br/>	
+	 <table class="table">
+	  <tr>
+	   <td><?php tr('main', 'Nearest City'); ?>:</td><td>{{ info.nearest_city.name }}</td>
+	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{ roundedElevation }} m </td><td></td>
+	   </tr>
+		  <tr>   
+	   <td><?php tr('main', 'Nearest Station'); ?>:</td><td>{{nearestStation.name}} ({{nearestStation.abbreviation}})</td>
+	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td><td><?php tr('hazards', 'Distance'); ?>: {{Math.round(parseFloat(nearestStation.distance/1000)).toString()}} km</td>
+	  </tr>	
+	 </table>	
+     </template>		 
+	 <template v-if="((info !== 'none') && (currHazard === 'all'))">
+	 <br/>	
+	 
 	<template v-if="info === 'all'">
 	<p>
 	<?php tr('hazard', 'Die Karte zeigt den Klimawandel in der transnationalen Oberrheinregion, illustriert an {6 klimatischen Parametern}, deren projizierte Änderungen statistisch ausgewertet wurden.', 
@@ -100,23 +118,9 @@ function md() {
 	    ['keine Aussage zu absoluten Änderungswerten' => '<strong>'.yii::t('hazard', 'keine Aussage zu absoluten Änderungswerten').'</strong>']); ?> 
 	<?php tr('hazard', 'Wir empfehlen daher, auf jeden Fall auch die Werte zu den einzelnen Parametern abzurufen.'); ?> 
 	</p>
-    </template>	
-   
-    <template v-if="info !== 'none'">
-	 <br/>	
-	 <table class="table">
-	  <tr>
-	   <td><?php tr('main', 'Nearest City'); ?>:</td><td>{{ info.nearest_city.name }}</td>
-	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{ roundedElevation }} m </td><td></td>
-	   </tr>
-		  <tr>   
-	   <td><?php tr('main', 'Nearest Station'); ?>:</td><td>{{nearestStation.name}} ({{nearestStation.abbreviation}})</td>
-	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td><td><?php tr('hazards', 'Distance'); ?>: {{Math.round(parseFloat(nearestStation.distance/1000)).toString()}} km</td>
-	  </tr>	
-	 </table>	
-     </template>		 
-	 <template v-if="((info !== 'none') && (currHazard === 'all'))">
-	 <br/>	
+    </template>
+	
+	 <br/>
 	 <table class="table">
 	  <tr>
 	   <td><span class='inactive' v-on:click="switchHazard('fd')" title='<?php echo \Yii::t('Hazard:description', 'fd', []); ?>' > <?php tr('Hazard:Name', 'fd'); ?></span></td>
