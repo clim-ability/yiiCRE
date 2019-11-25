@@ -92,7 +92,7 @@ function md() {
 	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{ roundedElevation }} m </td><td></td>
 	   </tr>
 		  <tr>   
-	   <td><div class="leaflet-marker-icon extra-marker extra-marker-square-yellow leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -17px; margin-top: -42px; width: 35px; height: 45px; transform: translate3d(339px, 569px, 0px); z-index: 569;"><i number="{{nearestStation.abbreviation}}" style="color: black" class=" fa fa-number"></i></div>
+	   <td><div class="leaflet-marker-icon extra-marker extra-marker-square-yellow leaflet-zoom-animated leaflet-clickable" tabindex="0" style="position: relative; display: inline-block;"><i v-bind:number="nearestStation.abbreviation" style="color: black" class=" fa fa-number"></i></div>
 	       <?php tr('main', 'Nearest Station'); ?>:</td><td>{{nearestStation.name}}</td>
 	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td><td><?php tr('hazards', 'Distance'); ?>: {{Math.round(parseFloat(nearestStation.distance/1000)).toString()}} km</td>
 	  </tr>	
