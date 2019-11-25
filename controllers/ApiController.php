@@ -284,10 +284,10 @@ class ApiController extends Controller
       return $result;	  
    }
   
-   public function actionStationData($latitude, $longitude)
+   public function actionStationData($latitude, $longitude, $language='en')
    {
 	   $result = [];	  	   
-       $result = Station::getNearestStation($latitude, $longitude);
+       $result = Station::getNearestStation($latitude, $longitude, $language);
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;

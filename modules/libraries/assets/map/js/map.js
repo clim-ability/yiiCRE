@@ -4,9 +4,9 @@ addCategoryToTranslationPool('hazards');
 addCategoryToTranslationPool('Hazard:name');
 addCategoryToTranslationPool('Hazard:description');
 
-addCategoryToTranslationPool('scenarios');
-addCategoryToTranslationPool('Scenario:name');
-addCategoryToTranslationPool('Scenario:description');
+//addCategoryToTranslationPool('scenarios');
+//addCategoryToTranslationPool('Scenario:name');
+//addCategoryToTranslationPool('Scenario:description');
 
 
     // initialize the map
@@ -601,7 +601,7 @@ var vueInfo = new Vue({
 		var longitude = getCurrentLongitude();
 		if (latitude !== 0 && longitude !== 0) {
 		  var url = apiBaseUrl+'/api/station-data';
-	      url = url + '?latitude='+latitude+'&longitude='+longitude;
+	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&language='+currentLanguage;
           axios.get(url).then(response => {
 	         this.nearestStation = response.data; 
 	      });
