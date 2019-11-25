@@ -94,7 +94,7 @@ class Station extends ActiveRecord
            . " FROM public.station WHERE visible ORDER BY distance LIMIT 1;";
 	 $command = $connection->createCommand($sql);
      $result = $command->queryOne();
-	 $result['abbreviation'] = \Yii::t('Hazard:abbreviation', $result['name'], [], $language);
+	 $result['abbreviation'] = \Yii::t('Station:abbreviation', $result['name'], [], $language);
 	 return $result;		
 	}
 	
