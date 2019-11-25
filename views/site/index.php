@@ -99,7 +99,6 @@ function md() {
 	 <template v-if="((info !== 'none') && (currHazard === 'all'))">
 	 <br/>	
 	 
-	<template v-if="info === 'all'">
 	<p>
 	<?php tr('hazard', 'Die Karte zeigt den Klimawandel in der transnationalen Oberrheinregion, illustriert an {6 klimatischen Parametern}, deren projizierte Änderungen statistisch ausgewertet wurden.', 
 	    ['6 klimatischen Parametern' => '<strong>'.yii::t('hazard', '6 klimatischen Parametern').'</strong>']); ?> 
@@ -118,7 +117,6 @@ function md() {
 	    ['keine Aussage zu absoluten Änderungswerten' => '<strong>'.yii::t('hazard', 'keine Aussage zu absoluten Änderungswerten').'</strong>']); ?> 
 	<?php tr('hazard', 'Wir empfehlen daher, auf jeden Fall auch die Werte zu den einzelnen Parametern abzurufen.'); ?> 
 	</p>
-    </template>
 	
 	 <br/>
 	 <table class="table">
