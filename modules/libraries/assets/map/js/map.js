@@ -126,7 +126,7 @@ map.addLayer(geojsonLayerWells);
 geojsonLayerWells.on('click', onMapClick);
 
 var geojsonLayerBorder = new L.GeoJSON();
-map.addLayer(geojsonLayerWells);
+map.addLayer(geojsonLayerBorder);
 geojsonLayerBorder.on('click', onMapClick);
 
 function LayerStyleBorder(feature) {
