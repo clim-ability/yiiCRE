@@ -180,14 +180,6 @@ function md() {
 	  ); ?></p>
     </template>
 	
-	
-	
-	                    tr('p:welcome', '{Everyone is welcome} to {search} and {contribute} data.', array('Everyone is welcome' => '<strong>' . yii::t('p:welcome', 'Everyone is welcome') . '</strong>',
-                        'search' => Html::a(yii::t('p:welcome', 'search'), ['/grouping/event/list', 'mode'=>'search']),
-                        'contribute' => Html::a(yii::t('p:welcome', 'contribute'), Yii::$app->user->isGuest ? ['/user/security/login'] : ['/grouping/project/list'])
-                    ));
-	
-	
 	<template v-if="((info !== 'none') && (currHazard === 'sd'))">
 	 <h2><?php tr('Hazard:Name', 'sd'); ?></h2>
 	 <p><?php tr('Hazard:description', 'sd'); ?></p>
