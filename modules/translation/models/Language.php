@@ -252,15 +252,16 @@ class Language extends \yii\db\ActiveRecord
     }
      
     public static function getAllCategories($language = 'en') {
-        //$sql = 'SELECT category, count (*) AS counting FROM table_message_source GROUP BY category ORDER BY counting DESC';
-        $sql = "SELECT category, count (*) AS counting, "
+        $sql = 'SELECT category, count (*) AS counting FROM table_message_source GROUP BY category ORDER BY counting DESC';
+        /*
+		$sql = "SELECT category, count (*) AS counting, "
                ."  sum(case when (language = 'en') THEN 1 ELSE 0 END) - "
                ."  sum(case when (language = :language) THEN 1 ELSE 0 END) as missing "
                ." FROM table_message_source src, table_message_target trg where src.id = trg.id "
                ." GROUP BY category ORDER BY missing DESC, counting ASC; ";
-        
+        */
         $command = Yii::$app->db->createCommand($sql);
-        $command->bindValue(':language', $language, PDO::PARAM_STR);        
+        // $command->bindValue(':language', $language, PDO::PARAM_STR);        
         $categories = $command->queryAll();
 		$result = [];
         foreach ($categories as $category) {

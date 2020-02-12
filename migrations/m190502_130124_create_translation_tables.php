@@ -18,9 +18,10 @@ class m190502_130124_create_translation_tables extends Migration
         ]);
         $this->createIndex('language_unique_id', 'language', 'id', true);
 		
-        $this->insert('language', [ 'language' => 'en', 'name' => 'english',   'iso' => 'eng', 'visible' => true ]); 		
-        $this->insert('language', [ 'language' => 'de', 'name' => 'deutsch',   'iso' => 'deu', 'visible' => true ]); 		
-        $this->insert('language', [ 'language' => 'fr', 'name' => 'francaise', 'iso' => 'fra', 'visible' => true ]); 
+        $this->insert('language', [ 'language' => 'en', 'name' => 'english',   'iso' => 'eng', 'visible' => true, 'requests' => 2 ]); 		
+        $this->insert('language', [ 'language' => 'de', 'name' => 'deutsch',   'iso' => 'deu', 'visible' => true, 'requests' => 2 ]); 		
+        $this->insert('language', [ 'language' => 'fr', 'name' => 'francaise', 'iso' => 'fra', 'visible' => true, 'requests' => 2 ]); 
+        $this->insert('language', [ 'language' => 'tlh', 'name' => 'klingonisch', 'iso' => 'tlh', 'visible' => false]); 
 
         $this->createTable('table_message_source', [
             'id'                   => Schema::TYPE_PK,
