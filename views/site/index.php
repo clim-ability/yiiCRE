@@ -175,11 +175,11 @@ function md() {
   	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.'); ?>
      </p>
 	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über den {Wintertourismus}.',
-	    [ 'Wintertourismus' => Html::a(yii::t('hazards', 'Wintertourismus'), ['/media/flyer/Ski-ClimAbility.de.pdf'], ['target' => '_blank']),
+	    [ 'Wintertourismus' => Html::a(yii::t('hazards', 'Wintertourismus'), ['//media/flyer/Ski-ClimAbility.de.pdf'], ['target' => 'flyer']),
 		]
 	  ); ?></p>
     </template>
-	
+
 	<template v-if="((info !== 'none') && (currHazard === 'sd'))">
 	 <h2><?php tr('Hazard:Name', 'sd'); ?></h2>
 	 <p><?php tr('Hazard:description', 'sd'); ?></p>
@@ -209,7 +209,7 @@ function md() {
   	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr20}} Tage pro Jahr'); ?>
      </p>
 	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über {Starkregen}.',
-	    [ 'Starkregen' => Html::a(yii::t('hazards', 'Starkregen'), ['/media/flyer/Flood-ClimAbility.de.pdf'], ['target' => '_blank']),
+	    [ 'Starkregen' => Html::a(yii::t('hazards', 'Starkregen'), ['/media/flyer/Flood-ClimAbility.de.pdf'], ['target' => 'flyer']),
 		]
 	  ); ?></p>
     </template>
@@ -223,7 +223,7 @@ function md() {
   	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_winter}} mm für die Wintermonate.'); ?>
      </p>
 	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über {Hochwasser}.',
-	    [ 'Hochwasser' => Html::a(yii::t('hazards', 'Starkregen'), ['/media/flyer/Flood-ClimAbility.de.pdf'], ['target' => '_blank']),
+	    [ 'Hochwasser' => Html::a(yii::t('hazards', 'Starkregen'), ['/media/flyer/Flood-ClimAbility.de.pdf'], ['target' => 'flyer']),
 		]
 	  ); ?></p>
     </template>
