@@ -174,15 +174,12 @@ function md() {
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
   	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.'); ?>
      </p>
-	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über den {Wintertourismus}.',
-	    [ 'Winter2tourismus' => Html::a(yii::t('hazards', 'Wintertourismus'), '/media/flyer/Ski-ClimAbility.de.pdf', ['target'=>'_flyer']),
-		
-		'Wintertourismus' => Html::a(\Yii::t('sugg:footer', 'Help'), ['/site/page', 'view' => 'onlineHelp', '#'=> 'toc'], ['class' => 'no-wait', 'target'=>'_tmbHelp'])
-		
-		]
-	  ); ?></p>
+	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über'); 
+	  echo ' ';
+	  echo Html::a(\Yii::t('hazards', 'Wintertourismus'), '/media/flyer/Ski-ClimAbility.de.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	  echo ".";
+	  ?></p>
 	  <?php
-	  echo Html::a(\Yii::t('sugg:footer', 'Help'), '/media/flyer/Ski-ClimAbility.de.pdf', ['class' => 'no-wait', 'target'=>'_tmbHelp']);
 	  ?>
     </template>
 
@@ -214,10 +211,13 @@ function md() {
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
   	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr20}} Tage pro Jahr'); ?>
      </p>
-	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über {Starkregen}.',
-	    [ 'Starkregen' => Html::a(yii::t('hazards', 'Starkregen'), '/media/flyer/Flood-ClimAbility.de.pdf', ['target' => '_flyer']),
-		]
-	  ); ?></p>
+	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über'); 
+	  echo ' ';
+	  echo Html::a(\Yii::t('hazards', 'Starkregen'), '/media/flyer/Flood-ClimAbility.de.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	  echo ".";
+	  ?></p>	  
+	  
+	  
     </template>
 
 	<template v-if="((info !== 'none') && (currHazard === 'rr_winter'))">
@@ -228,10 +228,11 @@ function md() {
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
   	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_winter}} mm für die Wintermonate.'); ?>
      </p>
-	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über {Hochwasser}.',
-	    [ 'Hochwasser' => Html::a(yii::t('hazards', 'Starkregen'), '/media/flyer/Flood-ClimAbility.de.pdf', ['target' => '_flyer']),
-		]
-	  ); ?></p>
+	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über'); 
+	  echo ' ';
+	  echo Html::a(\Yii::t('hazards', 'Hochwasser'), '/media/flyer/Flood-ClimAbility.de.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	  echo ".";
+	  ?></p>
     </template>
 
 	<template v-if="((info !== 'none') && (currHazard === 'rr_summer'))">
