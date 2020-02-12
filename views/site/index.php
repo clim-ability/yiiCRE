@@ -181,6 +181,9 @@ function md() {
 		
 		]
 	  ); ?></p>
+	  <?php
+	  echo Html::a(\Yii::t('sugg:footer', 'Help'), '/media/flyer/Ski-ClimAbility.de.pdf', ['class' => 'no-wait', 'target'=>'_tmbHelp']);
+	  ?>
     </template>
 
 	<template v-if="((info !== 'none') && (currHazard === 'sd'))">
