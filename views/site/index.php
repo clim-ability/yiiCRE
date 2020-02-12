@@ -1,5 +1,6 @@
 <?php
 use app\modules\libraries\bundles\MapAsset;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\Tabs;
 use app\modules\translation\widgets\LanguageTranslate;
