@@ -175,7 +175,7 @@ function md() {
   	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.'); ?>
      </p>
 	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über den {Wintertourismus}.',
-	    [ 'Wintertourismus' => Html::a(yii::t('hazards', 'Wintertourismus'), ['@web/media/flyer/Ski-ClimAbility.de.pdf'], ['target' => 'flyer']),
+	    [ 'Wintertourismus' => Html::a(yii::t('hazards', 'Wintertourismus'), ['media/flyer/Ski-ClimAbility.de.pdf'], ['target' => 'flyer']),
 		]
 	  ); ?></p>
     </template>
