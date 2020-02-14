@@ -32,8 +32,7 @@ class FlyerItems
         return $items;
     }
     
-	Html::a(\Yii::t('hazards', 'Hochwasser'), '/media/flyer/Flood-ClimAbility.de.pdf', ['class' => 'no-wait', 'target'=>'_flyer'])
-	
+
      public static function getRandom() {
          $items = ShowroomItems::getItems();
          $any = rand(0, sizeof($items)-1);
