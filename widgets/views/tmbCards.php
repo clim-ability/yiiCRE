@@ -32,8 +32,8 @@
                     $description = $str;
                 }
                 $target = "";
-				if (is_string($item['target']) {
-				  $target = "target='".$item['target']."'";
+				if (is_string($item['target'])) {
+				  $target = "target='" . $item['target'] . "'";
 				}
                 echo "<div class='col-md-3 col-sm-6 " . $sizeSpecial . "'>"; //  'col-md-offset-1'  in general destroys layout for showroom
                 echo "<div class=' side-box'>";
