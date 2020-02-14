@@ -58,6 +58,7 @@ $left =
                 ['label' => Language::t('p:menue', 'Tags'), 'url' => ['/locating/tag/index']],
             ]
         ],
+		['label' => Language::t('p:menue', 'Flyer'), 'url' => ['/site/page', 'view' => 'flyer']],
         ['label' => Language::t('p:menue', 'About'), 'url' => '/site/about'],
     ];
 
