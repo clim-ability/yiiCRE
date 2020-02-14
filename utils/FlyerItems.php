@@ -25,7 +25,7 @@ class FlyerItems
 				'target' => '_flyer', 
             ],
             ['title' => Yii::t('p:flyer', 'Forstsektor'),
-                'description' => Yii::t('p:flyer', 'Der Klimawandel - der Forst- und Holzsektor unter Spannung'),
+                'description' => Yii::t('p:flyer', 'Der Klimawandel: Der Forst- und Holzsektor unter Spannung'),
                 'img' => Url::to('@web/media/flyer/forest.png'),
                 'url' => Url::to('@web/media/flyer/Forest-ClimAbility.'.$language.'.pdf'),
 				'target' => '_flyer', 
