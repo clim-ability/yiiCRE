@@ -31,13 +31,16 @@
                     $tooltip = $description;
                     $description = $str;
                 }
-                
+                $target = "";
+				if (is_string($item['target']) {
+				  $target = "target='".$item['target']."'";
+				}
                 echo "<div class='col-md-3 col-sm-6 " . $sizeSpecial . "'>"; //  'col-md-offset-1'  in general destroys layout for showroom
                 echo "<div class=' side-box'>";
                 echo "<h3>";
                 echo $title;
                 echo "</h3>";
-                echo "<a href='" . $item['url'] . "' class='' role=''>";                  
+                echo "<a href='" . $item['url'] . "' class='' role='' ".$target.">";                  
                 echo "<div class= 'thumbnail' style='min-height: 175px' >";
                 if (array_key_exists('img', $item) && is_string($item['img'])) {
                     

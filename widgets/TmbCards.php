@@ -16,7 +16,8 @@
     'description' => Yii::t('p:cards', 'Such doch selber'), 'glyphicon' => 'search'],
    ['title' => 'Tambora', 'url' => 'http://www.tambora.org',
     'description' => 'Dieser Vulkan ist heiss!',
-    'img' => 'https://tambora-test.ub.uni-freiburg.de/tambora-dev/images/logos/tambora-logo.png' ]
+    'img' => 'https://tambora-test.ub.uni-freiburg.de/tambora-dev/images/logos/tambora-logo.png' ],
+	'target' => '_flyer' 
    ];
   echo TmbCards::widget(['items' => $items]);
   // best image-size 250*175px 
