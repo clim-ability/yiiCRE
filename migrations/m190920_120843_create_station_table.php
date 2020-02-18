@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use yii\db\Schema;
 use yii\db\Migration;
@@ -33,7 +33,7 @@ class m190920_120843_create_station_table extends Migration {
 		$this->insert('station', [ 'name' => 'Freiburg', 'location' => 'POINT(7.8344 48.0233)',   'elevation' => 236.0, 
 		                           'sd' => 54.2, 'tr' => 3.7, 'fd' => 52.3, 'rr20' => 7.2, 'rr_winter' => 180.6, 'rr_summer' => 292.2, 
 		                           'visible' => true, 'begin'=>1971, 'end'=>2000]);
-		$this->insert('station', [ 'name' => 'Basel-Binningen', 'location' => 'POINT(7.966 47.9166)',   'elevation' => 316.0, 
+		$this->insert('station', [ 'name' => 'Basel-Binningen', 'location' => 'POINT(7.57109  47.5394)',   'elevation' => 316.0, 
 		                           'sd' => 41.6, 'tr' => 2.0, 'fd' => 71, 'rr20' => 5.7, 'rr_winter' => 154, 'rr_summer' => 253, 
 		                           'visible' => true, 'begin'=>1961, 'end'=>2009]);
 		$this->insert('station', [ 'name' => 'Wangenbourg', 'location' => 'POINT(7.31 48.64)',   'elevation' => 465.0, 

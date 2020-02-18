@@ -753,7 +753,7 @@ class Language extends \yii\db\ActiveRecord
         $language = $event->language;
         $category = $event->category;
         $message = $event->message;
-        if ('en' == $event->language) {
+        if (in_array($event->language, ['de','en','fr'])) {
             Language::addTranslation($message, 'en', $message, $category);
         } else {
             $findMessage = Language::findAnyTranslation($language, $message);
