@@ -313,8 +313,11 @@ return [
 		// vue - http://threejs.org/
         'vue.js' => '//cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js',
         'vue.min.js' => '//cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.min.js', 
-		'axios.js' => '//unpkg.com/axios/dist/axios.js',
-        'axios.min.js' => '//unpkg.com/axios/dist/axios.min.js', 
+		//'axios.js' => '//unpkg.com/axios/dist/axios.js',
+        //'axios.min.js' => '//unpkg.com/axios/dist/axios.min.js', 
+		'axios.js' => '//cdn.jsdelivr.net/npm/axios@0.19.2/dist/axios.js',
+	    'axios.min.js' => '//cdn.jsdelivr.net/npm/axios@0.19.2/dist/axios.min.js',
+		
     /*
       //maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css
       //maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js
