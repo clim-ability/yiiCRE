@@ -185,7 +185,7 @@ class m200225_100843_create_link_table extends Migration {
 	}
 	
 	private function addImage($original, $date='20200224') {
-		$this->addOriginal($original, 'https://web.archive.org/web/'.$date.'if_/'.$original, null);
+		$this->addOriginal($original, 'https://web.archive.org/web/'.$date.'if_/'.$original, $date, null);
 	}
 
 }
