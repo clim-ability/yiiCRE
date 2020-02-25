@@ -156,7 +156,7 @@ class m200225_100843_create_link_table extends Migration {
                     'date' => $date,
 					'status' => 'archived',
 					'language_id' => $languageId,
-					'translation' => $translationId
+					'translation_id' => $translationId
 					
         ]);
     }
