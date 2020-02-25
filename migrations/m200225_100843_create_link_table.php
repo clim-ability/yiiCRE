@@ -127,7 +127,7 @@ class m200225_100843_create_link_table extends Migration {
           $command = $connection->createCommand($sql);
           $lang = $command->queryOne();
 		  if(!is_null($lang)) {
-		    $languageId=$ang['id'];
+		    $languageId=$lang['id'];
 		  }		
 		}
         return $result;
