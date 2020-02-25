@@ -127,7 +127,7 @@ class m200225_100843_create_link_table extends Migration {
           $command = $connection->createCommand($sql);
           $lang = $command->queryOne();
 		  if(!is_null($lang)) {
-		    $languageId=$lang['id'];
+		    $result=$lang['id'];
 		  }		
 		}
         return $result;
@@ -172,12 +172,12 @@ class m200225_100843_create_link_table extends Migration {
 		   'http://archive.md/'.$date.'/'.'https://translate.google.de/translate?sl='.$language.'&tl=fr&u='.$original,
 		   $date, $language, 'fr');
 		}
-		if('fr' != $language) {
+		if('de' != $language) {
 		  $this->addTranslation($original,
 		   'http://archive.md/'.$date.'/'.'https://translate.google.de/translate?sl='.$language.'&tl=de&u='.$original,
 		   $date, $language, 'de');
 		}
-		if('fr' != $language) {
+		if('en' != $language) {
 		  $this->addTranslation($original,
 		   'http://archive.md/'.$date.'/'.'https://translate.google.de/translate?sl='.$language.'&tl=en&u='.$original,
 		   $date, $language, 'en');		
