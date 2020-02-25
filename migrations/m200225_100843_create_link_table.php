@@ -134,7 +134,7 @@ class m200225_100843_create_link_table extends Migration {
 	} 
 	
     private function addOriginal($original, $archive, $date, $language=null) {
-        $languageId = findLanguageId($language);
+        $languageId = $this->findLanguageId($language);
 		return $this->insert('link', [
                     'original' => $original,
                     'archive' => $archive,
@@ -147,8 +147,8 @@ class m200225_100843_create_link_table extends Migration {
     }
 
     private function addTranslation($original, $archive, $date, $language=null, $translation=null) {
-        $languageId = findLanguageId($language);
-		$translationId = findLanguageId($translation);
+        $languageId = $this->findLanguageId($language);
+		$translationId = $this->findLanguageId($translation);
 		return $this->insert('link', [
                     'original' => $original,
                     'archive' => $archive,
