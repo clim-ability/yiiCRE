@@ -3,6 +3,19 @@ body {
     height: 100%;
 }
 
+body{
+    width: 100%;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background-image: url('/images/regenbogen3.jpg');
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
 .wrap {
     min-height: 100%;
     height: auto;
@@ -88,6 +101,11 @@ a.desc:after {
     border-left: 3px solid #eed3d7;
     padding: 10px 20px;
     margin: 0 0 15px 0;
+}
+
+.navbar-fixed-top, .navbar-fixed-bottom {
+  border-radius: 8px;
+  margin: 8px;
 }
 
 /* align the logout "link" (button in form) of the navbar */

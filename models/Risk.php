@@ -14,8 +14,8 @@ class Risk extends ActiveRecord
 //    public $year_begin;
 //    public $year_end;
 //	  public $visible;
-      public $label;
-      public $description;
+      //public $label;
+      //public $description;
 	
     public static function getDb() 
 	{
@@ -30,7 +30,7 @@ class Risk extends ActiveRecord
     public function fields()
     {
         $fields = parent::fields();
-		$fields[] = 'label';
+		//$fields[] = 'label';
 		return $fields;
     }
 
@@ -45,13 +45,17 @@ class Risk extends ActiveRecord
         return [
             [['name'], 'required'],
             [['visible'], 'boolean'],
+            [['negative'], 'boolean'],
             [['name'], 'string'],
-			[['label', 'description'], 'safe']
+            [['description'], 'string'],
+            [['details'], 'string'],
+            //[['label'], 'safe']
+			// [['label', 'description'], 'safe']
 			
         ];
     }
 
-/*
+
     private $_label;
 	
 	public function getLabel() {
@@ -60,7 +64,7 @@ class Risk extends ActiveRecord
 	public function setLabel($l) {
 	    $this->_label = $l;	
 	}
-*/
+
 	
 	public function inqAllRisks( $inclInvisible = false ) {
 	    $risks = Risk::find();
@@ -71,6 +75,24 @@ class Risk extends ActiveRecord
         $risks = $risks->orderBy(['name'=>SORT_ASC]);
         return $risks->all();
 	}
+
+	public function inqRisksByDangerAndNegative( $dangerId, $negative=true, $sector=NULL, $inclInvisible = false ) {
+	    $risks = Risk::find()->where(['negative' => $negative]);
+        $risks = $risks->join('INNER JOIN', 'danger_risk', 'danger_risk.risk_id = risk.id')->andWhere(['danger_risk.danger_id' => $dangerId]);
+		if(!$inclInvisible) {
+		   $risks = $risks->andWhere(['visible' => true]);	
+		}
+        if($sector) {
+            $sectorModel = Sector::findBy($sector);
+            if($sectorModel) {
+                $sectorId = $sectorModel['id'];
+                $risks = $risks->join('INNER JOIN', 'sector_risk', 'sector_risk.risk_id = risk.id')->andWhere(['sector_risk.sector_id' => $sectorId]); 
+            }
+        }
+		$risks = $risks->limit(-1);
+        $risks = $risks->orderBy(['name'=>SORT_ASC]);
+        return $risks->all();
+	}    
 	
 	public static function findById($id)
     {

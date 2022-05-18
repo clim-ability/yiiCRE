@@ -5,12 +5,9 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
-use yii\db\Expression;
 
 
-
-
-class Station extends ActiveRecord 
+class Landscape extends ActiveRecord 
 {
 //    public $id;
 //    public $name;
@@ -19,10 +16,7 @@ class Station extends ActiveRecord
 //	  public $visible;
       public $label;
       public $description;
-      public $abbreviation;
-      public $longitude;
-      public $latitude;	  
-	  
+	
     public static function getDb() 
 	{
         return Yii::$app->pgsql_cre;
@@ -30,7 +24,7 @@ class Station extends ActiveRecord
 
     public static function tableName()
     {
-        return 'station';
+        return 'landscape';
     }
 
     public function fields()
@@ -49,10 +43,11 @@ class Station extends ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'elevation_min', 'elevation_max'], 'required'],
+            [['elevation_min', 'elevation_max'], 'integer'],
             [['visible'], 'boolean'],
             [['name'], 'string'],
-			[['label', 'description'], 'safe']
+	    [['label', 'description'], 'safe']
 			
         ];
     }
@@ -68,77 +63,68 @@ class Station extends ActiveRecord
 	}
 */
 	
-	public function inqAllStations( $inclInvisible = false ) {
-	    $stations = Station::find();
-		$longitude = new Expression('ST_X(location::geometry) AS longitude'); 
-		$latitude = new Expression('ST_Y(location::geometry) AS latitude');
-		$stations = $stations->select(['*', $longitude, $latitude]);
-		//if(!$inclInvisible) {
-		//   $stations = $stations->where(['visible' => true]);	
-		//}
-		$stations = $stations->limit(-1);
-        $stations = $stations->orderBy(['name'=>SORT_ASC]);
-		
-		//var_dump($stations->createCommand()->sql);
-		
-        return $stations->all();
+
+
+	public static function inqAllLandscapes( $inclInvisible = false ) {
+	    $landscapes = Landscape::find();
+		if(!$inclInvisible) {
+		   $landscapes = $landscapes->where(['visible' => true]);	
+		}
+		$landscapes = $landscapes->limit(-1);
+        $landscapes = $landscapes->orderBy(['elevation_min'=>SORT_ASC]);
+        return $landscapes->all();
 	}
-	
-	public static function getNearestStation($latitude, $longitude, $language='en', $elevmin=null, $elevmax=null)
-	{
-	  $coordinate = ''.(float)$longitude.','.(float)$latitude.'';
-	  $connection = Station::getDb();
-      //$connection = Yii::$app->pgsql_gisdata;
-	  $sql = "SELECT st_distance(location, ST_SetSRID(ST_MakePoint(".$coordinate."),4326)) as distance, "
-	        ." ST_X(location::geometry) as longitude, ST_Y(location::geometry) as  latitude, *"
-           . " FROM public.station WHERE visible ";
-          if($elevmin) {
-              $sql .= " AND elevation >= ".(float)$elevmin." ";
-          }
-          if($elevmax) {
-              $sql .= " AND elevation <= ".(float)$elevmax." ";
-          }
-          $sql .= " ORDER BY distance LIMIT 1;";
-	 $command = $connection->createCommand($sql);
-     $result = $command->queryOne();
-	 $result['abbreviation'] = \Yii::t('Station:abbreviation', $result['name'], [], $language);
-	 return $result;		
-	}
-	
+/*	
 	public static function findById($id)
     {
-        $station = Station::find()
+        $danger = Danger::find()
             ->where(['id' => $id])
             ->one();
-        return $station;
+        return $danger;
     }
 	
 	public static function findByName($name)
     {
-        $station = Station::find()
+        $danger = Danger::find()
             ->where(['name' => $name])
 			->orderBy(['id'=>SORT_DESC])
             ->one();
-        return $station;
+        return $danger;
     }
 	
 	public static function findBy($idOrName)
 	{
-		$station = NULL;
+		$danger = NULL;
 		if(is_numeric($idOrName))
 		{
-		   $station = Station::findById((int)$idOrName);	
+		   $danger = Danger::findById((int)$idOrName);	
 		} 
 		elseif(is_string($idOrName)) 
 		{
-		   $station = Station::findByName($idOrName);
+		   $danger = Danger::findByName($idOrName);
 		}
-		return $station;
+		return $danger;
 	}	
-  
+*/
+
+    public static function findByElevation($elevation)
+    {
+      $result = null;
+      $landscapes = Landscape::inqAllLandscapes();
+      foreach($landscapes as $landscape) 
+      { 
+        if(($landscape->elevation_min <= $elevation) && ($landscape->elevation_max >= $elevation))
+        {
+            $result = $landscape;
+        } 
+      }  
+      return $result;
+    }  
+
+
 public function search($params)
     {
-        $query = Station::find();
+        $query = Landscape::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -151,6 +137,8 @@ public function search($params)
             // $query->where('0=1');
             return $dataProvider;
         }
+
+
 /*
         $query->andFilterWhere([
             'id' => $this->id,

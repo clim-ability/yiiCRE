@@ -10,6 +10,7 @@ use yii\web\Controller;
 use app\models\Epoch;
 use app\models\Hazard;
 use app\models\Parameter;
+use app\models\Landscape;
 use app\models\Scenario;
 use app\models\Station;
 use app\models\Sector;
@@ -139,6 +140,8 @@ class ApiController extends Controller
 	   }
 	   $result['elevation_calculated'] = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
 	   $result['elevation_iso_raster'] = Gis::getIsoElevation($latitude, $longitude);
+           $elevation = (1.5*$result['elevation_calculated']['value'] + 3.0*$result['elevation_iso_raster']['value'])/4.0;
+           $result['landscape'] = Landscape::findByElevation($elevation);
 	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
 	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);
 	   $result['country'] = Gis::getCountry($latitude, $longitude);
@@ -156,51 +159,6 @@ class ApiController extends Controller
       return $hazards;		   
    }
    
-   public function actionRatedRisks($latitude, $longitude, $epoch='', $scenario='', $hazard='all', $sector='all')
-   {
-	  $results = []; 
-	  $risks = Gis::getRatedRisks($latitude, $longitude, $epoch, $scenario, $hazard, $sector);
-	  foreach($risks as $risk=>$value) {
-		 $results[] = ['value'=> $value, 'name'=>$risk, 'label'=> yii::t('Risk:name', $risk)];
-	  }
-	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
-      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-      return $results;		   
-   }   
-   
-   public function actionAdaptRisks($latitude, $longitude, $epoch='', $scenario='', $hazard='all', $sector='all', $risk= '', $value=0.0)
-   {
-	   if(User::hasRole('sysadmin')) {
-		   Gis::adaptRisks($latitude, $longitude, $epoch, $scenario, $hazard, $sector, $risk, $value);
-	   }
-	//  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
-      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-	   return ['risk' => $risk, 'value'=>$value*1.1];
-   }
-   
-   
-   
-   public function actionRatedDangers($latitude, $longitude, $epoch='', $scenario='', $hazard='all')
-   {
-	  $results = []; 
-	  $dangers = Gis::getRatedDangers($latitude, $longitude, $epoch, $scenario, $hazard);
-	  foreach($dangers as $danger=>$value) {
-		 $results[] = ['value'=> $value, 'name'=>$danger, 'label'=> yii::t('Danger:name', $danger)];
-	  }
-	  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
-      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-      return $results;		   
-   }
-   
-   public function actionAdaptDangers($latitude, $longitude, $epoch='', $scenario='', $hazard='all', $danger='', $value=0.0)
-   {
-	   if(User::hasRole('sysadmin')) {
-		   Gis::adaptDangers($latitude, $longitude, $epoch, $scenario, $hazard, $danger, $value);
-	   }
-	//  \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
-      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-	   return ['danger' => $danger, 'value'=>$value*1.1];
-   }
    
    public function actionHazardExtremes($hazard='', $epoch='', $scenario='', $absolute='')
    {
@@ -284,10 +242,10 @@ class ApiController extends Controller
       return $result;	  
    }
   
-   public function actionStationData($latitude, $longitude, $language='en')
+   public function actionStationData($latitude, $longitude, $language='en', $elevmin=null, $elevmax=null)
    {
 	   $result = [];	  	   
-       $result = Station::getNearestStation($latitude, $longitude, $language);
+       $result = Station::getNearestStation($latitude, $longitude, $language, $elevmin, $elevmax);
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
@@ -315,7 +273,7 @@ class ApiController extends Controller
    {
 	   $result = [];
 	   $hazards = Hazard::inqAllHazards();
-       $epoch = Epoch::findBy($epoch);
+           $epoch = Epoch::findBy($epoch);
 	   $scenario = Scenario::findBy($scenario);
 	   $parameter = Parameter::findBy($parameter);
 	   foreach($hazards as $hazard)
@@ -341,6 +299,13 @@ class ApiController extends Controller
 	   }
 	   $result['elevation_calculated'] = Gis::getCalculatedValue('elevation_mean', 'elev', $latitude, $longitude);
 	   $result['elevation_iso_raster'] = Gis::getIsoElevation($latitude, $longitude);
+           $result['landscape'] = null;
+           $elevation = (1.5*floatval($result['elevation_calculated']['value']) +
+                         10.0*floatval($result['elevation_iso_raster']['value'])) / 11.0;
+           $landscape = Landscape::findByElevation($elevation);
+           if($landscape) {
+               $result['landscape'] = ['name'=>$landscape->name, 'elevMin'=>$landscape->elevation_min, 'elevMax'=>$landscape->elevation_max];
+           }
 	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
 	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);
        $result['country'] = Gis::getCountry($latitude, $longitude);	 

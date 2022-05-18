@@ -151,7 +151,8 @@ function loadGeoJsonBorder(data) {
   };
 
 function initBorders() {
-    var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/borders'; 
+    //var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/borders'; 
+	var geoJsonUrl = apiBaseUrl+'/api/borders';
     //var parameters = L.Util.extend(defaultParameters, customParams);
     $.ajax({
           url: geoJsonUrl,  // + L.Util.getParamString(parameters),
@@ -457,7 +458,8 @@ var statisticOptions = {
         if (!map.hasLayer(pointLayer)) { map.addLayer(pointLayer); }					
         if (map.hasLayer(imageAdded)) { map.removeLayer(imageAdded); }
         if (map.hasLayer(statisticLayer)) { map.removeLayer(statisticLayer); }			
-        var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
+        //var geoJsonUrl ='https://gis.clim-ability.eu/index.php/api/hazard-geom'; 
+		var geoJsonUrl = apiBaseUrl+'/api/hazard-geom';
         var parameters = L.Util.extend(defaultParameters, customParams);
         $.ajax({
           url: geoJsonUrl + L.Util.getParamString(parameters),
@@ -497,8 +499,43 @@ redrawParameters();
 initStationData();
 initBorders();
 
+
+
 var vueEventBus = new Vue({ });
 	  
+var tabSelect = new Vue({
+	el: '#tabselect',
+	data: {
+		activeTab: 'climate_info'
+	},
+	methods: {
+		isTabActive(tab) {
+           return (tab == this.activeTab);
+		},
+		activateTab(tab) {
+			this.activeTab = tab;	 
+		}
+	}
+})
+
+var vueOther = new Vue({
+	el: '#other',
+	methods: {
+		isTabActive(tab) {
+			return tabSelect.isTabActive(tab);
+		}
+	}
+})
+
+var vueImpacts = new Vue({
+	el: '#impacts_adaptions',
+	methods: {
+		isTabActive(tab) {
+			return tabSelect.isTabActive(tab);
+		}
+	}
+})
+
 var vueSelect = new Vue({
   el: '#selectionrow',
   data: {
@@ -508,6 +545,8 @@ var vueSelect = new Vue({
     epochs: [ { label: '', name: 'none' } ],
     scenario: 'none',
     scenarios: [ { label: '', name: 'none' } ],
+    sector: 'none',
+    sectors: [ { label: '', name: 'none' } ],	
     language: 'none',
     languages: [ { label: '', name: 'none' } ]	
   },
@@ -562,6 +601,7 @@ var vueSelect = new Vue({
         //setParametersOnMap(this.hazard, this.epoch, this.scenario);		
 	  }
 	},
+	getCurrentSector() {return this.sector; },
 	getCurrentEpoch() {return this.epoch; },
 	getCurrentSzenario() {return this.scenario; },
 	getCurrentHazard() {return this.hazard; },
@@ -596,6 +636,20 @@ var vueSelect = new Vue({
 		this.scenario = this.scenarios[0].name;
 		this.updateParameters();
 		 });
+	axios
+		 .get(apiBaseUrl+'/api/sectors?language='+currentLanguage)
+		 //.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		 .then(response => { 
+		   this.sectors = response.data; 
+		   //initStatisticOptions(this.hazards);
+		   var noneTranslate = tr('Sector:name', 'none');
+		   //this.hazards.unshift({name: 'off', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		   var allTranslate = tr('Sector:name', 'all');
+		   //this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		   this.sector = this.sectors[0].name;
+		   //this.updateParameters();
+		   //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
+		   });		 
     axios
       .get(apiBaseUrl+'/api/languages')
 	  //.get('https://gis.clim-ability.eu/index.php/api/languages')
@@ -605,23 +659,136 @@ var vueSelect = new Vue({
   }
 })
 
+var nodeIcon3 = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="32" viewBox="0 0 20 32"><path d="M20 14h-8l6-14-18 18h8l-6 14 18-18z"></path></svg>'
+// https://www.svgrepo.com/collection/zwicon-line-icons/1
+// https://icons8.de/icons/set/wetter
+
+
+
+var D3Network = window['vue-d3-network']
+var vueNetwork = new Vue({
+	el: '#impacts_adaptions',
+	components: {
+		D3Network
+	  },	
+	data: {
+       nodes: [
+        { id: 1, name:'orange node', _color: 'orange' },
+        { id: 2, name:'blue node',_color: '#00aaff', svgSym: this.iconSvg},
+        { id: 3, svgSym:nodeIcon3 },
+      ],
+       links: [
+        { sid: 1, tid: 2, name:'link 1' },
+        { sid: 2, tid: 3, }, 
+	   ],	
+	   svgIcon: '<svg></svg>',
+	   nodeSize:12,
+	   canvas:false,
+	   currentNode:0	      
+	},
+	computed:{
+		iconSvg(){
+          return this.svgIcon;
+        },
+		options(){
+		  return{
+			force: 3000,
+			size:{ w:500, h:500},
+			nodeSize: this.nodeSize,
+			nodeLabels: true,
+			linkLabels: true,
+			canvas: this.canvas,
+			linkWidth:2
+		  }
+		}
+	},
+	methods:{
+	  lcb (link) {
+		return link
+	  },
+	  setIcon(svg) {
+        this.svgIcon = svg;
+	  },
+	  setNodes(nodes) {
+        this.nodes = nodes;
+	  },
+	  setLinks(links) {
+        this.links = links;
+	  },
+	  setCurrentNode(event, node) {
+        this.currentNode = node.id;
+		this.getGraph();
+	  },
+	  getGraph() {
+		var currSector = vueSelect.getCurrentSector();  
+        var url = apiBaseUrl+'/graph/full-graph';
+		var url = url+'?current='+this.currentNode.toString();
+		var url = url+'&sector='+currSector;
+		axios
+		  .get(url)
+		  //.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		  .then(response => { 
+			this.setNodes(response.data.nodes);
+			this.setLinks(response.data.links);    
+			});	
+	  },
+	  xxx() {
+		var url = apiBaseUrl+'/images/test.svg';
+        url = url.replace('/index.php/','/');
+		axios
+		  .get(url)
+		  //.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		  .then(response => { 
+			this.setIcon(response.data);  
+			});	
+		var oldLinks = this.links;	
+		this.nodes = [
+				{ id: 1, name:'red Node', _color: '#00aaff' },
+				{ id: 2, name:'blue Node',_color: 'red', svgSym: this.iconSvg},
+				{ id: 3, svgSym:nodeIcon3 },
+			  ];
+		this.links = [
+			{ sid: 1, tid: 2, name:'Link 1' },
+			{ sid: 2, tid: 3, }, 
+		   ];	  
+	  },
+	},
+	mounted () {
+		vueEventBus.$on('updatedParameters', e => { this.getGraph();})
+		var url = apiBaseUrl+'/images/small.svg';
+        url = url.replace('/index.php/','/');
+		axios
+		  .get(url)
+		  //.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		  .then(response => { 
+			this.setIcon(response.data);  
+			});	
+        this.getGraph();		
+		},
+
+})
+
 
 var vueInfo = new Vue({
-  el: '#informationfield',
+  el: '#climate_info',
   data: {
     info: 'none',
 	infoVisible: false,
 	currHazard: '',
 	currEpoch: '',
 	currSzenario: '',
-	nearestStation: {},
+    nearestStation: {},
+    bestStation: {},
 	dangerText: '',
-	dangers: {},
-	risks: {},
+//	dangers: {},
+//	risks: {},
     sector: 'none',
     sectors: [ { label: '', name: 'none' } ]
   },
   methods: { 
+	isTabActive(tab) {
+		return tabSelect.isTabActive(tab);
+	},   
     switchHazard(hazard) {
 		vueSelect.setCurrentHazard(hazard);
 		vueSelect.updateParameters();
@@ -649,24 +816,24 @@ var vueInfo = new Vue({
           axios.get(url).then(response => {
 	         this.info = response.data; 
 	         this.infoVisible = true;
+
+		    var latitude = getCurrentLatitude();
+		    var longitude = getCurrentLongitude();
+                    //  this.info.landscape
+	    	    if (latitude !== 0 && longitude !== 0 && response.data.landscape) {
+                      var elevMin = response.data.landscape.elevMin;
+                      var elevMax = response.data.landscape.elevMax;
+                      //var elevMin = 300;
+                      //var elevMax = 600;
+		      var url = apiBaseUrl+'/api/station-data';
+	              url = url + '?latitude='+latitude+'&longitude='+longitude+'&language='+currentLanguage+'&elevmin='+elevMin+'&elevmax='+elevMax;
+                      axios.get(url).then(response => {
+	                  this.bestStation = response.data; 
+	              });
+                    }
+
 	      });
-	      var url = apiBaseUrl+'/api/rated-dangers';
-	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
-          axios.get(url).then(response => {
-			 this.dangerText = '';
-			 this.dangers = response.data;
-             for (var i = 0; i < response.data.length; i++) {
-               var danger = response.data[i];
-			   if(danger.value > 0.0) {
-                  this.dangerText += danger.label+', ';
-			   }
-			 }			   
-	      });
-	      var url = apiBaseUrl+'/api/rated-risks';
-	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard+'&sector='+this.sector; 
-          axios.get(url).then(response => {
-			 this.risks = response.data;
-	      });		  
+	  
 	    }
 	},
 	getGeoLocation() {
@@ -700,48 +867,13 @@ var vueInfo = new Vue({
 		}
 	  }
 	  return '';
-	},
-	voteDanger(danger, value) {
-		var latitude = getCurrentLatitude();
-		var longitude = getCurrentLongitude();
-		if (latitude !== 0 && longitude !== 0) {
-		  var url = apiBaseUrl+'/api/adapt-dangers';
-	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
-		  url = url + '&danger='+danger+'&value='+value.toString();
-          axios.get(url).then(response => {
-             for (var i = 0; i < this.dangers.length; i++) {
-               if(this.dangers[i].name == response.data.danger) {
-				   this.dangers[i].value += response.data.value/10.0;
-			   }
-			 }
-	      });
-		}		  
-	},
-	voteRisk(risk, value) {
-	   console.log(risk+': '+value.toString());	
-	   var latitude = getCurrentLatitude();
-		var longitude = getCurrentLongitude();
-		if (latitude !== 0 && longitude !== 0) {
-		  var url = apiBaseUrl+'/api/adapt-risks';
-	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario+'&hazard='+this.currHazard;
-		  url = url + '&sector='+this.sector+'&risk='+risk+'&value='+value.toString();
-		  axios.defaults.timeout = 0;
-          axios.get(url, {timeout: 8000}).then(response => {
-			 console.log('Adapted?:'+response.data.danger+' '+response.data.value);
-             for (var i = 0; i < this.risks.length; i++) {
-               if(this.risks[i].name == response.data.risk) {
-				   this.risks[i].value += response.data.value/10.0;
-			   }
-			 }
-	      });
-		}
-	   
-	   
 	}
+
   },
   computed: {
 	roundedElevation: function() {
-      return this.roundedValue(this.info.elevation_calculated.value, 2);
+      //return this.roundedValue(this.info.elevation_calculated.value, 2);
+	  return this.roundedValue(this.info.elevation_iso_raster.value, 2);
 	},		
     roundedCddp: function () {
 	  return this.roundedRange(this.info.cddp_delta_calculated, 1);

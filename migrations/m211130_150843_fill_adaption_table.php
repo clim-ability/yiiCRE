@@ -242,6 +242,8 @@ class m211130_150843_fill_adaption_table extends Migration {
 		$field = str_replace('allgemeiner Temperaturanstieg','Temperaturanstieg',$field);
 		$field = str_replace('Gewitter&Hagel','Gewitter & Hagel',$field);
 
+		// "alle"  !!!
+
 		$stressors = explode(';', $field);
         $results = [];
 		foreach($stressors as $stressor) {
@@ -308,7 +310,8 @@ class m211130_150843_fill_adaption_table extends Migration {
 		foreach($countries as $country) {
 			$results[] = trim($country);
 		}
-		return $results;
+		return ['Switzerland','Germany','France'];  // use all per default
+		//return $results;
 	}
 
 	private function extractLandscapes($row, $header='Naturraum'){
@@ -325,7 +328,8 @@ class m211130_150843_fill_adaption_table extends Migration {
 		foreach($landscapes as $landscape) {
 			$results[] = trim($landscape);
 		}
-		return $results;
+		return ['Tieflagen','mittlere Lagen','Hochlagen'];  // use all Landscapes per Default
+		//return $results;
 	}	
 
 	private function findAdaption($name)

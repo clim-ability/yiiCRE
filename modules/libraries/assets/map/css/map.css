@@ -43,3 +43,64 @@ html body {
 #informationfield span.inactive {
 	color: blue; 
 }
+
+ /* Style the tab */
+ .tab {
+	overflow: hidden;
+	border: none;
+	background-color: #f1f1f1;
+  }
+
+
+  div#impacts_adaptions {
+    border: 1px solid #ccc
+  }
+  
+  /* Style the buttons that are used to open the tab content */
+  .tab button {
+	background-color: inherit;
+	float: left;
+	
+	outline: none; 
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.3s;
+	border: 1px solid #c77
+
+  /* Only round the top corners */
+  -webkit-border-top-left-radius: 15px;
+  -webkit-border-top-right-radius: 15px;
+  -moz-border-radius-topleft: 15px;
+  -moz-border-radius-topright: 15px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px; 
+
+
+  }
+  
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+	background-color: #ddd;
+  }
+  
+  /* Create an active/current tablink class */
+  .tab button.active {
+	background-color: #ccc;
+  }
+  
+  /* Style the tab content */
+  .tabcontent {
+	display: none;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
+  } 
+
+
+  .link-label,  .node-label {
+    stroke: #000;
+    stroke-width: 0.5px;
+	font-size: 14px;
+	text-anchor: middle;
+	dominant-baseline: hanging;
+}

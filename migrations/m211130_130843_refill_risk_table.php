@@ -325,7 +325,9 @@ class m211130_130843_refill_risk_table extends Migration {
 		foreach($countries as $country) {
 			$results[] = trim($country);
 		}
-		return $results;
+
+		return ['Switzerland','Germany','France'];  // use all per default
+		//return $results;
 	}
 
 	private function extractLandscapes($row, $header='Naturraum'){
@@ -341,7 +343,8 @@ class m211130_130843_refill_risk_table extends Migration {
 		foreach($landscapes as $landscape) {
 			$results[] = trim($landscape);
 		}
-		return $results;
+		return ['Tieflagen','mittlere Lagen','Hochlagen'];  // use all Landscapes per Default
+		//return $results;
 	}	
 
 	private function findRisk($name)
