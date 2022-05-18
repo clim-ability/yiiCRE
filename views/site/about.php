@@ -12,12 +12,19 @@ function tr($c, $m, $p = []) {
     echo LanguageTranslate::widget(['category' => $c, 'message' => $m, 'params' => $p]);
 }
 ?>
+<style>
+ body {
+   background-image: url('/images/regenbogen1.jpg') !important; 
+ }
+</style>
 <div class="site-about">
  <div class="container-fluid">
   <div class="row">
    <div class="col-md-1">
    </div>
    <div class="col-md-6">
+
+    <div class="glass70">
 
     <h3><?php tr('about', 'Warum noch ein Tool zum Klimawandel?'); ?></h3>
 
@@ -44,6 +51,9 @@ function tr($c, $m, $p = []) {
          <?php tr('about', 'Und lohnt es sich daher, in Klimaschutz und Klimaanpassung zu investieren?'); ?></li>	 
 	</ul></p>
     
+    </div>
+    <div class="glass70">
+
     <h3><?php tr('about', 'Wie funktioniert der Upper Rhine Climate Inspector?'); ?></h3>
 
 	<p>
@@ -80,7 +90,9 @@ function tr($c, $m, $p = []) {
 	  <?php tr('about', 'Sie stellen die Basis für eine vertiefte Auseinandersetzung mit individuellen Klimaanpassungsmaßnahmen dar und geben Hinweise auf potentielle Risiken und Chancen.'); ?>	  
 	  </li>	  
 	</ul></p>  
-	
+    </div>
+
+    <div class="glass70">
     <h3><?php tr('about', 'Wie ist der Climate Inspector wissenschaftlich hinterlegt?'); ?></h3>	
 
 	<p>
@@ -89,7 +101,8 @@ function tr($c, $m, $p = []) {
 	  <?php tr('about', 'Die Daten entstammen der EURO-CORDEX-Initiative und geben die Mittelwerte eines Ensembles aus 16 Klimamodellen wieder, die das zukünftige Klima der Oberrheinregion rechnerisch simulieren.'); ?>	  
 	  <?php tr('about', 'Trotz der großen Bandbreite der simulierten Ergebnisse lassen sich gewisse Trends mit hoher Wahrscheinlichkeit vorhersagen.'); ?> 
 	  <?php tr('about', 'Die wichtigsten klimatischen Trends der Oberrheinregion sind durch die 6 ausgewerteten klimatischen Parameter abgedeckt.'); ?>	  
-	</p>	
+	</p>
+    </div>	
    </div>	
    <div class="col-md-1">
    </div>  
