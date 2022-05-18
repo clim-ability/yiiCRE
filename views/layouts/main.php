@@ -29,7 +29,7 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+<body style="backgroundImage: url('/images/wolke4.jpg') !important;">
 <?php $this->beginBody() ?>
 
 <div class="wrap">

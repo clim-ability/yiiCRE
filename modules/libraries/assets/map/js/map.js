@@ -365,6 +365,19 @@ var statisticOptions = {
     colorParameters.minColor = cmin;
     colorParameters.maxColor = cmax;	  
   }	
+ 
+   
+  function setBackgroundImage(hazard) 
+  {
+	urlImg = "url('/images/wolke4.jpg')"
+	if('fd'==hazard) { urlImg = "url('/images/frost1.jpg')"; }
+	if('sd'==hazard) { urlImg = "url('/images/hitze1.jpg')"; }
+	if('tr'==hazard) { urlImg = "url('/images/hitze3.jpg')"; }
+	if('rr20'==hazard) { urlImg = "url('/images/rain1.jpg')"; }
+	if('rr_winter'==hazard) { urlImg = "url('/images/schnee1.jpg')"; }
+	if('rr_summer'==hazard) { urlImg = "url('/images/duerre5.jpg')"; }
+	document.body.style.backgroundImage = urlImg;
+  }
 	
   function getStyleColor(d) {
 	var amount = (parseFloat(d) - colorParameters.minValueGlobal) / (colorParameters.maxValueGlobal - colorParameters.minValueGlobal);
@@ -556,7 +569,7 @@ var vueSelect = new Vue({
         for (var i = 0; i < this.hazards.length; i++) {
           if (this.hazard == this.hazards[i].name) {
 			setExtremeColors(this.hazards[i].color_min, this.hazards[i].color_max);  
-
+            setBackgroundImage(this.hazard);
 		  }	
 	    }
 	    if(('all' != this.hazard) && ('off' != this.hazard)) {

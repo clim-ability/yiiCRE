@@ -25,17 +25,10 @@ function md() {
 	var absMode = "<?php echo md()?'abs':'rel'; ?>";
 </script>
 
-<style>
- body {
-   background-image: url('/images/wolke4.jpg') !important; 
- }
-</style>
-
 <div id="climateinspector">
 
 
  <div class="container-fluid">
-
 
   <div class="row" style="margin: 8px;">
    <div class="col-md-6 "> <!-- eoEvents Upper-Left Corner -->
@@ -157,6 +150,7 @@ function md() {
 	 </table>	
      </template>		 
 	 <template v-if="((info !== 'none') && (currHazard === 'all'))">
+	 <!--style> body { background-image: url('/images/wolke4.jpg') !important; } </style--> 
 	 <br/>	
 	 
 	<p>
