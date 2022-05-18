@@ -9,6 +9,12 @@ $this->title = $messages['create'];
 $this->params['breadcrumbs'][] = ['label' => $messages['title'], 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+ body {
+   background-image: unset !important; 
+ }
+</style>
+
 <div class="item-create">
 
     <h1><?= Html::encode($this->title) ?></h1>

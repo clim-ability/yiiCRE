@@ -8,6 +8,12 @@ use yii\grid\GridView;
 
 $this->title = $messages['title']; 
 ?>
+<style>
+ body {
+   background-image: unset !important; 
+ }
+</style>
+
 <div class="item-index">
 
     <p>

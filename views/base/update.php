@@ -12,6 +12,12 @@ $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' 
 $this->params['breadcrumbs'][] = Yii::t('p:base', 'Update');
 
 ?>
+<style>
+ body {
+   background-image: unset !important; 
+ }
+</style>
+
 <div class="item-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
