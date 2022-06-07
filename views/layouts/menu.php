@@ -41,6 +41,12 @@ $left =
                 ['label' => Language::t('p:menue', 'Manage Zones'), 'url' => ['/zone/index'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Translate Zones'), 'url' => ['/zone/translate'], 'visible' => $special],  
                 '<li class="divider'.($special ? '' : ' hidden').'"></li>',
+                ['label' => Language::t('p:menue', 'Manage Stations'), 'url' => ['/station/index'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Translate Stations'), 'url' => ['/station/translate'], 'visible' => $special],  
+                '<li class="divider'.($special ? '' : ' hidden').'"></li>',       
+                ['label' => Language::t('p:menue', 'Manage Landscapes'), 'url' => ['/landscape/index'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Translate Landscapes'), 'url' => ['/landscape/translate'], 'visible' => $special],  
+                '<li class="divider'.($special ? '' : ' hidden').'"></li>',             
                 //['label' => Language::t('p:menue', 'Manage Scenarios'), 'url' => ['/scenario/index'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Translate Scenarios'), 'url' => ['/scenario/translate'], 'visible' => $special],				
             ]

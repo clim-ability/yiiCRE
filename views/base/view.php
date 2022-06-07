@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a(Yii::t('p:base', 'List all'), ['index'], ['class' => 'btn btn-secondary']) ?>
     </p>
 
     <?= DetailView::widget([

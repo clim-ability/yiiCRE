@@ -42,7 +42,11 @@ class ControllerBase extends Controller
     {
         if ($model = $this->newModel()) {
             if ($schema = $model->getTableSchema()) {
-                return $schema->columns;
+                $columns = $schema->columns;
+                unset($columns['id']);
+                unset($columns['created_at']);
+                unset($columns['updated_at']);
+                return $columns;
             }
         }
     }

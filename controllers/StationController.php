@@ -63,8 +63,36 @@ class StationController extends ControllerBase
 
     protected function getColumns()
     {
-        return array_keys($this->getAllColumns());
+        if ($model = $this->newModel()) {
+            if ($schema = $model->getTableSchema()) {
+                $columns = $schema->columns;
+                unset($columns['location']);
+                $columns['latitude'] = (object)['type'=>'double', 'phpType'=>'double', 'name'=>'latitude'];
+                $columns['longitude'] = (object)['type'=>'double', 'phpType'=>'double', 'name'=>'longitude'];
+                return(array_keys($columns));
+
+            }
+        }
     }
+
+    protected function getAllColumns()
+    {
+        if ($model = $this->newModel()) {
+            if ($schema = $model->getTableSchema()) {
+                //var_dump($schema->columns);
+                $columns = $schema->columns;
+                unset($columns['location']);
+                $columns['latitude'] = (object)['type'=>'double', 'phpType'=>'double', 'name'=>'latitude'];
+                $columns['longitude'] = (object)['type'=>'double', 'phpType'=>'double', 'name'=>'longitude'];
+                unset($columns['id']);
+                unset($columns['created_at']);
+                unset($columns['updated_at']);
+                //var_dump($columns);
+                return($columns);
+
+            }
+        }
+    }    
 
     protected function getMessages()
     {

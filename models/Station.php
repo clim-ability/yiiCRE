@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use PDO;
 use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
@@ -20,6 +21,7 @@ class Station extends ActiveRecord
       public $label;
       public $description;
       public $abbreviation;
+      
       public $longitude;
       public $latitude;	  
 	  
@@ -44,7 +46,25 @@ class Station extends ActiveRecord
     {
         parent::afterFind();
         $this->label = $this->name;
+        $coordinates = $this->getCoordinate();
+        $this->latitude = $coordinates['latitude'];
+        $this->longitude = $coordinates['longitude'];
     }
+
+    public function beforeSave($insert)
+    {
+        $sql = "SELECT ST_MakePoint( :longiTude, :latiTude )::geography AS location";
+        $command = Yii::$app->db->createCommand($sql);
+        $command->bindValue(':longiTude', (double) $this->longitude, PDO::PARAM_STR);
+        $command->bindValue(':latiTude', (double) $this->latitude, PDO::PARAM_STR);
+        $query = $command->queryOne();
+        if (parent::beforeSave($insert)) {
+            $this->location = (string)$query['location'];
+            return true;
+        } else {
+            return false;
+        }
+    }    
 
     public function rules()
     {
@@ -52,8 +72,11 @@ class Station extends ActiveRecord
             [['name'], 'required'],
             [['visible'], 'boolean'],
             [['name'], 'string'],
-			[['label', 'description'], 'safe']
-			
+            [['location'], 'string'],
+			[['label', 'description'], 'safe'],
+            [['latitude', 'longitude'], 'double'],
+            [['elevation','sd','tr','fd','rr20','rr_winter','rr_summer'], 'double'],
+			[['begin','end'], 'integer']
         ];
     }
 
@@ -68,6 +91,17 @@ class Station extends ActiveRecord
 	}
 */
 	
+    public function getCoordinate() {
+        $sql = "SELECT  (ST_Y(location::geometry)) as latitude, (ST_X(location::geometry)) as longitude "
+                . " FROM station " 
+                . " WHERE station.id = :stationId ";
+
+        $command = Yii::$app->db->createCommand($sql);
+        $command->bindValue(':stationId', (int) $this->id, PDO::PARAM_INT);
+        $coordinate = $command->queryOne();
+        return $coordinate;
+    }
+
 	public function inqAllStations( $inclInvisible = false ) {
 	    $stations = Station::find();
 		$longitude = new Expression('ST_X(location::geometry) AS longitude'); 
