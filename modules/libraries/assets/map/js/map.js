@@ -600,6 +600,10 @@ var vueSelect = new Vue({
 		}
 	}
 	},
+    switchParameters() {
+       this.updateParameters();
+       vueEventBus.$emit('updatedParameters', this);
+	},
     updateParameters() {
 	  if(this.hazard !== 'none' && this.epoch !== 'none' && this.scenario !== 'none' ) {
         for (var i = 0; i < this.hazards.length; i++) {
@@ -646,7 +650,7 @@ var vueSelect = new Vue({
 	    	});			
 		}	
 		//window.viewInfo.clickOnMap();
-		vueEventBus.$emit('updatedParameters', this);
+		
         //setParametersOnMap(this.hazard, this.epoch, this.scenario);		
 	  }
 	},
@@ -930,8 +934,11 @@ var vueImpacts = new Vue({
 		  });
 	  },
       inqImpacts() {
-		var url = apiBaseUrl+'/api/inq-risks?danger='+encodeURIComponent(this.danger)+'&sector='+encodeURIComponent(this.sector)
+		var url = apiBaseUrl+'/api/inq-risks?sector='+encodeURIComponent(this.sector)
 		        +'&landscape='+encodeURIComponent(this.currentLandscape)+'&country='+encodeURIComponent(this.currentCountry);
+		if('alle' !== this.danger) {
+			url += ('&danger='+encodeURIComponent(this.danger))
+		}		
 		axios
 		.get(url)
 		//.get('https://gis.clim-ability.eu/index.php/api/hazards')
@@ -1118,8 +1125,11 @@ var vueAdaptions = new Vue({
 		return cssClass;
 	  },
       inqAdaptions() {
-		var url = apiBaseUrl+'/api/inq-adaptions?danger='+encodeURIComponent(this.danger)+'&sector='+encodeURIComponent(this.sector)
+		var url = apiBaseUrl+'/api/inq-adaptions?sector='+encodeURIComponent(this.sector)
 		                    +'&landscape='+encodeURIComponent(this.currentLandscape)+'&country='+encodeURIComponent(this.currentCountry);
+		if('alle' !== this.danger) {
+			url += ('&danger='+encodeURIComponent(this.danger))
+		}	
 		axios
 		.get(url)
 		//.get('https://gis.clim-ability.eu/index.php/api/hazards')

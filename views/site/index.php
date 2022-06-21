@@ -52,7 +52,7 @@ function md() {
       <div class="row" id="selectionrow">
  	  <div class="col-md-4">
 	   <?php tr('hazard', 'Klima-Parameter'); ?><br/>
-       <select v-model="hazard" v-on:change="updateParameters" class="form-control">
+       <select v-model="hazard" v-on:change="switchParameters" class="form-control">
         <option v-for="hazard in hazards" v-bind:value="hazard.name">
          {{ hazard.label }} 
         </option>
@@ -60,7 +60,7 @@ function md() {
 	  </div>	
  	  <div class="col-md-4">
 	    <?php tr('hazard', 'Zeithorizont'); ?><br/>
-       <select v-model="epoch" v-on:change="updateParameters" class="form-control">
+       <select v-model="epoch" v-on:change="switchParameters" class="form-control">
         <option v-for="epoch in epochs" v-bind:value="epoch.name">
          {{ epoch.label }} 
         </option>
@@ -68,7 +68,7 @@ function md() {
 	  </div>	
  	  <div class="col-md-4">
 	   <?php tr('hazard', 'Szenario'); ?><br/>
-       <select v-model="scenario" v-on:change="updateParameters" class="form-control">
+       <select v-model="scenario" v-on:change="switchParameters" class="form-control">
         <option v-for="scenario in scenarios" v-bind:value="scenario.name">
          {{ scenario.label }} 
         </option>
@@ -76,7 +76,7 @@ function md() {
 	  </div>
 	  <!-- div class="col-md-3" -->
 	   <!-- ?php tr('sector', 'Branche'); ?><br/ -->
-       <!-- select v-model="sector" v-on:change="updateParameters" class="form-control">
+       <!-- select v-model="sector" v-on:change="switchParameters" class="form-control">
         <option v-for="sector in sectors" v-bind:value="sector.name">
          {{ sector.label }} 
         </option>
