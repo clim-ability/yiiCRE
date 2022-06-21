@@ -64,7 +64,7 @@ class ApiController extends Controller
        return $result;
    } 	
 	
-   public function actionInqRisks($danger, $sector, $landscape, $country, $language='en') {
+   public function actionInqRisks($danger=null, $sector, $landscape, $country, $language='en') {
     $dangerId = null; 
 	if($danger) {
 		$dangerModel = Danger::findBy($danger);
@@ -125,7 +125,7 @@ class ApiController extends Controller
 	return $result; 
    }
 
-   public function actionInqAdaptions($danger, $sector, $landscape, $country, $language='en') {
+   public function actionInqAdaptions($danger=null, $sector, $landscape, $country, $language='en') {
     $dangerId = null; 
 	if($danger) {
 		$dangerModel = Danger::findBy($danger);
