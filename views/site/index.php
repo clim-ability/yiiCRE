@@ -50,7 +50,7 @@ function md() {
       </h1>
 
       <div class="row" id="selectionrow">
- 	  <div class="col-md-3">
+ 	  <div class="col-md-4">
 	   <?php tr('hazard', 'Klima-Parameter'); ?><br/>
        <select v-model="hazard" v-on:change="updateParameters" class="form-control">
         <option v-for="hazard in hazards" v-bind:value="hazard.name">
@@ -58,7 +58,7 @@ function md() {
         </option>
        </select>
 	  </div>	
- 	  <div class="col-md-3">
+ 	  <div class="col-md-4">
 	    <?php tr('hazard', 'Zeithorizont'); ?><br/>
        <select v-model="epoch" v-on:change="updateParameters" class="form-control">
         <option v-for="epoch in epochs" v-bind:value="epoch.name">
@@ -66,7 +66,7 @@ function md() {
         </option>
        </select>
 	  </div>	
- 	  <div class="col-md-3">
+ 	  <div class="col-md-4">
 	   <?php tr('hazard', 'Szenario'); ?><br/>
        <select v-model="scenario" v-on:change="updateParameters" class="form-control">
         <option v-for="scenario in scenarios" v-bind:value="scenario.name">
@@ -74,14 +74,14 @@ function md() {
         </option>
        </select>
 	  </div>
-	  <div class="col-md-3">
-	   <?php tr('sector', 'Branche'); ?><br/>
-       <select v-model="sector" v-on:change="updateParameters" class="form-control">
+	  <!-- div class="col-md-3" -->
+	   <!-- ?php tr('sector', 'Branche'); ?><br/ -->
+       <!-- select v-model="sector" v-on:change="updateParameters" class="form-control">
         <option v-for="sector in sectors" v-bind:value="sector.name">
          {{ sector.label }} 
         </option>
        </select>
-	  </div>  
+	  </div -->  
 	  
 	</div> 
 
@@ -92,30 +92,199 @@ function md() {
      <!--  https://www.w3schools.com/howto/howto_js_tabs.asp  -->
 	
 	<div id="tabselect" class="tab">
-		<button class="tablinks" v-on:click="activateTab('climate_info')">Climate</button>
-		<!--button class="tablinks" v-on:click="activateTab('impacts_adaptions')">Impacts & Adaptions</button-->
-		<!--button class="tablinks" v-on:click="activateTab('other')" disabled>Other</button-->
+		<button class="tablinks" v-on:click="activateTab('climate_info')" :class="('climate_info' == activeTab) && 'button-active'" >Climate</button>
+		<button class="tablinks" v-on:click="activateTab('impacts')" :class="('impacts' == activeTab) && 'button-active'" :disabled="disabled">Impacts</button>
+		<button class="tablinks" v-on:click="activateTab('adaptions')" :class="('adaptions' == activeTab) && 'button-active'" :disabled="disabled">Adaptions</button>				
+		<!--button class="tablinks" v-on:click="activateTab('impacts_adaptions')" :class="('impacts_adaptions' == activeTab) && 'button-active'" >Impacts & Adaptions</button -->
+		<button class="tablinks" v-on:click="activateTab('other')" :class="('other' == activeTab) && 'button-active'" disabled>Other</button>
     </div>
     
     
     <div class='glass70 tabbody'>  
 
-	<div id="other" v-show="isTabActive('other')">
+	<div id="other">
+	<span v-if="tabActive === 'other'" class="minheight"> 
 	  <br/>	
 	  
       <p> other here</p>
-
+    </span>  
     </div> <!-- end div other  --> 
 
-    <div id="impacts_adaptions" v-show="isTabActive('impacts_adaptions')">
+	<div id="impacts">
+	<span v-if="tabActive === 'impacts'" class="minheight"> 
+
+
+	 <div class="row" id="selectionrow">
+	  <div class="col-md-6">
+	   <div class="row" id="selectionrow">
+		<div class="col-md-6">
+		<?php tr('sector', 'Branche'); ?><br/>
+		<select v-model="sector" v-on:change="updateImpacts" class="form-control">
+			<option v-for="sector in sectors" v-bind:value="sector.name">
+			{{ sector.label }} 
+			</option>
+		</select>
+		</div>  
+		<div class="col-md-6">
+		<?php tr('danger', 'Danger'); ?><br/>
+		<select v-model="danger" v-on:change="updateImpacts" class="form-control">
+			<option v-for="danger in dangers" v-bind:value="danger.name">
+			{{ danger.label }} 
+			</option>
+		</select>
+		</div>  	  
+      </div>
+	  <br/>	
+
+	  <template v-if="impacts.length>0">
+			<p><b>Impacts</b></p>
+			<ul style="list-style-type: none; margin: 0; padding: 0;">
+			    <li	v-for="imp in impacts" v-on:click="showImpactDetails(imp.id)" :class="imp.negative ? 'neg' : 'pos' " >
+				  <span class="impact" :class="imp.id == impact.id ? 'current' : 'any' ">{{imp.name}}&nbsp;<img src="/icons/information-button.png"/></span>
+				</li>
+            </ul>
+      </template>		
+	  <template v-else><p><b>No impacts available</b></p></template>		
+			
+      </div> 
+
+	  <div class="col-md-6">
+
+	  <div class="row" >
+	     <div class="landscapes col-md-5">Landscapes<br/>
+		 <img v-for="landscape in landscapes" :src="('/images/landscapes/'+landscape.name+'.jpg') | underscore" 
+		        :title="landscape.label" :class="getLandscapeClass(landscape.name)" 
+				class="icons" width=32 height=32>
+         </div>
+	     <div class="countries col-md-7">Countries<br/>
+		    <img v-for="country in allCountries" :src="('/images/countries/'+country.country+'.jpg') | underscore" 
+		        :title="country.label" :class="getCountryClass(country.country)" 
+				class="icons" width=48 height=32>	
+         </div>
+       </div>
+
+	   <!-- br/>
+       <h4>{{dangerDetails.label}}</h4>
+       <p>{{dangerDetails.description}}</p -->
+	   <!--i>{{tr('Danger:description', dangerDetails.name, currentLanguage)}}</i-->
+	   <br/>
+
+	   <template v-if="'none' !== impact.name">
+         <h4>{{impact.name}}</h4>
+	     <br/>
+	     <p>{{impact.description}}</p>
+         <p v-if="impact.details"><i>({{impact.details}})</i></p>
+       </template>
+
+	   <template v-if="zones.length>0">
+	     <br/>
+	     <div class="row" >
+	       <div class="zones col-md-12">Zones<br/>
+		     <img v-for="zone in zones" :src="('/images/zones/'+zone.name+'.png') | underscore" 
+		          :title="zone.label" class="icons" width=32 height=32>
+           </div>
+         </div>
+       </template>
+
+      </div>	
+     </div> 
+
+	</span>  
+    </div> <!-- end div impacts  --> 
+	
+	<div id="adaptions">
+	<span v-if="tabActive === 'adaptions'" class="minheight"> 
+
+	  <div class="row" id="selectionrow">
+	  <div class="col-md-6">
+	   <div class="row" id="selectionrow">
+		<div class="col-md-6">
+		<?php tr('sector', 'Branche'); ?><br/>
+		<select v-model="sector" v-on:change="updateAdaptions" class="form-control">
+			<option v-for="sector in sectors" v-bind:value="sector.name">
+			{{ sector.label }} 
+			</option>
+		</select>
+		</div>  
+		<div class="col-md-6">
+		<?php tr('danger', 'Danger'); ?><br/>
+		<select v-model="danger" v-on:change="updateAdaptions" class="form-control">
+			<option v-for="danger in dangers" v-bind:value="danger.name">
+			{{ danger.label }} 
+			</option>
+		</select>
+		</div>  
+		
+		
+      </div>
+	  <br/>	
+	    <template v-if="adaptions.length>0">
+			<p><b>Adaptions</b></p>
+			<ul style="list-style-type: none; margin: 0; padding: 0;">
+			    <li	v-for="adp in adaptions" v-on:click="showAdaptionDetails(adp.id)" class="adp" >
+				  <span class="adaption" :class="adp.id == adaption.id ? 'current' : 'any' ">{{adp.name}}&nbsp;<img src="/icons/information-button.png"/></span>
+				</li>
+            </ul>	
+        </template>		
+	    <template v-else><p><b>No adaptions available</b></p></template>				
+			
+      </div> 
+
+	  <div class="col-md-6">
+
+	  <div class="row" >
+	     <div class="landscapes col-md-5">Landscapes<br/>
+		   <img v-for="landscape in landscapes" :src="('/images/landscapes/'+landscape.name+'.jpg') | underscore" 
+		        :title="landscape.label" :class="getLandscapeClass(landscape.name)" 
+				class="icons" width=32 height=32>
+         </div>
+	     <div class="countries col-md-7">Countries<br/>
+		   <img v-for="country in allCountries" :src="('/images/countries/'+country.country+'.jpg') | underscore" 
+		        :title="country.label" :class="getCountryClass(country.country)" 
+				class="icons" width=48 height=32>		   
+         </div>
+       </div>
+	   <!-- br/>	  
+       <h4>{{dangerDetails.label}}</h4>
+       <p>{{dangerDetails.description}}</p -->
+	   <!--i>{{tr('Danger:description', dangerDetails.name, currentLanguage)}}</i-->
+	   <br/>
+	   <template v-if="'none' !== adaption.name">
+         <h4>{{adaption.name}}</h4>
+	     <p>{{adaption.description}}</p>
+         <p v-if="adaption.details"><i>({{adaption.details}})</i></p>
+       </template>
+
+	   <template v-if="zones.length>0">
+	     <br/>
+	     <div class="row" >
+	       <div class="zones col-md-12">Zones<br/>
+		     <img v-for="zone in zones" :src="('/images/zones/'+zone.name+'.png') | underscore" 
+		        :title="zone.label" class="icons" width=32 height=32>
+           </div>
+         </div>
+       </template>
+
+      </div>	
+     </div> 
+
+
+    </span>  
+    </div> <!-- end div adaptions  --> 
+
+
+
+    <div id="impacts_adaptions">
+	<span v-if="tabActive === 'impacts_adaptions'" class="minheight"> 
 	  <br/>	
 	  
-      <p> impacts here</p>
-	  <d3-network ref='net' :net-nodes="nodes" :net-links="links" :options="options"  :link-cb="lcb" @node-click='setCurrentNode' />
-
+      <p> impacts & adaptions here</p>
+	  <d3-network ref='net' :net-nodes="nodes" :net-links="links" :options="options" :link-cb="lcb" @node-click='setCurrentNode' />
+	</span>  
     </div> <!-- end div impacts_adaptions  --> 
 
-    <div id="climate_info" v-show="isTabActive('climate_info')">
+    <div id="climate_info">
+	<span v-if="tabActive === 'climate_info'" class="minheight"> 	
     <template v-if="info === 'none'">
 	<br/>
 	<h3 style="display:inline;"><?php tr('hazard', 'To start choose your location by'); ?> </h3>
@@ -303,7 +472,7 @@ function md() {
 	</p>
     </template>
 
-	
+    </span>
 	</div> <!-- end #climate_info -->
 
 
