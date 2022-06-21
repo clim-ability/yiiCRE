@@ -104,3 +104,41 @@ html body {
 	text-anchor: middle;
 	dominant-baseline: hanging;
 }
+
+li.adp {
+	list-style: square inside url("/icons/arrow-circle.png");
+	margin: 0.5em;
+  } 
+
+li.neg {
+	list-style: square inside url("/icons/minus-circle.png");
+	margin: 0.5em;
+  }
+
+li.pos {
+	list-style: square inside url("/icons/plus-circle.png");
+	margin: 0.5em;
+  } 
+  
+span.impact.current, span.adaption.current {
+	background-color: #FFF;
+	padding: 1px;
+	border: 1px solid #AAA;
+}  
+
+img.icons {
+	margin: 2px;
+}
+
+.minheight {
+	min-height: 500px;
+	display: inline-block;
+}
+
+img.current {
+	border: solid #11A 3px;
+}
+
+img.unrelated {
+	filter: grayscale(90%);
+}

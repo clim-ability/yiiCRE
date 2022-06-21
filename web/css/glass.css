@@ -17,7 +17,7 @@
 }
 
 .tab button.tablinks {
-  background-color: rgba(255,255,255,0.7);
+  background-color: rgba(255,255,255,0.5);
   b2ox-shadow: 5px 3px 30px black;
   o2verflow: hidden;
 }
@@ -27,9 +27,20 @@
   color: rgba(255,255,255,0.7);
  }
 
- .tab button.tablinks:hover {
-	background-color: #ddd;
+.tab button.tablinks:disabled:hover {
+	background-color: rgba(200,200,200,0.1);
+  color: rgba(255,255,255,0.7);
+ }
+
+.tab button.tablinks:hover {
+	background-color: rgba(240,240,240,0.75);
   }
+
+.tab button.tablinks.button-active {
+    background-color: rgba(220,220,220,0.9);
+    color: rgba(0,0,0,0.9);
+    font-weight: bold;
+   }  
 
 .side-box {
   o2pacity: 0.5;
@@ -67,7 +78,7 @@
   b2ackground-color: #fff;
   background-color: rgba(255,255,255,0.7);
   color: #111;
-  backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(4px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%); 
   box-shadow: 5px 3px 30px black;
   overflow: hidden;

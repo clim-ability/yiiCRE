@@ -7,13 +7,18 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\Controller;
+use app\models\Adaption;
+use app\models\Country;
+use app\models\Danger;
 use app\models\Epoch;
 use app\models\Hazard;
 use app\models\Parameter;
 use app\models\Landscape;
+use app\models\Risk;
 use app\models\Scenario;
 use app\models\Station;
 use app\models\Sector;
+use app\models\Zone;
 use app\models\Gis;
 use app\models\User;
 use app\modules\translation\models\Language;
@@ -59,6 +64,179 @@ class ApiController extends Controller
        return $result;
    } 	
 	
+   public function actionInqRisks($danger, $sector, $landscape, $country, $language='en') {
+    $dangerId = null; 
+	if($danger) {
+		$dangerModel = Danger::findBy($danger);
+		if($dangerModel) {
+			$dangerId = $dangerModel['id'];
+		}
+	}
+    $sectorId = null; 
+	if($sector) {
+		$sectorModel = Sector::findBy($sector);
+		if($sectorModel) {
+			$sectorId = $sectorModel['id'];
+		}
+	}
+	$landscapeId = null; 
+	if($landscape) {
+		$landscapeModel = Landscape::findBy($landscape);
+		if($landscapeModel) {
+			$landscapeId = $landscapeModel['id'];
+		}
+	}
+	$countryId = null; 
+	if($country) {
+		$countryModel = Country::findBy($country);
+		if($countryModel) {
+			$countryId = $countryModel['id'];
+		}
+	}
+	$result = Risk::inqRisksByDangerSectorLandscapeCountry($dangerId, $sectorId, $landscapeId, $countryId);
+	$result = array_map(function($e) use ($language) { 
+		$e->label = \Yii::t('Risk:name', $e->name, [], $language);
+		$e->description = \Yii::t('Risk:description', $e->description, [], $language);
+		$e->details = \Yii::t('Risk:details', $e->details, [], $language);
+		//$e->zones = $e->inqZones();
+		return $e; 
+		} ,$result); 
+		//var_dump($result);
+	 \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	 \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	 return $result;
+   }
+ 
+   public function actionInqRelatedInfoByRisk($risk) {
+	$zones = []; 
+	$countries = [];
+	$landscapes = [];
+	if($risk) {
+		$riskModel = Risk::findBy($risk);
+		if($riskModel) {
+			$zones = $riskModel->inqRelatedZones();
+			$countries = $riskModel->inqRelatedCountries();
+			$landscapes = $riskModel->inqRelatedLandscapes();
+		}
+	}
+	$result = ['zones'=>$zones, 'countries'=>$countries, 'landscapes'=>$landscapes];
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result; 
+   }
+
+   public function actionInqAdaptions($danger, $sector, $landscape, $country, $language='en') {
+    $dangerId = null; 
+	if($danger) {
+		$dangerModel = Danger::findBy($danger);
+		if($dangerModel) {
+			$dangerId = $dangerModel['id'];
+		}
+	}
+    $sectorId = null; 
+	if($sector) {
+		$sectorModel = Sector::findBy($sector);
+		if($sectorModel) {
+			$sectorId = $sectorModel['id'];
+		}
+	}
+	$landscapeId = null; 
+	if($landscape) {
+		$landscapeModel = Landscape::findBy($landscape);
+		if($landscapeModel) {
+			$landscapeId = $landscapeModel['id'];
+		}
+	}
+	$countryId = null; 
+	if($country) {
+		$countryModel = Country::findBy($country);
+		if($countryModel) {
+			$countryId = $countryModel['id'];
+		}
+	}
+	$result = Adaption::inqAdaptionsByDangerSectorLandscapeCountry($dangerId, $sectorId, $landscapeId, $countryId);
+	$result = array_map(function($e) use ($language) { 
+		$e->label = \Yii::t('Adaption:name', $e->name, [], $language);
+		$e->description = \Yii::t('Adaption:description', $e->description, [], $language);
+		$e->details = \Yii::t('Adaption:details', $e->details, [], $language);
+		return $e; 
+		} ,$result); 
+	 \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	 \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	 return $result;
+   }
+
+   public function actionInqRelatedInfoByAdaption($adaption) {
+	$zones = []; 
+	$countries = [];
+	$landscapes = [];
+	if($adaption) {
+		$adaptionModel = Adaption::findBy($adaption);
+		if($adaptionModel) {
+			$zones = $adaptionModel->inqRelatedZones();
+			$countries = $adaptionModel->inqRelatedCountries();
+			$landscapes = $adaptionModel->inqRelatedLandscapes();
+		}
+	}
+	$result = ['zones'=>$zones, 'countries'=>$countries, 'landscapes'=>$landscapes];
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result; 
+   }
+
+   public function actionDangers($mode='visible-only', $language='en') {
+	// returns list of all Hazards.
+	$result = Danger::inqAllDangers('invisible'==$mode);
+	$result = array_map(function($e) use ($language) { 
+	   $e->label = \Yii::t('Danger:name', $e->name, [], $language);
+	   $e->description = \Yii::t('Danger:description', $e->name, [], $language);
+	   return $e; 
+	   } ,$result); 
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result;
+   } 
+
+   public function actionZones($mode='visible-only', $language='en') {
+	// returns list of all Landscapes.
+	$result = Zone::inqAllZones('invisible'==$mode);
+	$result = array_map(function($e) use ($language) { 
+	   $e->label = \Yii::t('Zone:name', $e->name, [], $language);
+	   // $e->description = \Yii::t('Danger:description', $e->name, [], $language);
+	   return $e; 
+	   } ,$result); 
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result;
+   } 
+
+   public function actionLandscapes($mode='visible-only', $language='en') {
+	// returns list of all Landscapes.
+	$result = Landscape::inqAllLandscapes('invisible'==$mode);
+	$result = array_map(function($e) use ($language) { 
+	   $e->label = \Yii::t('Landscape:name', $e->name, [], $language);
+	   // $e->description = \Yii::t('Danger:description', $e->name, [], $language);
+	   return $e; 
+	   } ,$result); 
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result;
+   } 
+
+   public function actionCountries($mode='visible-only', $language='en') {
+	// returns list of all Landscapes.
+	$result = Gis::getCountries();
+
+	$result = array_map(function($e) use ($language) { 
+	   $e['label'] = \Yii::t('Country:name', $e['country'], [], $language);
+	   // $e->description = \Yii::t('Danger:description', $e->name, [], $language);
+	   return $e; 
+	   } ,$result); 
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result;
+   } 
+
     public function actionHazards($mode='visible-only', $language='en') {
        // returns list of all Hazards.
 	   $result = Hazard::inqAllHazards('invisible'==$mode);

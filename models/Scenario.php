@@ -31,6 +31,7 @@ class Scenario extends ActiveRecord
     {
         $fields = parent::fields();
 		$fields[] = 'label';
+        $fields[] = 'description';
 		return $fields;
     }
 	

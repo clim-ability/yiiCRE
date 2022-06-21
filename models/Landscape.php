@@ -74,38 +74,38 @@ class Landscape extends ActiveRecord
         $landscapes = $landscapes->orderBy(['elevation_min'=>SORT_ASC]);
         return $landscapes->all();
 	}
-/*	
+	
 	public static function findById($id)
     {
-        $danger = Danger::find()
+        $landscape = Landscape::find()
             ->where(['id' => $id])
             ->one();
-        return $danger;
+        return $landscape;
     }
 	
 	public static function findByName($name)
     {
-        $danger = Danger::find()
+        $landscape = Landscape::find()
             ->where(['name' => $name])
 			->orderBy(['id'=>SORT_DESC])
             ->one();
-        return $danger;
+        return $landscape;
     }
 	
 	public static function findBy($idOrName)
 	{
-		$danger = NULL;
+		$landscape = NULL;
 		if(is_numeric($idOrName))
 		{
-		   $danger = Danger::findById((int)$idOrName);	
+		   $landscape = Landscape::findById((int)$idOrName);	
 		} 
 		elseif(is_string($idOrName)) 
 		{
-		   $danger = Danger::findByName($idOrName);
+		   $landscape = Landscape::findByName($idOrName);
 		}
-		return $danger;
+		return $landscape;
 	}	
-*/
+
 
     public static function findByElevation($elevation)
     {

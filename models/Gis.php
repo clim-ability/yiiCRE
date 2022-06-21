@@ -340,6 +340,16 @@ class Gis extends ActiveRecord
 	 return $result;		
 	}
 
+	public static function getCountries()
+	{
+		$connection = Yii::$app->pgsql_gisdata;
+		$sql = "SELECT nuts0 AS country FROM \"borders_dissolved_adminboundaries\" "
+			 . " GROUP BY nuts0 ";
+		$command = $connection->createCommand($sql);
+		$result = $command->queryAll();
+		return $result;
+	}
+
 	public static function getCountryBorders()
 	{
 	 $connection = Yii::$app->pgsql_gisdata;

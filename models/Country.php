@@ -7,12 +7,11 @@ use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
 
 
-class Danger extends ActiveRecord 
+class Country extends ActiveRecord 
 {
 //    public $id;
 //    public $name;
-//    public $year_begin;
-//    public $year_end;
+//    public gis;
 //	  public $visible;
       public $label;
       public $description;
@@ -24,14 +23,13 @@ class Danger extends ActiveRecord
 
     public static function tableName()
     {
-        return 'danger';
+        return 'country';
     }
 
     public function fields()
     {
         $fields = parent::fields();
 		$fields[] = 'label';
-        $fields[] = 'description';
 		return $fields;
     }
 
@@ -39,16 +37,15 @@ class Danger extends ActiveRecord
     {
         parent::afterFind();
         $this->label = $this->name;
-        $this->description = $this->name;
     }
 
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'gis', 'short'], 'required'],
             [['visible'], 'boolean'],
-            [['name'], 'string'],
-			[['label', 'description'], 'safe']
+            [['name', 'gis', 'short'], 'string'],
+	    [['label', 'description'], 'safe']
 			
         ];
     }
@@ -64,53 +61,80 @@ class Danger extends ActiveRecord
 	}
 */
 	
-	public function inqAllDangers( $inclInvisible = false ) {
-	    $dangers = Danger::find();
+
+
+	public static function inqAllCountries( $inclInvisible = false ) {
+	    $countries = Country::find();
 		if(!$inclInvisible) {
-		   $dangers = $dangers->where(['visible' => true]);	
+		   $countries = $countries->where(['visible' => true]);	
 		}
-		$dangers = $dangers->limit(-1);
-        $dangers = $dangers->orderBy(['name'=>SORT_ASC]);
-        return $dangers->all();
+		$countries = $countries->limit(-1);
+        $countries = $countries->orderBy(['short'=>SORT_ASC]);
+        return $countries->all();
 	}
 	
 	public static function findById($id)
     {
-        $danger = Danger::find()
+        $country = Country::find()
             ->where(['id' => $id])
             ->one();
-        return $danger;
+        return $country;
     }
 	
 	public static function findByName($name)
     {
-        //var_dump($name);
-        //var_dump(html_entity_decode($name));
-        //var_dump(htmlentities($name));
-        $danger = Danger::find()
+        $country = Country::find()
             ->where(['name' => $name])
 			->orderBy(['id'=>SORT_DESC])
             ->one();
-        return $danger;
+        return $country;
     }
-	
+
+    public static function findByGis($name)
+    {
+        $country = Country::find()
+            ->where(['gis' => $name])
+			->orderBy(['id'=>SORT_DESC])
+            ->one();
+        return $country;
+    }   
+
 	public static function findBy($idOrName)
 	{
-		$danger = NULL;
+		$country = NULL;
 		if(is_numeric($idOrName))
 		{
-		   $danger = Danger::findById((int)$idOrName);	
+		   $country = Country::findById((int)$idOrName);	
 		} 
 		elseif(is_string($idOrName)) 
 		{
-		   $danger = Danger::findByName($idOrName);
+		   $country = Country::findByName($idOrName);
+           if(!$country) {
+            $country = Country::findByGis($idOrName);
+           }
 		}
-		return $danger;
+		return $country;
 	}	
-  
+
+
+    public static function findByElevation($elevation)
+    {
+      $result = null;
+      $landscapes = Landscape::inqAllLandscapes();
+      foreach($landscapes as $landscape) 
+      { 
+        if(($landscape->elevation_min <= $elevation) && ($landscape->elevation_max >= $elevation))
+        {
+            $result = $landscape;
+        } 
+      }  
+      return $result;
+    }  
+
+
 public function search($params)
     {
-        $query = Danger::find();
+        $query = Landscape::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -123,6 +147,8 @@ public function search($params)
             // $query->where('0=1');
             return $dataProvider;
         }
+
+
 /*
         $query->andFilterWhere([
             'id' => $this->id,

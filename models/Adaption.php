@@ -7,7 +7,7 @@ use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
 
 
-class Risk extends ActiveRecord 
+class Adaption extends ActiveRecord 
 {
 //    public $id;
 //    public $name;
@@ -24,7 +24,7 @@ class Risk extends ActiveRecord
 
     public static function tableName()
     {
-        return 'risk';
+        return 'adaption';
     }
 
     public function fields()
@@ -45,7 +45,6 @@ class Risk extends ActiveRecord
         return [
             [['name'], 'required'],
             [['visible'], 'boolean'],
-            [['negative'], 'boolean'],
             [['name'], 'string'],
             [['description'], 'string'],
             [['details'], 'string'],
@@ -57,7 +56,8 @@ class Risk extends ActiveRecord
 
 
     private $_label;
-    public function getLabel() {
+	
+	public function getLabel() {
 	    return $this->_label;	
 	}	 
 	public function setLabel($l) {
@@ -69,7 +69,7 @@ class Risk extends ActiveRecord
 		if(!$inclInvisible) {
 		   $zones = $zones->where(['visible' => true]);	
 		}
-        $zones = $zones->join('INNER JOIN', 'zone_risk', 'zone_risk.zone_id = zone.id')->andWhere(['zone_risk.risk_id' => $this->id]);
+        $zones = $zones->join('INNER JOIN', 'zone_adaption', 'zone_adaption.zone_id = zone.id')->andWhere(['zone_adaption.adaption_id' => $this->id]);
 		$zones = $zones->limit(-1);
         $zones = $zones->orderBy(['name'=>SORT_ASC]);
         return $zones->all();       
@@ -80,107 +80,108 @@ class Risk extends ActiveRecord
 		if(!$inclInvisible) {
 		   $countries = $countries->where(['visible' => true]);	
 		}
-        $countries = $countries->join('INNER JOIN', 'country_risk', 'country_risk.country_id = country.id')->andWhere(['country_risk.risk_id' => $this->id]);
+        $countries = $countries->join('INNER JOIN', 'country_adaption', 'country_adaption.country_id = country.id')->andWhere(['country_adaption.adaption_id' => $this->id]);
 		$countries = $countries->limit(-1);
-        $countries = $countries->orderBy(['name'=>SORT_ASC]);
+        $zones = $countries->orderBy(['name'=>SORT_ASC]);
         return $countries->all();       
     }
-
     public function inqRelatedLandscapes($inclInvisible = false) {
         $landscapes = Landscape::find();
 		if(!$inclInvisible) {
 		   $landscapes = $landscapes->where(['visible' => true]);	
 		}
-        $landscapes = $landscapes->join('INNER JOIN', 'landscape_risk', 'landscape_risk.landscape_id = landscape.id')->andWhere(['landscape_risk.risk_id' => $this->id]);
+        $landscapes = $landscapes->join('INNER JOIN', 'landscape_adaption', 'landscape_adaption.landscape_id = landscape.id')->andWhere(['landscape_adaption.adaption_id' => $this->id]);
 		$landscapes = $landscapes->limit(-1);
         $landscapes = $landscapes->orderBy(['name'=>SORT_ASC]);
         return $landscapes->all();       
     }
 
-	public function inqAllRisks( $inclInvisible = false ) {
-	    $risks = Risk::find();
+	public function inqAllAdaptions( $inclInvisible = false ) {
+	    $adaptions = Adaption::find();
 		if(!$inclInvisible) {
-		   $risks = $risks->where(['visible' => true]);	
+		   $adaptions = $adaptions->where(['visible' => true]);	
 		}
-		$risks = $risks->limit(-1);
-        $risks = $risks->orderBy(['name'=>SORT_ASC]);
-        return $risks->all();
+		$adaptions = $adaptions->limit(-1);
+        $adaptions = $adaptions->orderBy(['name'=>SORT_ASC]);
+        return $adaptions->all();
 	}
 
-	public function inqRisksByDangerAndNegative( $dangerId, $negative=true, $sector=NULL, $inclInvisible = false ) {
-	    $risks = Risk::find()->where(['negative' => $negative]);
-        $risks = $risks->join('INNER JOIN', 'danger_risk', 'danger_risk.risk_id = risk.id')->andWhere(['danger_risk.danger_id' => $dangerId]);
+	public function inqAdaptionsByDanger( $dangerId, $sector=NULL, $inclInvisible = false ) {
+	    $adaptions = Adaption::find();
+        $adaptions = $adaptions->join('INNER JOIN', 'danger_adaption', 'danger_adaption.adaption_id = adaption.id')->andWhere(['danger_adaption.danger_id' => $dangerId]);
 		if(!$inclInvisible) {
-		   $risks = $risks->andWhere(['visible' => true]);	
+		   $adaptions = $adaptions->andWhere(['visible' => true]);	
 		}
         if($sector) {
             $sectorModel = Sector::findBy($sector);
             if($sectorModel) {
                 $sectorId = $sectorModel['id'];
-                $risks = $risks->join('INNER JOIN', 'sector_risk', 'sector_risk.risk_id = risk.id')->andWhere(['sector_risk.sector_id' => $sectorId]); 
+                $adaptions = $adaptions->join('INNER JOIN', 'sector_adaption', 'sector_adaption.adaption_id = adaption.id')->andWhere(['sector_adaption.sector_id' => $sectorId]); 
             }
         }
-		$risks = $risks->limit(-1);
-        $risks = $risks->orderBy(['name'=>SORT_ASC]);
-        return $risks->all();
+		$adaptions = $adaptions->limit(-1);
+        $adaptions = $adaptions->orderBy(['name'=>SORT_ASC]);
+        return $adaptions->all();
 	}    
-
-	public function inqRisksByDangerSectorLandscapeCountry( $dangerId=NULL, $sectorId=NULL, $landscapeId=NULL, $countryId=NULL, $inclInvisible = false ) {
-	    $risks = Risk::find();
+	
+	public function inqAdaptionsByDangerSectorLandscapeCountry( $dangerId=NULL, $sectorId=NULL, $landscapeId=NULL, $countryId=NULL, $inclInvisible = false ) {
+	    $adaptions = Adaption::find();
         if($dangerId) {
-          $risks = $risks->join('INNER JOIN', 'danger_risk', 'danger_risk.risk_id = risk.id')->andWhere(['danger_risk.danger_id' => $dangerId]);
+          $adaptions = $adaptions->join('INNER JOIN', 'danger_adaption', 'danger_adaption.adaption_id = adaption.id')->andWhere(['danger_adaption.danger_id' => $dangerId]);
         } 
 		if(!$inclInvisible) {
-		   $risks = $risks->andWhere(['visible' => true]);	
+		   $adaptions = $adaptions->andWhere(['visible' => true]);	
 		}
         if($sectorId) {
-           $risks = $risks->join('INNER JOIN', 'sector_risk', 'sector_risk.risk_id = risk.id')->andWhere(['sector_risk.sector_id' => $sectorId]); 
+           $adaptions = $adaptions->join('INNER JOIN', 'sector_adaption', 'sector_adaption.adaption_id = adaption.id')->andWhere(['sector_adaption.sector_id' => $sectorId]); 
         }
         if($landscapeId) {
-            $risks = $risks->join('INNER JOIN', 'landscape_risk', 'landscape_risk.risk_id = risk.id')->andWhere(['landscape_risk.landscape_id' => $landscapeId]); 
+            $adaptions = $adaptions->join('INNER JOIN', 'landscape_adaption', 'landscape_adaption.adaption_id = adaption.id')->andWhere(['landscape_adaption.landscape_id' => $landscapeId]); 
          }
          if($countryId) {
-            $risks = $risks->join('INNER JOIN', 'country_risk', 'country_risk.risk_id = risk.id')->andWhere(['country_risk.country_id' => $countryId]); 
+            $adaptions = $adaptions->join('INNER JOIN', 'country_adaption', 'country_adaption.adaption_id = adaption.id')->andWhere(['country_adaption.country_id' => $countryId]); 
          }         
-		$risks = $risks->limit(-1);
-        $risks = $risks->orderBy(['name'=>SORT_ASC]);
-        return $risks->all();
-	}      
+		$adaptions = $adaptions->limit(-1);
+        $adaptions = $adaptions->orderBy(['name'=>SORT_ASC]);
+        return $adaptions->all();
+	} 
+
+
 
 	public static function findById($id)
     {
-        $risk = Risk::find()
+        $adaption = Adaption::find()
             ->where(['id' => $id])
             ->one();
-        return $risk;
+        return $adaption;
     }
 	
 	public static function findByName($name)
     {
-        $risk = Risk::find()
+        $adapton = Adaption::find()
             ->where(['name' => $name])
 			->orderBy(['id'=>SORT_DESC])
             ->one();
-        return $risk;
+        return $adaption;
     }
 	
 	public static function findBy($idOrName)
 	{
-		$risk = NULL;
+		$adapton = NULL;
 		if(is_numeric($idOrName))
 		{
-		   $risk = Risk::findById((int)$idOrName);	
+		   $adapton = Adaption::findById((int)$idOrName);	
 		} 
 		elseif(is_string($idOrName)) 
 		{
-		   $risk = Risk::findByName($idOrName);
+		   $adapton = Adaption::findByName($idOrName);
 		}
-		return $risk;
+		return $adapton;
 	}	
   
 public function search($params)
     {
-        $query = Risk::find();
+        $query = Adaption::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
