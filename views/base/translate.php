@@ -19,7 +19,15 @@ $this->title = $messages['title'];
 foreach($dataProvider->getModels() as $data) {
   $name = $data->formName();
   echo '<li><ul>';	 
-  if (in_array('name', $columns) && in_array('description', $columns)) {
+  if (in_array('name', $columns) && in_array('description', $columns) && in_array('details', $columns)) {
+	echo $data['name'].'<li>Name: ';
+	tr($name.':name', $data['name']); 
+	echo '</li><li>Description: ';
+	tr($name.':description', $data['description']); 
+	echo '</li><li>Details: ';
+	tr($name.':details', $data['details']); 
+    echo '</li>';
+  } elseif (in_array('name', $columns) && in_array('description', $columns)) {
 	echo $data['name'].'<li>Name: ';
 	tr($name.':name', $data['name']); 
 	echo '</li><li>Description: ';

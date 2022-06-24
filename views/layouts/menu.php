@@ -32,14 +32,14 @@ $left =
                 ['label' => Language::t('p:menue', 'Manage Hazards'), 'url' => ['/hazard/index'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Translate Hazards'), 'url' => ['/hazard/translate'], 'visible' => $special],
                 '<li class="divider'.($special ? '' : ' hidden' ).'"></li>',
-                ['label' => Language::t('p:menue', 'Manage Risks'), 'url' => ['/risk/index'], 'visible' => $special],
-                ['label' => Language::t('p:menue', 'Translate Risks'), 'url' => ['/risk/translate'], 'visible' => $special],
-                '<li class="divider'.($special ? '' : ' hidden'). '"></li>',
                 ['label' => Language::t('p:menue', 'Manage Dangers'), 'url' => ['/danger/index'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Translate Dangers'), 'url' => ['/danger/translate'], 'visible' => $special],
                 '<li class="divider'.($special ? '' : ' hidden').'"></li>',
                 ['label' => Language::t('p:menue', 'Manage Zones'), 'url' => ['/zone/index'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Translate Zones'), 'url' => ['/zone/translate'], 'visible' => $special],  
+                '<li class="divider'.($special ? '' : ' hidden').'"></li>',
+                ['label' => Language::t('p:menue', 'Manage Sectors'), 'url' => ['/sector/index'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Translate Sectors'), 'url' => ['/sector/translate'], 'visible' => $special],  
                 '<li class="divider'.($special ? '' : ' hidden').'"></li>',
                 ['label' => Language::t('p:menue', 'Manage Stations'), 'url' => ['/station/index'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Translate Stations'), 'url' => ['/station/translate'], 'visible' => $special],  
@@ -49,6 +49,18 @@ $left =
                 '<li class="divider'.($special ? '' : ' hidden').'"></li>',             
                 //['label' => Language::t('p:menue', 'Manage Scenarios'), 'url' => ['/scenario/index'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Translate Scenarios'), 'url' => ['/scenario/translate'], 'visible' => $special],				
+            ]
+        ],
+
+        [
+            'label' => Language::t('p:menue', 'Admin2'),
+            'visible' => (User::hasRole('sysadmin')), 
+            'items' => [
+                ['label' => Language::t('p:menue', 'Manage Impacts'), 'url' => ['/risk/index'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Translate Impacts'), 'url' => ['/risk/translate'], 'visible' => $special],
+                '<li class="divider'.($special ? '' : ' hidden' ).'"></li>',
+                ['label' => Language::t('p:menue', 'Manage Adaptions'), 'url' => ['/adaption/index'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Translate Adaptions'), 'url' => ['/adaption/translate'], 'visible' => $special],
             ]
         ],
 

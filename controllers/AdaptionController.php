@@ -6,7 +6,11 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Risk;
+use app\models\Adaption;
+use app\models\Danger;
+use app\models\Sector;
+use app\models\Country;
+use app\models\Landscape;
 use app\models\Zone;
 use app\controllers\ControllerBase;
 use yii\filters\AccessControl;
@@ -17,7 +21,7 @@ use yii\filters\VerbFilter;
  * @package app\modules\grouping\controllers
  * @since 2.0
  */
-class RiskController extends ControllerBase
+class AdaptionController extends ControllerBase
 {
 
 
@@ -48,18 +52,18 @@ class RiskController extends ControllerBase
 
     protected function findOneModel($id)
     {
-        return Risk::findOne($id);
+        return Adaption::findOne($id);
     }
 
     protected function newModel()
     {
-        return new Risk();
+        return new Adaption();
     }
 
     protected function newSearchModel()
     {
         //return new HazardSearch(); 
-		return new Risk(); 
+		return new Adaption(); 
     }
 
     protected function getColumns()
@@ -76,9 +80,9 @@ class RiskController extends ControllerBase
     protected function getMessages()
     {
         return [
-            'title' => 'Risks', // Yii::t('p:quote', 'Quotes'),
-            'item' => 'Risk', // Yii::t('p:quote', 'Quote'),
-            'create' => 'Create Risk', // Yii::t('p:quote', 'Create Quote'),
+            'title' => 'Adaptions', // Yii::t('p:quote', 'Quotes'),
+            'item' => 'Adaption', // Yii::t('p:quote', 'Quote'),
+            'create' => 'Create Adaption', // Yii::t('p:quote', 'Create Quote'),
         ];
     }
 
@@ -94,12 +98,12 @@ class RiskController extends ControllerBase
                 'model' => $model,
                 'columns' => $columns,
                 'messages' => $this->getMessages(),
-                'messages' => $this->getMessages(),
                 'dangers' => Danger::inqAllDangers(),
                 'sectors' => Sector::inqAllSectors(),
                 'countries' => Country::inqAllCountries(),
-                'landscapes' => Zone::inqAllLandscapes(),
+                'landscapes' => Landscape::inqAllLandscapes(),
                 'zones' => Zone::inqAllZones()
+
             ]);
         }
     }
@@ -121,7 +125,7 @@ class RiskController extends ControllerBase
                 'dangers' => Danger::inqAllDangers(),
                 'sectors' => Sector::inqAllSectors(),
                 'countries' => Country::inqAllCountries(),
-                'landscapes' => Zone::inqAllLandscapes(),
+                'landscapes' => Landscape::inqAllLandscapes(),
                 'zones' => Zone::inqAllZones()
             ]);
         }
