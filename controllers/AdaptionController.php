@@ -15,6 +15,7 @@ use app\models\Zone;
 use app\controllers\ControllerBase;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use app\utils\CsvExport;
 
 /**
  * Class HazardController
@@ -42,7 +43,7 @@ class AdaptionController extends ControllerBase
                     [
                         [
                             'allow' => true,
-                            'actions' => ['list', 'show', 'new' ,'modify', 'remove', 'translate'],
+                            'actions' => ['list', 'csv', 'show', 'new' ,'modify', 'remove', 'translate'],
                             'roles' => ['@','sysadmin','admin'],
                         ],
                     ], $this->crudRules()),
@@ -85,6 +86,30 @@ class AdaptionController extends ControllerBase
             'create' => 'Create Adaption', // Yii::t('p:quote', 'Create Quote'),
         ];
     }
+
+    public function actionCsv()
+    {
+        $adaptions = Adaption::inqAllAdaptions();
+        $data = [];
+        foreach($adaptions as $adaption) {
+            $item=[];
+            $item['id'] = $adaption['id'];
+            $item['visible'] = $adaption['visible'] ? 'visible' : 'hidden';
+            $item['name'] = $adaption['name'];
+
+            $item['dangers'] = $adaption['dangers'];
+            $item['sectors'] = $adaption['sectors'];            
+            $item['countries'] = $adaption['countries'];
+            $item['landscapes'] = $adaption['landscapes'];
+            
+            $item['description'] = $adaption['description'];
+            $item['details'] = $adaption['details'];
+            $item['zones'] = $adaption['zones'];
+
+            $data[] = $item;
+        }
+	    CsvExport::export($data,"adaptations.csv" );
+	}
 
     public function actionCreate()
     {

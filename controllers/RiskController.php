@@ -11,6 +11,7 @@ use app\models\Zone;
 use app\controllers\ControllerBase;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use app\utils\CsvExport;
 
 /**
  * Class HazardController
@@ -38,7 +39,7 @@ class RiskController extends ControllerBase
                     [
                         [
                             'allow' => true,
-                            'actions' => ['list', 'show', 'new' ,'modify', 'remove', 'translate'],
+                            'actions' => ['list', 'csv', 'show', 'new' ,'modify', 'remove', 'translate'],
                             'roles' => ['@','sysadmin','admin'],
                         ],
                     ], $this->crudRules()),
@@ -81,6 +82,32 @@ class RiskController extends ControllerBase
             'create' => 'Create Risk', // Yii::t('p:quote', 'Create Quote'),
         ];
     }
+
+    public function actionCsv()
+    {
+        $risks = Risk::inqAllRisks();
+        //var_dump($risks);
+        $data = [];
+        foreach($risks as $risk) {
+            $item=[];
+            $item['id'] = $risk['id'];
+            $item['visible'] = $risk['visible'] ? 'visible' : 'hidden';
+            $item['name'] = $risk['name'];
+            $item['negative'] = $risk['negative'] ? 'negativ' : 'positiv'; 
+
+            $item['dangers'] = $risk['dangers'];
+            $item['sectors'] = $risk['sectors'];            
+            $item['countries'] = $risk['countries'];
+            $item['landscapes'] = $risk['landscapes'];
+            
+            $item['description'] = $risk['description'];
+            $item['details'] = $risk['details'];
+            $item['zones'] = $risk['zones'];
+
+            $data[] = $item;
+        }
+	    CsvExport::export($data,"impacts.csv" );
+	}
 
     public function actionCreate()
     {

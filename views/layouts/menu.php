@@ -58,9 +58,11 @@ $left =
             'items' => [
                 ['label' => Language::t('p:menue', 'Manage Impacts'), 'url' => ['/risk/index'], 'visible' => $special],
                 ['label' => Language::t('p:menue', 'Translate Impacts'), 'url' => ['/risk/translate'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Download Impacts CSV'), 'url' => ['/risk/csv'], 'visible' => $special],
                 '<li class="divider'.($special ? '' : ' hidden' ).'"></li>',
-                ['label' => Language::t('p:menue', 'Manage Adaptions'), 'url' => ['/adaption/index'], 'visible' => $special],
-                ['label' => Language::t('p:menue', 'Translate Adaptions'), 'url' => ['/adaption/translate'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Manage Adaptations'), 'url' => ['/adaption/index'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Translate Adaptations'), 'url' => ['/adaption/translate'], 'visible' => $special],
+                ['label' => Language::t('p:menue', 'Download Adaptations CSV'), 'url' => ['/adaption/csv'], 'visible' => $special],
             ]
         ],
 
