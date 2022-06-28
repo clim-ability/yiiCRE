@@ -390,7 +390,7 @@ class Adaption extends ActiveRecord
 	
 	public static function findByName($name)
     {
-        $adapton = Adaption::find()
+        $adaption = Adaption::find()
             ->where(['name' => $name])
 			->orderBy(['id'=>SORT_DESC])
             ->one();
@@ -399,16 +399,16 @@ class Adaption extends ActiveRecord
 	
 	public static function findBy($idOrName)
 	{
-		$adapton = NULL;
+		$adaption = NULL;
 		if(is_numeric($idOrName))
 		{
-		   $adapton = Adaption::findById((int)$idOrName);	
+		   $adaption = Adaption::findById((int)$idOrName);	
 		} 
 		elseif(is_string($idOrName)) 
 		{
-		   $adapton = Adaption::findByName($idOrName);
+		   $adaption = Adaption::findByName($idOrName);
 		}
-		return $adapton;
+		return $adaption;
 	}	
   
 public function search($params)

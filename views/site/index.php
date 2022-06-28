@@ -121,7 +121,7 @@ function md() {
 		<?php tr('sector', 'Branche'); ?><br/>
 		<select v-model="sector" v-on:change="updateImpacts" class="form-control">
 			<option v-for="sector in sectors" v-bind:value="sector.name">
-			{{ sector.label }} 
+			{{ sector.label }} (#{{sector.counting}})
 			</option>
 		</select>
 		</div>  
@@ -129,7 +129,7 @@ function md() {
 		<?php tr('danger', 'Danger'); ?><br/>
 		<select v-model="danger" v-on:change="updateImpacts" class="form-control">
 			<option v-for="danger in dangers" v-bind:value="danger.name">
-			{{ danger.label }} 
+			{{ danger.label }} (#{{danger.counting}})
 			</option>
 		</select>
 		</div>  	  
@@ -202,7 +202,7 @@ function md() {
 		<?php tr('sector', 'Branche'); ?><br/>
 		<select v-model="sector" v-on:change="updateAdaptions" class="form-control">
 			<option v-for="sector in sectors" v-bind:value="sector.name">
-			{{ sector.label }} 
+			{{ sector.label }} (#{{sector.counting}})
 			</option>
 		</select>
 		</div>  
@@ -210,7 +210,7 @@ function md() {
 		<?php tr('danger', 'Danger'); ?><br/>
 		<select v-model="danger" v-on:change="updateAdaptions" class="form-control">
 			<option v-for="danger in dangers" v-bind:value="danger.name">
-			{{ danger.label }} 
+			{{ danger.label }} (#{{danger.counting}})
 			</option>
 		</select>
 		</div>  

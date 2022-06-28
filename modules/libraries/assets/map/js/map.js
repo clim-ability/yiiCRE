@@ -883,7 +883,6 @@ var vueImpacts = new Vue({
 			  this.inqImpacts();
 			}
 		}
-
 	  },
 	  updateImpacts() {
 		this.inqImpacts();
@@ -894,6 +893,8 @@ var vueImpacts = new Vue({
 			}		
 	    }	
 		vueEventBus.$emit('updatedImpacts', this);	
+		//this.inqSectorsCounting();
+		//this.inqDangersCounting();
 	  },
 	  // getCurrentSector() {return this.sector; },
 	  inqLandscapes() {
@@ -964,7 +965,9 @@ var vueImpacts = new Vue({
 		  //this.updateParameters();
 		  //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
 		  // vueEventBus.$emit('updatedParameters', this);
-		  });			
+		  });	
+		  this.inqSectorsCounting();
+		  this.inqDangersCounting();		
 	  },
 	  showImpactDetails(id) {
 		this.inqImpactRelations(id);
@@ -986,16 +989,8 @@ var vueImpacts = new Vue({
 		  this.relatedCountries = response.data.countries;
 		  this.relatedLandscapes = response.data.landscapes
 		  });					
-	  }
-	},
-	mounted () {
-		vueEventBus.$on('updatedTabs', e => { this.updateTabs(e);});
-		vueEventBus.$on('updatedInfo', e => { this.updateInfo(e);});
-		vueEventBus.$on('updatedAdaptions', e => { this.updateAdaption(e);});
-		vueEventBus.$on('updatedParameters', e => { this.updateParameters(e);});
-		this.inqLandscapes();
-		this.inqCountries();
-		this.inqZones();
+	  },
+	  inqSectors() {
 		axios
 		.get(apiBaseUrl+'/api/sectors?language='+currentLanguage)
 		//.get('https://gis.clim-ability.eu/index.php/api/hazards')
@@ -1011,21 +1006,85 @@ var vueImpacts = new Vue({
 		  //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
 		  //vueEventBus.$emit('updatedImpacts', this);
 		  });	
-		  axios
-		  .get(apiBaseUrl+'/api/dangers?language='+currentLanguage)
-		  //.get('https://gis.clim-ability.eu/index.php/api/hazards')
-		  .then(response => { 
-			this.dangers = response.data; 
-			//initStatisticOptions(this.hazards);
-			var noneTranslate = tr('Danger:name', 'none');
-			//this.hazards.unshift({name: 'off', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
-			var allTranslate = tr('Danger:name', 'all');
-			//this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
-			this.danger = this.dangers[0].name;
-			//this.updateParameters();
-			//updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
-			//vueEventBus.$emit('updatedImpacts', this);
-			});
+	  },
+	  inqSectorsCounting() {
+        var url = apiBaseUrl+'/api/sectors-counting-risks?language='+currentLanguage+'&landscape='+encodeURIComponent(this.currentLandscape)
+		                    +'&country='+encodeURIComponent(this.currentCountry)
+		if('alle' !== this.danger) {
+			url += ('&danger='+encodeURIComponent(this.danger))
+		}
+		axios
+		.get(url)
+		//.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		.then(response => { 
+		  this.sectors = response.data; 
+		  //initStatisticOptions(this.hazards);
+		  var noneTranslate = tr('Sector:name', 'none');
+		  //this.hazards.unshift({name: 'off', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  var allTranslate = tr('Sector:name', 'all');
+		  //this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  if(this.sector == 'none') {
+		    this.sector = this.sectors[0].name;
+		  }
+		  //this.updateParameters();
+		  //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
+		  //vueEventBus.$emit('updatedAdaptions', this);
+		  });			
+	  },
+	  inqDangers() {
+		axios
+		.get(apiBaseUrl+'/api/dangers?language='+currentLanguage)
+		//.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		.then(response => { 
+		  this.dangers = response.data; 
+		  //initStatisticOptions(this.hazards);
+		  var noneTranslate = tr('Danger:name', 'none');
+		  //this.hazards.unshift({name: 'off', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  var allTranslate = tr('Danger:name', 'all');
+		  //this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  this.danger = this.dangers[0].name;
+		  //this.updateParameters();
+		  //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
+		  //vueEventBus.$emit('updatedImpacts', this);
+		  });
+	  },
+	  inqDangersCounting() {
+        var url = apiBaseUrl+'/api/dangers-counting-risks?language='+currentLanguage+'&landscape='+encodeURIComponent(this.currentLandscape)
+		                    +'&country='+encodeURIComponent(this.currentCountry)
+		if('alle' !== this.sector) {
+			url += ('&sector='+encodeURIComponent(this.sector))
+		}
+		axios
+		.get(url)
+		//.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		.then(response => { 
+		  this.dangers = response.data; 
+		  //initStatisticOptions(this.hazards);
+		  var noneTranslate = tr('Danger:name', 'none');
+		  //this.hazards.unshift({name: 'off', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  var allTranslate = tr('Danger:name', 'all');
+		  //this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  if(this.danger == 'none') {
+		    this.danger = this.danger[0].name;
+		  }
+		  //this.updateParameters();
+		  //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
+		  //vueEventBus.$emit('updatedAdaptions', this);
+		  });			
+	  }	 
+	},
+	mounted () {
+		vueEventBus.$on('updatedTabs', e => { this.updateTabs(e);});
+		vueEventBus.$on('updatedInfo', e => { this.updateInfo(e);});
+		vueEventBus.$on('updatedAdaptions', e => { this.updateAdaption(e);});
+		vueEventBus.$on('updatedParameters', e => { this.updateParameters(e);});
+        //this.inqSectors();
+		//this.inqDangers();
+		this.inqLandscapes();
+		this.inqCountries();
+		this.inqZones();
+		this.inqSectorsCounting();
+		this.inqDangersCounting();
 		},
 
 })
@@ -1083,13 +1142,17 @@ var vueAdaptions = new Vue({
 		
 	  },
 	  updateAdaptions() {
+		//this.inqSectorsCounting();
 		this.inqAdaptions();
+
 		for (var i = 0; i < this.dangers.length; i++) {
 			if(this.dangers[i].name == this.danger) {
 				this.dangerDetails = this.dangers[i];
 			}		
 	    }	
 		vueEventBus.$emit('updatedAdaptions', this);
+		//this.inqSectorsCounting();
+		//this.inqDangersCounting();
 	  },
 	  // getCurrentSector() {return this.sector; },
 	  inqLandscapes() {
@@ -1155,7 +1218,9 @@ var vueAdaptions = new Vue({
 		  //this.updateParameters();
 		  //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
 		  // vueEventBus.$emit('updatedParameters', this);
-		  });			
+		  });
+		  this.inqSectorsCounting();
+		  this.inqDangersCounting();  			
 	  },
       showAdaptionDetails(id) {
 		this.inqAdaptionRelations(id);
@@ -1177,30 +1242,49 @@ var vueAdaptions = new Vue({
 		  this.relatedCountries = response.data.countries;
 		  this.relatedLandscapes = response.data.landscapes;
 		  });					
-	  }	  	  
-	},
-	mounted () {
-		vueEventBus.$on('updatedTabs', e => { this.updateTabs(e);});
-		vueEventBus.$on('updatedInfo', e => { this.updateInfo(e);});
-		vueEventBus.$on('updatedImpacts', e => { this.updateRisk(e);});
-		vueEventBus.$on('updatedParameters', e => { this.updateParameters(e);});
-		this.inqLandscapes();
-		this.inqCountries();
-	    axios
-		 .get(apiBaseUrl+'/api/sectors?language='+currentLanguage)
-		 //.get('https://gis.clim-ability.eu/index.php/api/hazards')
-		 .then(response => { 
-		   this.sectors = response.data; 
-		   //initStatisticOptions(this.hazards);
-		   var noneTranslate = tr('Sector:name', 'none');
-		   //this.hazards.unshift({name: 'off', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
-		   var allTranslate = tr('Sector:name', 'all');
-		   //this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
-		   this.sector = this.sectors[0].name;
-		   //this.updateParameters();
-		   //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
-		   //vueEventBus.$emit('updatedAdaptions', this);
-		   });	
+	  },
+	  inqSectors() {
+		axios
+		.get(apiBaseUrl+'/api/sectors?language='+currentLanguage)
+		//.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		.then(response => { 
+		  this.sectors = response.data; 
+		  //initStatisticOptions(this.hazards);
+		  var noneTranslate = tr('Sector:name', 'none');
+		  //this.hazards.unshift({name: 'off', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  var allTranslate = tr('Sector:name', 'all');
+		  //this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  this.sector = this.sectors[0].name;
+		  //this.updateParameters();
+		  //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
+		  //vueEventBus.$emit('updatedAdaptions', this);
+		  });	
+	  },
+	  inqSectorsCounting() {
+        var url = apiBaseUrl+'/api/sectors-counting-adaptions?language='+currentLanguage+'&landscape='+encodeURIComponent(this.currentLandscape)
+		                    +'&country='+encodeURIComponent(this.currentCountry)
+		if('alle' !== this.danger) {
+			url += ('&danger='+encodeURIComponent(this.danger))
+		}
+		axios
+		.get(url)
+		//.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		.then(response => { 
+		  this.sectors = response.data; 
+		  //initStatisticOptions(this.hazards);
+		  var noneTranslate = tr('Sector:name', 'none');
+		  //this.hazards.unshift({name: 'off', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  var allTranslate = tr('Sector:name', 'all');
+		  //this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  if(this.sector == 'none') {
+		    this.sector = this.sectors[0].name;
+		  }
+		  //this.updateParameters();
+		  //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
+		  //vueEventBus.$emit('updatedAdaptions', this);
+		  });			
+	  },
+	  inqDangers() {
 	    axios
 		   .get(apiBaseUrl+'/api/dangers?language='+currentLanguage)
 		   //.get('https://gis.clim-ability.eu/index.php/api/hazards')
@@ -1215,7 +1299,44 @@ var vueAdaptions = new Vue({
 			 //this.updateParameters();
 			 //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
 			 //vueEventBus.$emit('updatedAdaptions', this);
-			 });	
+			 });
+	  },
+	  inqDangersCounting() {
+        var url = apiBaseUrl+'/api/dangers-counting-adaptions?language='+currentLanguage+'&landscape='+encodeURIComponent(this.currentLandscape)
+		                    +'&country='+encodeURIComponent(this.currentCountry)
+		if('alle' !== this.sector) {
+			url += ('&sector='+encodeURIComponent(this.sector))
+		}
+		axios
+		.get(url)
+		//.get('https://gis.clim-ability.eu/index.php/api/hazards')
+		.then(response => { 
+		  this.dangers = response.data; 
+		  //initStatisticOptions(this.hazards);
+		  var noneTranslate = tr('Danger:name', 'none');
+		  //this.hazards.unshift({name: 'off', label: noneTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  var allTranslate = tr('Danger:name', 'all');
+		  //this.hazards.push({name: 'all', label: allTranslate, color_min: '#000000', color_max: '#FFFFFF'});
+		  if(this.danger == 'none') {
+		    this.danger = this.danger[0].name;
+		  }
+		  //this.updateParameters();
+		  //updateLegend(this.hazard, this.epoch, this.scenario, this.hazards);
+		  //vueEventBus.$emit('updatedAdaptions', this);
+		  });			
+	  }	  	  
+	},
+	mounted () {
+	    //this.inqSectors();
+		//this.inqDangers();
+		vueEventBus.$on('updatedTabs', e => { this.updateTabs(e);});
+		vueEventBus.$on('updatedInfo', e => { this.updateInfo(e);});
+		vueEventBus.$on('updatedImpacts', e => { this.updateRisk(e);});
+		vueEventBus.$on('updatedParameters', e => { this.updateParameters(e);});
+		this.inqLandscapes();
+		this.inqCountries();
+		this.inqSectorsCounting();
+		this.inqDangersCounting();	
 		},
 
 })

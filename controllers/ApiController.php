@@ -197,6 +197,80 @@ class ApiController extends Controller
 	return $result;
    } 
 
+   public function actionDangersCountingRisks($sector, $landscape, $country, $mode='visible-only', $language='en') {
+	// returns list of all Scenarios.
+	$sectorId = null; 
+	if($sector) {
+		$sectorModel = Sector::findBy($sector);
+		if($sectorModel) {
+			$sectorId = $sectorModel['id'];
+		}
+	}
+	$landscapeId = null; 
+	if($landscape) {
+		$landscapeModel = Landscape::findBy($landscape);
+		if($landscapeModel) {
+			$landscapeId = $landscapeModel['id'];
+		}
+	}
+	$countryId = null; 
+	if($country) {
+		$countryModel = Country::findBy($country);
+		if($countryModel) {
+			$countryId = $countryModel['id'];
+		}
+	}
+	$result = Danger::inqAllDangersWithCountOfRisks($sectorId, $landscapeId, $countryId, 'invisible'==$mode);
+	$result = array_map(function($e) use ($language) { 
+	   $e['label'] = \Yii::t('Danger:name', $e['name'], [], $language);
+	   $e['description'] = \Yii::t('Danger:description', $e['name'], [], $language);
+	   if(!$e['counting']) {
+		$e['counting'] = 0;
+	   }
+	   return $e; 
+	   } ,$result); 
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result;
+   } 
+
+   public function actionDangersCountingAdaptions($sector, $landscape, $country, $mode='visible-only', $language='en') {
+	// returns list of all Scenarios.
+	$sectorId = null; 
+	if($sector) {
+		$sectorModel = Sector::findBy($sector);
+		if($sectorModel) {
+			$sectorId = $sectorModel['id'];
+		}
+	}
+	$landscapeId = null; 
+	if($landscape) {
+		$landscapeModel = Landscape::findBy($landscape);
+		if($landscapeModel) {
+			$landscapeId = $landscapeModel['id'];
+		}
+	}
+	$countryId = null; 
+	if($country) {
+		$countryModel = Country::findBy($country);
+		if($countryModel) {
+			$countryId = $countryModel['id'];
+		}
+	}
+	$result = Danger::inqAllDangersWithCountOfAdaptions($sectorId, $landscapeId, $countryId, 'invisible'==$mode);
+	$result = array_map(function($e) use ($language) { 
+	   $e['label'] = \Yii::t('Danger:name', $e['name'], [], $language);
+	   $e['description'] = \Yii::t('Danger:description', $e['name'], [], $language);
+	   if(!$e['counting']) {
+		$e['counting'] = 0;
+	   }
+	   return $e; 
+	   } ,$result); 
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result;
+   } 
+
    public function actionZones($mode='visible-only', $language='en') {
 	// returns list of all Landscapes.
 	$result = Zone::inqAllZones('invisible'==$mode);
@@ -292,8 +366,82 @@ class ApiController extends Controller
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
-   }  
+   } 
+   
+   public function actionSectorsCountingRisks($danger, $landscape, $country, $mode='visible-only', $language='en') {
+	// returns list of all Scenarios.
+	$dangerId = null; 
+	if($danger) {
+		$dangerModel = Danger::findBy($danger);
+		if($dangerModel) {
+			$dangerId = $dangerModel['id'];
+		}
+	}
+	$landscapeId = null; 
+	if($landscape) {
+		$landscapeModel = Landscape::findBy($landscape);
+		if($landscapeModel) {
+			$landscapeId = $landscapeModel['id'];
+		}
+	}
+	$countryId = null; 
+	if($country) {
+		$countryModel = Country::findBy($country);
+		if($countryModel) {
+			$countryId = $countryModel['id'];
+		}
+	}
+	$result = Sector::inqAllSectorsWithCountOfRisks($dangerId, $landscapeId, $countryId, 'invisible'==$mode);
+	$result = array_map(function($e) use ($language) { 
+	   $e['label'] = \Yii::t('Sector:name', $e['name'], [], $language);
+	   $e['description'] = \Yii::t('Sector:description', $e['name'], [], $language);
+	   if(!$e['counting']) {
+		$e['counting'] = 0;
+	   }
+	   return $e; 
+	   } ,$result); 
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result;
+   }    
  
+   public function actionSectorsCountingAdaptions($danger, $landscape, $country, $mode='visible-only', $language='en') {
+	// returns list of all Scenarios.
+	$dangerId = null; 
+	if($danger) {
+		$dangerModel = Danger::findBy($danger);
+		if($dangerModel) {
+			$dangerId = $dangerModel['id'];
+		}
+	}
+	$landscapeId = null; 
+	if($landscape) {
+		$landscapeModel = Landscape::findBy($landscape);
+		if($landscapeModel) {
+			$landscapeId = $landscapeModel['id'];
+		}
+	}
+	$countryId = null; 
+	if($country) {
+		$countryModel = Country::findBy($country);
+		if($countryModel) {
+			$countryId = $countryModel['id'];
+		}
+	}
+	$result = Sector::inqAllSectorsWithCountOfAdaptions($dangerId, $landscapeId, $countryId, 'invisible'==$mode);
+	$result = array_map(function($e) use ($language) { 
+	   $e['label'] = \Yii::t('Sector:name', $e['name'], [], $language);
+	   $e['description'] = \Yii::t('Sector:description', $e['name'], [], $language);
+	   if(!$e['counting']) {
+		$e['counting'] = 0;
+	   }
+	   return $e; 
+	   } ,$result); 
+	\Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
+	\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+	return $result;
+   } 
+
    public function actionHazardValue($latitude, $longitude, $hazard='', $epoch='', $scenario='', $parameter='mean', $resolution=0.1) 
    {
 	   $result = [];
