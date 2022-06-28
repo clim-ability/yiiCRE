@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use PDO;
 use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
 
@@ -71,6 +72,46 @@ class Sector extends ActiveRecord
         $sectors = $sectors->orderBy(['name'=>SORT_ASC]);
         return $sectors->all();
 	}
+
+    public function inqAllSectorsWithCountOfRisks( $dangerId=NULL, $landscapeId=NULL, $countryId=NULL, $inclInvisible = false ) {
+	    $sql = "SELECT sector.*, ca.counting AS counting "
+            . " FROM sector "
+            . " LEFT JOIN "
+            . " (SELECT sector_risk.sector_id AS sid, count(*) as counting "
+            . "  FROM sector_risk, country_risk, landscape_risk, danger_risk "
+            . " WHERE danger_risk.risk_id = sector_risk.risk_id AND danger_risk.danger_id = :dangerId "
+            . "  AND landscape_risk.risk_id = sector_risk.risk_id AND landscape_risk.landscape_id = :landscapeId "
+            . "  AND country_risk.risk_id = sector_risk.risk_id AND country_risk.country_id = :countryId "            
+            . " GROUP BY sector_risk.sector_id ) as ca "
+            . " ON ca.sid = sector.id ";
+        $command = Yii::$app->db->createCommand($sql);
+        $command->bindValue(":dangerId", (int)$dangerId, PDO::PARAM_INT);
+        $command->bindValue(":landscapeId", (int)$landscapeId, PDO::PARAM_INT);
+        $command->bindValue(":countryId", (int)$countryId, PDO::PARAM_INT);
+        $sectors = $command->queryAll();
+        return $sectors;
+    }
+
+    public function inqAllSectorsWithCountOfAdaptions( $dangerId=NULL, $landscapeId=NULL, $countryId=NULL, $inclInvisible = false ) {
+	    $sql = "SELECT sector.*, ca.counting AS counting "
+            . " FROM sector "
+            . " LEFT JOIN "
+            . " (SELECT sector_adaption.sector_id AS sid, count(*) as counting "
+            . "  FROM sector_adaption, country_adaption, landscape_adaption, danger_adaption "
+            . " WHERE danger_adaption.adaption_id = sector_adaption.adaption_id AND danger_adaption.danger_id = :dangerId "
+            . "  AND landscape_adaption.adaption_id = sector_adaption.adaption_id AND landscape_adaption.landscape_id = :landscapeId "
+            . "  AND country_adaption.adaption_id = sector_adaption.adaption_id AND country_adaption.country_id = :countryId "            
+            . " GROUP BY sector_adaption.sector_id ) as ca "
+            . " ON ca.sid = sector.id ";
+        $command = Yii::$app->db->createCommand($sql);
+        $command->bindValue(":dangerId", (int)$dangerId, PDO::PARAM_INT);
+        $command->bindValue(":landscapeId", (int)$landscapeId, PDO::PARAM_INT);
+        $command->bindValue(":countryId", (int)$countryId, PDO::PARAM_INT);
+        $sectors = $command->queryAll();
+        return $sectors;
+    }
+
+
 	
 	public static function findById($id)
     {
