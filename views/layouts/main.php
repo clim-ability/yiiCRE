@@ -25,8 +25,11 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="dc.title" content="Climate Inspector @ Climability">
+    <meta name="description" content="Climate Inspector">
+    <meta name="keywords" content="Climate, Klima, Anpassung, Impacts, Adaptation">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title>Climate Inspector @ Climability</title>
     <?php $this->head() ?>
 </head>
 <body style="backgroundImage: url('/images/wolke4.jpg') !important;">
