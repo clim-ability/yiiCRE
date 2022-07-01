@@ -187,16 +187,6 @@ function md() {
          </div>
        </template>
 
-	   <div>
-         <p @click="showModal({title:'Hallo Youtube','youtube':'6EaOlzpjsic'})">hello youtube</p>
-		 <p @click="showModal({title:'Hallo Text','text':'Sehr schoener Text hier!'})">hello text</p>
-		 <p @click="showModal({title:'Hallo Url','url':'https://de.wikipedia.org/wiki/Regen', 'width':'80%', 'height':'75%' })">hello Url</p>
-		 <p @click="showModal({title:'Hallo Html','html':'Sehr <b style=\'color:red\'>schoener</b> Text hier!'})">hello html</p>
-
-		 <p @click="showModal({title:'Hallo Url','url':'https://www.localhost/media/flyer/Flood-ClimAbility.de.pdf', 'width':'80%', 'height':'75%' })">hello Pdf</p>
-		 <!--p @click="showModal({title:'Hallo Url','pdf':'https://www.localhost/media/flyer/Flood-ClimAbility.de.pdf', 'width':'80%', 'height':'75%' })">hello PDF</p-->
-		 
-       </div>
 
       </div>	
      </div> 
