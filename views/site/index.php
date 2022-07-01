@@ -10,6 +10,7 @@ $assets = MapAsset::register($this);
 
 header('Access-Control-Allow-Origin: *');
 
+
 function tr($c, $m, $p = []) {
     echo LanguageTranslate::widget(['category' => $c, 'message' => $m, 'params' => $p]);
 }
@@ -137,26 +138,26 @@ function md() {
 	  <br/>	
 
 	  <template v-if="impacts.length>0">
-			<p><b>Impacts</b></p>
+			<p><b><?php tr('impact', 'Impacts'); ?><br/></p>
 			<ul style="list-style-type: none; margin: 0; padding: 0;">
 			    <li	v-for="imp in impacts" v-on:click="showImpactDetails(imp.id)" :class="imp.negative ? 'neg' : 'pos' " >
-				  <span class="impact" :class="imp.id == impact.id ? 'current' : 'any' ">{{imp.name}}&nbsp;<img src="/icons/information-button.png"/></span>
+				  <span class="impact" :class="imp.id == impact.id ? 'current' : 'any' ">{{imp.label}}&nbsp;<img src="/icons/information-button.png"/></span>
 				</li>
             </ul>
       </template>		
-	  <template v-else><p><b>No impacts available</b></p></template>		
+	  <template v-else><p><b><?php tr('impacts', 'No impacts available'); ?></b></p></template>		
 			
       </div> 
 
 	  <div class="col-md-6">
 
 	  <div class="row" >
-	     <div class="landscapes col-md-5">Landscapes<br/>
+	     <div class="landscapes col-md-5"><?php tr('landscape', 'Landscapes'); ?><br/>
 		 <img v-for="landscape in landscapes" :src="('/images/landscapes/'+landscape.name+'.jpg') | underscore" 
 		        :title="landscape.label" :class="getLandscapeClass(landscape.name)" 
 				class="icons" width=32 height=32>
          </div>
-	     <div class="countries col-md-7">Countries<br/>
+	     <div class="countries col-md-7"><?php tr('country', 'Countries'); ?><br/>
 		    <img v-for="country in allCountries" :src="('/images/countries/'+country.country+'.jpg') | underscore" 
 		        :title="country.label" :class="getCountryClass(country.country)" 
 				class="icons" width=48 height=32>	
@@ -170,7 +171,7 @@ function md() {
 	   <br/>
 
 	   <template v-if="'none' !== impact.name">
-         <h4>{{impact.name}}</h4>
+         <h4>{{impact.label}}</h4>
 	     <br/>
 	     <p>{{impact.description}}</p>
          <p v-if="impact.details"><i>({{impact.details}})</i></p>
@@ -179,12 +180,23 @@ function md() {
 	   <template v-if="zones.length>0">
 	     <br/>
 	     <div class="row" >
-	       <div class="zones col-md-12">Zones<br/>
+	       <div class="zones col-md-12"><?php tr('zone', 'Zones'); ?><br/>
 		     <img v-for="zone in zones" :src="('/images/zones/'+zone.name+'.png') | underscore" 
 		          :title="zone.label" class="icons" width=32 height=32>
            </div>
          </div>
        </template>
+
+	   <div>
+         <p @click="showModal({title:'Hallo Youtube','youtube':'6EaOlzpjsic'})">hello youtube</p>
+		 <p @click="showModal({title:'Hallo Text','text':'Sehr schoener Text hier!'})">hello text</p>
+		 <p @click="showModal({title:'Hallo Url','url':'https://de.wikipedia.org/wiki/Regen', 'width':'80%', 'height':'75%' })">hello Url</p>
+		 <p @click="showModal({title:'Hallo Html','html':'Sehr <b style=\'color:red\'>schoener</b> Text hier!'})">hello html</p>
+
+		 <p @click="showModal({title:'Hallo Url','url':'https://www.localhost/media/flyer/Flood-ClimAbility.de.pdf', 'width':'80%', 'height':'75%' })">hello Pdf</p>
+		 <!--p @click="showModal({title:'Hallo Url','pdf':'https://www.localhost/media/flyer/Flood-ClimAbility.de.pdf', 'width':'80%', 'height':'75%' })">hello PDF</p-->
+		 
+       </div>
 
       </div>	
      </div> 
@@ -219,26 +231,26 @@ function md() {
       </div>
 	  <br/>	
 	    <template v-if="adaptions.length>0">
-			<p><b>Adaptions</b></p>
+			<p><b><?php tr('adaptions', 'Adaptations'); ?><br/></p>
 			<ul style="list-style-type: none; margin: 0; padding: 0;">
 			    <li	v-for="adp in adaptions" v-on:click="showAdaptionDetails(adp.id)" class="adp" >
-				  <span class="adaption" :class="adp.id == adaption.id ? 'current' : 'any' ">{{adp.name}}&nbsp;<img src="/icons/information-button.png"/></span>
+				  <span class="adaption" :class="adp.id == adaption.id ? 'current' : 'any' ">{{adp.label}}&nbsp;<img src="/icons/information-button.png"/></span>
 				</li>
             </ul>	
         </template>		
-	    <template v-else><p><b>No adaptions available</b></p></template>				
+	    <template v-else><p><b><?php tr('adaptions', 'No adaptions available'); ?></b></p></template>				
 			
       </div> 
 
 	  <div class="col-md-6">
 
 	  <div class="row" >
-	     <div class="landscapes col-md-5">Landscapes<br/>
+	     <div class="landscapes col-md-5"><?php tr('landscape', 'Landscapes'); ?><br/>
 		   <img v-for="landscape in landscapes" :src="('/images/landscapes/'+landscape.name+'.jpg') | underscore" 
 		        :title="landscape.label" :class="getLandscapeClass(landscape.name)" 
 				class="icons" width=32 height=32>
          </div>
-	     <div class="countries col-md-7">Countries<br/>
+	     <div class="countries col-md-7"><?php tr('country', 'Countries'); ?><br/>
 		   <img v-for="country in allCountries" :src="('/images/countries/'+country.country+'.jpg') | underscore" 
 		        :title="country.label" :class="getCountryClass(country.country)" 
 				class="icons" width=48 height=32>		   
@@ -250,7 +262,7 @@ function md() {
 	   <!--i>{{tr('Danger:description', dangerDetails.name, currentLanguage)}}</i-->
 	   <br/>
 	   <template v-if="'none' !== adaption.name">
-         <h4>{{adaption.name}}</h4>
+         <h4>{{adaption.label}}</h4>
 	     <p>{{adaption.description}}</p>
          <p v-if="adaption.details"><i>({{adaption.details}})</i></p>
        </template>
@@ -258,7 +270,7 @@ function md() {
 	   <template v-if="zones.length>0">
 	     <br/>
 	     <div class="row" >
-	       <div class="zones col-md-12">Zones<br/>
+	       <div class="zones col-md-12"><?php tr('zone', 'Zones'); ?><br/>
 		     <img v-for="zone in zones" :src="('/images/zones/'+zone.name+'.png') | underscore" 
 		        :title="zone.label" class="icons" width=32 height=32>
            </div>
