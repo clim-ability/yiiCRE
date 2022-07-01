@@ -15,7 +15,7 @@ class Risk extends ActiveRecord
 //    public $year_begin;
 //    public $year_end;
 //	  public $visible;
-      //public $label;
+      public $label;
       //public $description;
 
       public $zone_ids = [];
@@ -43,7 +43,7 @@ class Risk extends ActiveRecord
     public function fields()
     {
         $fields = parent::fields();
-		//$fields[] = 'label';
+		$fields[] = 'label';
         $fields[] = 'dangers';
         $fields[] = 'sectors';
         $fields[] = 'landscapes';
