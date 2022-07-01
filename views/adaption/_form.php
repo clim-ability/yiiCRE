@@ -54,7 +54,7 @@ use yii\widgets\ActiveForm;
     <?php $sectorArray = BaseArrayHelper::map($sectors, 'id', 'name'); ?>
     <?php echo $form->field($model, 'sector_ids')->checkBoxList($sectorArray, ['multiple'=>true]); ?>
     <?php echo "<br/>" ?>
-    <?php $countryArray = BaseArrayHelper::map($counties, 'id', 'name'); ?>
+    <?php $countryArray = BaseArrayHelper::map($countries, 'id', 'name'); ?>
     <?php echo $form->field($model, 'country_ids')->checkBoxList($countryArray, ['multiple'=>true]); ?>
     <?php $landscapeArray = BaseArrayHelper::map($landscapes, 'id', 'name'); ?>
     <?php echo $form->field($model, 'landscape_ids')->checkBoxList($landscapeArray, ['multiple'=>true]); ?>

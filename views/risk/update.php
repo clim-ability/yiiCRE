@@ -26,7 +26,11 @@ $this->params['breadcrumbs'][] = Yii::t('p:base', 'Update');
         'model' => $model,
         'columns' => $columns,
         'messages' => $messages,
-        'zones' => $zones
+        'dangers' => $dangers,
+        'sectors' => $sectors,
+        'countries' => $countries,
+        'landscapes' => $landscapes,
+        'zones' => $zones,
     ]) ?>
 
 </div>

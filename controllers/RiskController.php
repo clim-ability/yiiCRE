@@ -8,6 +8,10 @@ namespace app\controllers;
 use Yii;
 use app\models\Risk;
 use app\models\Zone;
+use app\models\Danger;
+use app\models\Sector;
+use app\models\Country;
+use app\models\Landscape;
 use app\controllers\ControllerBase;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -125,7 +129,7 @@ class RiskController extends ControllerBase
                 'dangers' => Danger::inqAllDangers(),
                 'sectors' => Sector::inqAllSectors(),
                 'countries' => Country::inqAllCountries(),
-                'landscapes' => Zone::inqAllLandscapes(),
+                'landscapes' => Landscape::inqAllLandscapes(),
                 'zones' => Zone::inqAllZones()
             ]);
         }
@@ -148,7 +152,7 @@ class RiskController extends ControllerBase
                 'dangers' => Danger::inqAllDangers(),
                 'sectors' => Sector::inqAllSectors(),
                 'countries' => Country::inqAllCountries(),
-                'landscapes' => Zone::inqAllLandscapes(),
+                'landscapes' => Landscape::inqAllLandscapes(),
                 'zones' => Zone::inqAllZones()
             ]);
         }
