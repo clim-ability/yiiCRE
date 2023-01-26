@@ -197,7 +197,7 @@ class ApiController extends Controller
 	return $result;
    } 
 
-   public function actionDangersCountingRisks($sector, $landscape, $country, $mode='visible-only', $language='en') {
+   public function actionDangersCountingRisks($sector, $landscape, $country, $mode='visible-only', $language='en', $all='') {
 	// returns list of all Scenarios.
 	$sectorId = null; 
 	if($sector) {
@@ -220,7 +220,7 @@ class ApiController extends Controller
 			$countryId = $countryModel['id'];
 		}
 	}
-	$result = Danger::inqAllDangersWithCountOfRisks($sectorId, $landscapeId, $countryId, 'invisible'==$mode);
+	$result = Danger::inqAllDangersWithCountOfRisks($sectorId, $landscapeId, $countryId, 'invisible'==$mode, $all=='incl');
 	$result = array_map(function($e) use ($language) { 
 	   $e['label'] = \Yii::t('Danger:name', $e['name'], [], $language);
 	   $e['description'] = \Yii::t('Danger:description', $e['name'], [], $language);
@@ -234,7 +234,7 @@ class ApiController extends Controller
 	return $result;
    } 
 
-   public function actionDangersCountingAdaptions($sector, $landscape, $country, $mode='visible-only', $language='en') {
+   public function actionDangersCountingAdaptions($sector, $landscape, $country, $mode='visible-only', $language='en', $all='') {
 	// returns list of all Scenarios.
 	$sectorId = null; 
 	if($sector) {
@@ -257,7 +257,7 @@ class ApiController extends Controller
 			$countryId = $countryModel['id'];
 		}
 	}
-	$result = Danger::inqAllDangersWithCountOfAdaptions($sectorId, $landscapeId, $countryId, 'invisible'==$mode);
+	$result = Danger::inqAllDangersWithCountOfAdaptions($sectorId, $landscapeId, $countryId, 'invisible'==$mode, $all=='incl');
 	$result = array_map(function($e) use ($language) { 
 	   $e['label'] = \Yii::t('Danger:name', $e['name'], [], $language);
 	   $e['description'] = \Yii::t('Danger:description', $e['name'], [], $language);

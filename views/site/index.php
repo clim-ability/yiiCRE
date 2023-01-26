@@ -22,8 +22,9 @@ function md() {
 
 <script>
     var mapBaseUrl = "<?php echo $assets->baseUrl; ?>";
-	var apiBaseUrl = "<?php echo Url::home('https'); ?>";
-	var absMode = "<?php echo md()?'abs':'rel'; ?>";
+    var apiBaseUrl = "<?php echo Url::home('https'); ?>";
+    var absMode = "<?php echo md()?'abs':'rel'; ?>";
+    var localDev = <?php echo (strpos(Url::home('https'),'localhost')===false)?'false':'true'; ?>;
 </script>
 
 <div id="climateinspector">
@@ -93,11 +94,11 @@ function md() {
      <!--  https://www.w3schools.com/howto/howto_js_tabs.asp  -->
 	
 	<div id="tabselect" class="tab">
-		<button class="tablinks" v-on:click="activateTab('climate_info')" :class="('climate_info' == activeTab) && 'button-active'" >Climate</button>
-		<button class="tablinks" v-on:click="activateTab('impacts')" :class="('impacts' == activeTab) && 'button-active'" :disabled="disabled">Impacts</button>
-		<button class="tablinks" v-on:click="activateTab('adaptions')" :class="('adaptions' == activeTab) && 'button-active'" :disabled="disabled">Adaptions</button>				
+		<button class="tablinks" v-on:click="activateTab('climate_info')" :class="('climate_info' == activeTab) && 'button-active'" ><?php tr('hazard', 'Climate'); ?></button>
+		<button class="tablinks" v-on:click="activateTab('impacts')" :class="('impacts' == activeTab) && 'button-active'" :disabled="disabled"><?php tr('hazard', 'Impacts'); ?></button>
+		<button class="tablinks" v-on:click="activateTab('adaptions')" :class="('adaptions' == activeTab) && 'button-active'" :disabled="disabled"><?php tr('hazard', 'Adaptions'); ?></button>				
 		<!--button class="tablinks" v-on:click="activateTab('impacts_adaptions')" :class="('impacts_adaptions' == activeTab) && 'button-active'" >Impacts & Adaptions</button -->
-		<button class="tablinks" v-on:click="activateTab('other')" :class="('other' == activeTab) && 'button-active'" disabled>Other</button>
+		<button class="tablinks" v-if="localDev" v-on:click="activateTab('other')" :class="('other' == activeTab) && 'button-active'" disabled><?php tr('hazard', 'Other'); ?></button>
     </div>
     
     
@@ -187,6 +188,16 @@ function md() {
          </div>
        </template>
 
+	   <div v-if="localDev">
+         <p @click="showModal({title:'Hallo Youtube','youtube':'6EaOlzpjsic'})">hello youtube</p>
+		 <p @click="showModal({title:'Hallo Text','text':'Sehr schoener Text hier!'})">hello text</p>
+		 <p @click="showModal({title:'Hallo Url','url':'https://de.wikipedia.org/wiki/Regen', 'width':'80%', 'height':'75%' })">hello Url</p>
+		 <p @click="showModal({title:'Hallo Html','html':'Sehr <b style=\'color:red\'>schoener</b> Text hier!'})">hello html</p>
+
+		 <p @click="showModal({title:'Hallo Url','url':'https://www.localhost/media/flyer/Flood-ClimAbility.de.pdf', 'width':'80%', 'height':'75%' })">hello Pdf</p>
+		 <!--p @click="showModal({title:'Hallo Url','pdf':'https://www.localhost/media/flyer/Flood-ClimAbility.de.pdf', 'width':'80%', 'height':'75%' })">hello PDF</p-->
+		 
+       </div>
 
       </div>	
      </div> 
@@ -289,9 +300,13 @@ function md() {
 	<span v-if="tabActive === 'climate_info'" class="minheight"> 	
     <template v-if="info === 'none'">
 	<br/>
-	<h3 style="display:inline;"><?php tr('hazard', 'To start choose your location by'); ?> </h3>
-	<button class="btn-lg" style="display:inline;" v-on:click="getGeoLocation()"><b><?php tr('hazard', 'clicking on the map'); ?></b></button>
-	<h3 style="display:inline;"><?php tr('hazard', 'and/or change parameters.'); ?></h3>
+        <h1><?php tr('hazard', 'STart'); ?></h1>
+        <h3><?php tr('hazard', '1. Wählen SIe Klima-Parameter, Zeithorizont und Szenario.'); ?> </h3> 
+        <h3><?php tr('hazard', '2. KLicken Sie auf den Ort in der Karte, für den Sie Klimadaten abrufen möchten.'); ?> </h3> 
+        <h3><?php tr('hazard', 'oder'); ?> </h3>
+	<h3 style="d2isplay:inline;"><?php tr('hazard', 'ZUr automatischen Lokalisierung Ihres aktuellen Standorts klicken Sie'); ?> </h3>
+	<button class="btn-lg" style="display:inline;" v-on:click="getGeoLocation()"><b><?php tr('hazard', 'HIer'); ?></b></button>
+	<!--h3 style="display:inline;"><?php tr('hazard', 'and/or change parameters.'); ?></h3-->
 	<br/>
 	</template>
 

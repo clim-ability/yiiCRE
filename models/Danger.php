@@ -65,10 +65,13 @@ class Danger extends ActiveRecord
 	}
 */
 	
-	public function inqAllDangers( $inclInvisible = false ) {
+	public function inqAllDangers( $inclInvisible = false, $inclAll = false ) {
 	    $dangers = Danger::find();
 		if(!$inclInvisible) {
 		   $dangers = $dangers->where(['visible' => true]);	
+		}
+		if(!$inclAll) {
+		   $dangers = $dangers->where(['!=', 'name', 'alle']);	
 		}
 		$dangers = $dangers->limit(-1);
         $dangers = $dangers->orderBy(['name'=>SORT_ASC]);
@@ -80,7 +83,8 @@ class Danger extends ActiveRecord
 
     }
 
-    public function inqAllDangersWithCountOfRisks( $sectorId=NULL, $landscapeId=NULL, $countryId=NULL, $inclInvisible = false ) {
+    public function inqAllDangersWithCountOfRisks( $sectorId=NULL, $landscapeId=NULL, $countryId=NULL, $inclInvisible = false, $inclAll = false ) {
+            $sqlAll = $inclAll?"":" WHERE NOT danger.name = 'alle' ";
 	    $sql = "SELECT danger.*, ca.counting AS counting "
             . " FROM danger "
             . " LEFT JOIN "
@@ -88,18 +92,20 @@ class Danger extends ActiveRecord
             . "  FROM danger_risk, country_risk, landscape_risk, sector_risk "
             . " WHERE sector_risk.risk_id = danger_risk.risk_id AND sector_risk.sector_id = :sectorId "
             . "  AND landscape_risk.risk_id = danger_risk.risk_id AND landscape_risk.landscape_id = :landscapeId "
-            . "  AND country_risk.risk_id = danger_risk.risk_id AND country_risk.country_id = :countryId "            
+            . "  AND country_risk.risk_id = danger_risk.risk_id AND country_risk.country_id = :countryId "  
             . " GROUP BY danger_risk.danger_id ) as ca "
-            . " ON ca.did = danger.id ";
+            . " ON ca.did = danger.id "
+            . $sqlAll ;
         $command = Yii::$app->db->createCommand($sql);
         $command->bindValue(":sectorId", (int)$sectorId, PDO::PARAM_INT);
         $command->bindValue(":landscapeId", (int)$landscapeId, PDO::PARAM_INT);
         $command->bindValue(":countryId", (int)$countryId, PDO::PARAM_INT);
-        $sectors = $command->queryAll();
-        return $sectors;
+        $dangers = $command->queryAll();
+        return $dangers;
     }
 
-    public function inqAllDangersWithCountOfAdaptions( $sectorId=NULL, $landscapeId=NULL, $countryId=NULL, $inclInvisible = false ) {
+    public function inqAllDangersWithCountOfAdaptions( $sectorId=NULL, $landscapeId=NULL, $countryId=NULL, $inclInvisible = false, $inclAll = false ) {
+            $sqlAll = $inclAll?"":" WHERE NOT danger.name = 'alle' ";
 	    $sql = "SELECT danger.*, ca.counting AS counting "
             . " FROM danger "
             . " LEFT JOIN "
@@ -109,7 +115,8 @@ class Danger extends ActiveRecord
             . "  AND landscape_adaption.adaption_id = danger_adaption.adaption_id AND landscape_adaption.landscape_id = :landscapeId "
             . "  AND country_adaption.adaption_id = danger_adaption.adaption_id AND country_adaption.country_id = :countryId "            
             . " GROUP BY danger_adaption.danger_id ) as ca "
-            . " ON ca.did = danger.id ";
+            . " ON ca.did = danger.id "
+            . $sqlAll ;
         $command = Yii::$app->db->createCommand($sql);
         $command->bindValue(":sectorId", (int)$sectorId, PDO::PARAM_INT);
         $command->bindValue(":landscapeId", (int)$landscapeId, PDO::PARAM_INT);
