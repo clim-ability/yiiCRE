@@ -24,10 +24,21 @@ function tr($c, $m, $p = []) {
    </div>
    <div class="col-md-6">
 
-    <div class="glass70">
-
-    <h3><?php tr('about', 'WArum noch ein Tool zum Klimawandel?'); ?></h3>
-
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default glass70">
+    <div class="p2anel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <h3>
+          <span class="icon-close glyphicon glyphicon-chevron-up "></span>
+          <span class="icon-open glyphicon glyphicon-chevron-down "></span> 
+          <?php tr('about', 'WArum noch ein Tool zum Klimawandel?'); ?>
+          </h3>    
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
     <p>
 	<?php tr('about', 'DIe Erde erwärmt sich, das Klima wandelt sich.'); ?>
 	<?php tr('about', 'JEdoch nicht überall im gleichen Maß.'); ?>
@@ -51,12 +62,26 @@ function tr($c, $m, $p = []) {
 	 <li><?php tr('about', 'Wie stark sind die Unterschiede zwischen den einzelnen Klimawandel-Szenarien?'); ?>
          <?php tr('about', 'Und lohnt es sich daher, in Klimaschutz und Klimaanpassung zu investieren?'); ?></li>	 
 	</ul></p-->
-    
+      </div>
     </div>
-    <div class="glass70">
+  </div>
+  <div class="panel panel-default glass70">
+    <div class="p2anel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          <h3>
+          <span class="icon-close glyphicon glyphicon-chevron-up "></span>
+          <span class="icon-open glyphicon glyphicon-chevron-down "></span>  
+          <?php tr('about', 'WIe funktioniert der Upper Rhine Climate Inspector?'); ?>
+          </h3>
 
-    <h3><?php tr('about', 'WIe funktioniert der Upper Rhine Climate Inspector?'); ?></h3>
 
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+
+      <div class="panel-body">
 	<p>
       <?php tr('about', 'MIt Hilfe des URCI kann man sich in wenigen Klicks einen Überblick über die Auswirkungen des Klimawandels in seiner Heimatgemeinde verschaffen.'); ?> 
       <?php tr('about', 'DIe Daten zur Entwicklung wichtiger klimatischer Kenngrößen (Sommertage, Tropennächte, Frosttage, Starkregen, Winterniederschlag, Sommerniederschlag) können interaktiv abgefragt und angezeigt werden.'); ?> 
@@ -100,11 +125,23 @@ function tr($c, $m, $p = []) {
           </li>
 
 	</ul></p>  
+      </div>
     </div>
-
-    <div class="glass70">
-    <h3><?php tr('about', 'WElche wissenschaftliche Basis hat der Climate Inspector?'); ?></h3>	
-
+  </div>
+  <div class="panel panel-default glass70">
+    <div class="p2anel-heading" role="tab" id="headingThree">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          <h3>
+          <span class="icon-close glyphicon glyphicon-chevron-up "></span>
+          <span class="icon-open glyphicon glyphicon-chevron-down "></span> 
+          <?php tr('about', 'WElche wissenschaftliche Basis hat der Climate Inspector?'); ?>
+          </h3>
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
 	<p>
 	  <?php tr('about', 'IM Upper Rhine Climate Inspector wurden klimatischen Daten mit einer Auflösung von ca. 12*12km kartographisch aufbereitet.'); ?> 
 	  <?php tr('about', 'DIe Daten wurden vom Deutschen Wetterdienst zur Verfügung gestellt und entstammen der EURO-CORDEX-Initiative.'); ?> 
@@ -116,7 +153,13 @@ function tr($c, $m, $p = []) {
 	<p>
           <?php tr('about', 'GRundlage für die Klimarisiken und Anpassungsmaßnahmen ist die Auswertung von über 200 Interviews, die mit regionalen Unternehmen im Rahmen der Interreg-Projekte Clim’Ability (2016-2019) und Clim’Ability Design (2019-2022) geführt wurden.'); ?> 
         </p>
-    </div>	
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
    </div>	
    <div class="col-md-1">
    </div>  

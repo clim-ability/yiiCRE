@@ -5,6 +5,11 @@
   margin: 20px 70px;
 }
 
+.panel-group .panel.glass70 {
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
 .tab {
   background-color: unset;
   margin: 0px 20px;
@@ -110,4 +115,29 @@
 .glass70 h1 {
    margin-top: 0px;
    margin-bottom: 20px;
+}
+
+
+.modal-content {
+  p2osition: relative;
+  m2argin: 20px;
+  p2adding: 20px;
+  border-radius: 8px;
+  background-color: rgba(255,255,255,0.7);
+  color: #111;
+  backdrop-filter: blur(4px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%); 
+  box-shadow: 5px 3px 30px black;
+  o2verflow: hidden;
+}
+
+.content-modal {
+  p2osition: relative;
+  m2argin: 20px;
+  p2adding: 20px;
+  background-color: rgba(255,255,255);
+}
+
+.modal-80 {
+  width: 80%;
 }

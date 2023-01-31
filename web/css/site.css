@@ -14,6 +14,11 @@ body{
     background-size: cover;
 }
 
+.panel .icon-open {  display: none; }
+.panel .icon-close { display: inline-block; }
+.panel .collapsed .icon-open { display: inline-block; }
+.panel .collapsed .icon-close { display: none; }
+
 
 .wrap {
     min-height: 100%;

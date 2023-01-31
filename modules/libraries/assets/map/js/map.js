@@ -126,7 +126,9 @@ function roundedValue(value, digits) {
 		  }
         }
        }
-	  }	  
+	  }	
+          var weatherStation = tr('Hazard:name', 'Weather Station').replace(' ','\xa0');  
+          div.innerHTML += '<div class="leaflet-marker-icon extra-marker extra-marker-square-yellow leaflet-zoom-animated leaflet-clickable" tabindex="0" style="position: relative; display: inline-block;"><i style="color: black" class=" fa fa-number">&nbsp;&nbsp;Xx&nbsp;&nbsp;&nbsp;<small>'+weatherStation+'</small></i></div>'
 	  // Return the Legend div containing the HTML content
 	  return div;
 	};
@@ -1570,7 +1572,7 @@ var modalDialog = new Vue({
 			this.openDialog();
 			var style = "width:70%";
 			$('#common-modal .modal-dialog').removeAttr('style');
-            $('#common-modal .modal-dialog').attr('style',style);
+                        $('#common-modal .modal-dialog').attr('style',style);
 		}
 	},
 	mounted () {

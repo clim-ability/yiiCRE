@@ -316,17 +316,23 @@ function md() {
 	 <table class="table">
 	  <tr>
 	   <td><img src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-icon.png' /> 
-	       <?php tr('main', 'Nearest City'); ?>:</td><td>{{ info.nearest_city.name }}</td>
+	       <?php tr('main', 'GEmeinde'); ?>:</td><td>{{ info.municipal.name }}</td>
 	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{ roundedElevation }} m </td>
 	   <td> {{ info.landscape.name }} </td>
 	   </tr>
-	  <tr>   
+	  <tr v-if="nearestStation.name == bestStation.name">   
+	     <td><div class="leaflet-marker-icon extra-marker extra-marker-square-yellow leaflet-zoom-animated leaflet-clickable" tabindex="0" style="position: relative; display: inline-block;"><i v-bind:number="nearestStation.abbreviation" style="color: black" class=" fa fa-number"></i></div>
+	       <?php tr('main', 'Nearest and Reference Station'); ?>:</td><td>{{nearestStation.name}}</td>
+	     <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td>
+	     <td><?php tr('hazards', 'Distance'); ?>: {{Math.round(parseFloat(nearestStation.distance/1000)).toString()}} km</td>
+	  </tr>	
+	  <tr v-if="nearestStation.name !== bestStation.name">   
 	     <td><div class="leaflet-marker-icon extra-marker extra-marker-square-yellow leaflet-zoom-animated leaflet-clickable" tabindex="0" style="position: relative; display: inline-block;"><i v-bind:number="nearestStation.abbreviation" style="color: black" class=" fa fa-number"></i></div>
 	       <?php tr('main', 'Nearest Station'); ?>:</td><td>{{nearestStation.name}}</td>
 	     <td><?php tr('main', 'Elevation'); ?>:</td><td>{{nearestStation.elevation}} m</td>
 	     <td><?php tr('hazards', 'Distance'); ?>: {{Math.round(parseFloat(nearestStation.distance/1000)).toString()}} km</td>
 	  </tr>	
-	  <tr>   
+	  <tr v-if="nearestStation.name !== bestStation.name">   
 	   <td><div class="leaflet-marker-icon extra-marker extra-marker-square-yellow leaflet-zoom-animated leaflet-clickable" tabindex="0" style="position: relative; display: inline-block;"><i v-bind:number="bestStation.abbreviation" style="color: black" class=" fa fa-number"></i></div>
 	       <?php tr('main', 'Reference Station'); ?>:</td><td>{{bestStation.name}}</td>
 	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{bestStation.elevation}} m</td>
@@ -401,6 +407,11 @@ function md() {
 	 <p>
       <?php tr('hazard', 'Alle Änderungen beziehen sich auf den Bezugszeitraum von 1971-2000.'); ?> 
      </p>	
+	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Report über den'); 
+	  echo ' ';
+	  echo Html::a(\Yii::t('hazards', 'Klimawandel'), 'http://www.georhena.eu/sites/default/files/Cartes/Klimawandel_am_Oberrhein_Changement_climatique_dans_le_Rhin_superieur.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	  echo ".";
+	  ?></p>
     </template>	
 	
 	<template v-if="((info !== 'none') && (currHazard === 'fd'))">
@@ -409,13 +420,26 @@ function md() {
      <p>
       <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedFd.tendency}} {{roundedFd.min}} bis  {{roundedFd.max}} Frosttagen zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
-  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.'); ?>
-  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.fd}} Tage pro Jahr.'); ?>
+          <template v-if="nearestStation.name == bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.');  
+          ?></template>
+  	  <template v-if="nearestStation.name !== bestStation.name"><?php  
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.');
+            echo "&nbsp;";
+            tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.fd}} Tage pro Jahr.'); 
+          ?></template>
      </p>
-	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über'); 
+	 <p><?php 
+          if(in_array(Yii::$app->language,['de','fr'])) {
+          tr('hazards', 'Mehr Informationen finden Sie in unserem Report über'); 
 	  echo ' ';
-	  echo Html::a(\Yii::t('hazards', 'Wintertourismus'), '/media/flyer/Ski-ClimAbility.de.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	  echo Html::a(\Yii::t('hazards', 'Frosttage'), 'http://www.georhena.eu/sites/default/files/Cartes/Frosttage_Jours_de_gel_Report.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	  echo " ";
+          tr('hazards', 'oder unserem Flyer über'); 
+	  echo ' ';
+	  echo Html::a(\Yii::t('hazards', 'Wintertourismus'), '/media/flyer/Ski-ClimAbility.'.Yii::$app->language.'.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
 	  echo ".";
+          }
 	  ?></p>
 	  <?php
 	  ?>
@@ -427,9 +451,22 @@ function md() {
      <p>
       <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedSd.tendency}} {{roundedSd.min}} bis  {{roundedSd.max}} Sommertagen zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
-  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.sd}} Tage pro Jahr.'); ?>
+  	   <template v-if="nearestStation.name == bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.sd}} Tage pro Jahr.');  
+          ?></template>
+  	  <template v-if="nearestStation.name !== bestStation.name"><?php 
+           tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.sd}} Tage pro Jahr.'); ?>
   	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.sd}} Tage pro Jahr.'); ?>
+         </template>
 	</p>
+	 <p><?php
+          if(in_array(Yii::$app->language,['de','fr'])) { 
+           tr('hazards', 'Mehr Informationen finden Sie in unserem Report über den'); 
+	   echo ' ';
+	   echo Html::a(\Yii::t('hazards', 'Klimawandel'), 'http://www.georhena.eu/sites/default/files/Cartes/Klimawandel_am_Oberrhein_Changement_climatique_dans_le_Rhin_superieur.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	   echo ".";
+          }
+	  ?></p>
     </template>
 
 	<template v-if="((info !== 'none') && (currHazard === 'tr'))">
@@ -438,9 +475,22 @@ function md() {
      <p>
       <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedTr.tendency}} {{roundedTr.min}} bis  {{roundedTr.max}} Tropennächten zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
-  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.tr}} Nächte pro Jahr.'); ?>
+  	    <template v-if="nearestStation.name == bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.tr}} Nächte pro Jahr.');  
+          ?></template>
+  	  <template v-if="nearestStation.name !== bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.tr}} Nächte pro Jahr.'); ?>
   	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.tr}} Nächte pro Jahr.'); ?>
+         </template>
      </p>
+	 <p><?php 
+          if(in_array(Yii::$app->language,['de','fr'])) {
+            tr('hazards', 'Mehr Informationen finden Sie in unserem Report über'); 
+	    echo ' ';
+	    echo Html::a(\Yii::t('hazards', 'Tropennaechte'), 'http://www.georhena.eu/sites/default/files/Cartes/Tropennaechte_Nuits_tropicales_Report.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	    echo ".";
+          }
+	  ?></p>
     </template>
 
 	<template v-if="((info !== 'none') && (currHazard === 'rr20'))">
@@ -449,13 +499,25 @@ function md() {
      <p>
       <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRr20.tendency}} {{roundedRr20.min}} bis  {{roundedRr20.max}} Starkregentagen zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
-  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr20}} Tage pro Jahr.'); ?>
+  	  <template v-if="nearestStation.name == bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.rr20}} Tage pro Jahr.');  
+          ?></template>
+  	  <template v-if="nearestStation.name !== bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr20}} Tage pro Jahr.'); ?>
   	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.rr20}} Tage pro Jahr.'); ?>
+         </template>
      </p>
-	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über'); 
-	  echo ' ';
-	  echo Html::a(\Yii::t('hazards', 'Starkregen'), '/media/flyer/Flood-ClimAbility.de.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
-	  echo ".";
+	 <p><?php 
+          if(in_array(Yii::$app->language,['de','fr'])) {
+            tr('hazards', 'Mehr Informationen finden Sie in unserem Report über'); 
+	    echo ' ';
+	    echo Html::a(\Yii::t('hazards', 'Starkregen'), 'http://www.georhena.eu/sites/default/files/Cartes/Starkregen_Pluies_intenses_Report.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	    echo " ";
+            tr('hazards', 'oder unserem Flyer über'); 
+	    echo ' ';
+	    echo Html::a(\Yii::t('hazards', 'Starkregen'), '/media/flyer/Flood-ClimAbility.'.Yii::$app->language.'.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	    echo ".";
+          }
 	  ?></p>	  
 	  
 	  
@@ -467,13 +529,27 @@ function md() {
      <p>
       <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRw.tendency}} {{roundedRw.min}} bis  {{roundedRw.max}} % an Winterniederschlag zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
-  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_winter}} mm für die Wintermonate.'); ?>
+          <template v-if="nearestStation.name == bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.rr_winter}} mm für die Wintermonate.');  
+          ?></template>
+  	  <template v-if="nearestStation.name !== bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_winter}} mm für die Wintermonate.'); ?>
   	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.rr_winter}} mm für die Wintermonate.'); ?>
+         </template>
      </p>
-	 <p><?php tr('hazards', 'Mehr Informationen finden Sie in unserem Flyer über'); 
-	  echo ' ';
-	  echo Html::a(\Yii::t('hazards', 'Hochwasser'), '/media/flyer/Flood-ClimAbility.de.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
-	  echo ".";
+	 <p>
+         <?php 
+          if(in_array(Yii::$app->language,['de','fr'])) {
+            tr('hazards', 'Mehr Informationen finden Sie in unserem Report über'); 
+	    echo ' ';
+	    echo Html::a(\Yii::t('hazards', 'Winterniederschlag'), 'http://www.georhena.eu/sites/default/files/Cartes/Winterniederschlag_Precipitations_hivernales_Report.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	    echo " ";
+            tr('hazards', 'oder unserem Flyer über'); 
+	    echo ' ';
+	    echo Html::a(\Yii::t('hazards', 'Hochwasser'), '/media/flyer/Flood-ClimAbility.'.Yii::$app->language.'.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	    echo ".";
+          }
+
 	  ?></p>
     </template>
 
@@ -483,10 +559,23 @@ function md() {
      <p>
       <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRs.tendency}} {{roundedRs.min}} bis  {{roundedRs.max}} % an Sommerniederschlag zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
-  	  <?php tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_summer}} mm für die Sommermonate.'); ?>
+          <template v-if="nearestStation.name == bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.rr_summer}} mm für die Sommermonate.');  
+          ?></template>
+  	  <template v-if="nearestStation.name !== bestStation.name"><?php 
+            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_summer}} mm für die Sommermonate.'); ?>
   	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.rr_summer}} mm für die Sommermonate.'); ?>
-
+         </template>
 	</p>
+	 <p><?php 
+          if(in_array(Yii::$app->language,['de','fr'])) {
+            tr('hazards', 'Mehr Informationen finden Sie in unserem Report über'); 
+	    echo ' ';
+	    echo Html::a(\Yii::t('hazards', 'Sommerniederschlag'), 'http://www.georhena.eu/sites/default/files/Cartes/Sommerniederschlag_Precipitations_estivales_Report.pdf', ['class' => 'no-wait', 'target'=>'_flyer']);
+	    echo ".";
+          }
+	  ?></p>
+
     </template>
 
     </span>

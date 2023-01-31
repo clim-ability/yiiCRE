@@ -359,7 +359,42 @@ class Gis extends ActiveRecord
 	 return $result;		
 	}
 
-	
+	public static function getLandcover($latitude, $longitude)
+	{
+	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
+	//$connection = Yii::$app->db2;
+	$connection = Yii::$app->pgsql_gisdata;
+	$sql = "SELECT clc1 AS lc1, clc2 AS lc2 FROM \"CLC2_2006_CRS\" "
+	     . " WHERE ST_Contains(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 3034)) LIMIT 1";
+	 $command = $connection->createCommand($sql);
+         $result = $command->queryOne();
+         if($result) {
+           $result['name1'] = 'landcover'.strval($result['lc1']);
+           $lcnames = ['landcover1'=>'urban','landcover2'=>'agricultur','landcover3'=>'forest','landcover4'=>'wetland','landcover5'=>'waterbody'];
+           if(array_key_exists($result['name1'], $lcnames)) {
+             $result['name1'] = $lcnames[$result['name1']];
+           }
+         } else {
+           $result = ['lc1'=> 0,'lc2'=>'0','name1'=>'-'];
+         }
+	 return $result;		
+	}
+ 
+        public static function getMunicipal($latitude, $longitude)
+	{
+	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';
+	//$connection = Yii::$app->db2;
+	$connection = Yii::$app->pgsql_gisdata;
+	$sql = "SELECT name AS name, area_km2 AS area, pop13 AS population FROM \"Administrative_Boundaries_2016\" "
+	     . " WHERE ST_Contains(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) LIMIT 1";
+	 $command = $connection->createCommand($sql);
+         $result = $command->queryOne();
+         if(not $result) {
+            $result = ['name'=>'-','area'=>0,'population'=>0];
+         } 
+	 return $result;		
+	}	
+
 	public static function getDistanceToRiver($latitude, $longitude)
 	{
 	$coordinate = ''.(float)$longitude.','.(float)$latitude.'';

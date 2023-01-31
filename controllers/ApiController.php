@@ -471,6 +471,8 @@ class ApiController extends Controller
 	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
 	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);
 	   $result['country'] = Gis::getCountry($latitude, $longitude);
+           $result['landcover'] = Gis::getLandcover($latitude, $longitude);
+           $result['municipal'] = Gis::getMunicipal($latitude, $longitude);
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
@@ -634,7 +636,9 @@ class ApiController extends Controller
            }
 	   $result['nearest_river'] = Gis::getDistanceToRiver($latitude, $longitude);
 	   $result['nearest_city'] = Gis::getDistanceToCity($latitude, $longitude);
-       $result['country'] = Gis::getCountry($latitude, $longitude);	 
+           $result['country'] = Gis::getCountry($latitude, $longitude);	 
+           $result['landcover'] = Gis::getLandcover($latitude, $longitude);
+           $result['municipal'] = Gis::getMunicipal($latitude, $longitude);
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
