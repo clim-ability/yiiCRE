@@ -389,7 +389,7 @@ class Gis extends ActiveRecord
 	     . " WHERE ST_Contains(geom, ST_Transform(ST_SetSRID(ST_MakePoint(".$coordinate."),4326), 25832)) LIMIT 1";
 	 $command = $connection->createCommand($sql);
          $result = $command->queryOne();
-         if(not $result) {
+         if(!$result) {
             $result = ['name'=>'-','area'=>0,'population'=>0];
          } 
 	 return $result;		
