@@ -574,6 +574,7 @@ class ApiController extends Controller
    {
 	   $result = [];	  	   
        $result = Station::getNearestStation($latitude, $longitude, $language, $elevmin, $elevmax);
+       #$result['abbr'] = yii::t('Station:abbreviation', $station['name'])]
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;
@@ -586,7 +587,8 @@ class ApiController extends Controller
        foreach($stations as $station) {
 	   $station['abbreviation'] = $station['name'];	   
  	   $results[] = ['type'=>'Feature',
-			              'properties'=>['abbreviation' => yii::t('Station:abbreviation', $station['name'])],
+			              'properties'=>['abbreviation' => yii::t('Station:abbreviation', $station['name'], [], $language),
+                                                    'id'=> $station['id']],
 			              'geometry'=>['type'=>'Point', 
 						    'coordinates'=>[floatval($station['longitude']),
 							                floatval($station['latitude'])]]
@@ -639,6 +641,7 @@ class ApiController extends Controller
            $result['country'] = Gis::getCountry($latitude, $longitude);	 
            $result['landcover'] = Gis::getLandcover($latitude, $longitude);
            $result['municipal'] = Gis::getMunicipal($latitude, $longitude);
+           #$result['municipal'] = ['name'=>'xxx'];
 	   \Yii::$app->response->headers->add('Access-Control-Allow-Origin', '*');	   
        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
        return $result;

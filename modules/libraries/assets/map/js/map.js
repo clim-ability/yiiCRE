@@ -205,16 +205,40 @@ var pointLayer = new L.GeoJSON(null, {
   
 map.addLayer(pointLayer);
 
+
+var allStationData = null;
+function setStationData(data) 
+{
+   allStationData = data; 
+}
+
 function initStationData() 
 {
-
   var url = apiBaseUrl+'/api/stations-geojson';
   axios.get(url).then(response => {
+        setStationData(response.data)
 	pointLayer.addData(response.data);
   });
- 
-	
 }
+
+function filterStationData(filterList)
+{
+  if(allStationData) {
+  var newData = [];
+  for (var i = 0; i < allStationData.length; i++) {
+     currentStation = allStationData[i];
+     for(var j = 0; j < filterList.length; j++) {
+       if(currentStation.properties.id == filterList[j])
+        {
+           newData.push(currentStation);
+         }
+     }
+  }
+  pointLayer.clearLayers()
+  pointLayer.addData(newData);
+  }
+}
+
 
 function interpolateColor(a, b, amount) { 
     var ah = parseInt(a.replace('#', '0x'), 16),
@@ -557,8 +581,6 @@ L.control.layers(baseMaps,{
 redrawParameters();
 initStationData();
 initBorders();
-
-
 
 var vueEventBus = new Vue({ });
 	  
@@ -1391,6 +1413,13 @@ var vueInfo = new Vue({
 		this.clickOnMap();
 	},
 	*/
+    updateStationLayer() {
+      if(this.nearestStation.id === this.bestStation.id) {
+          filterStationData([this.nearestStation.id]);
+      } else {
+          filterStationData([this.nearestStation.id,this.bestStation.id]);
+      }
+    },
     clickOnMap() {
 		var latitude = getCurrentLatitude();
 		var longitude = getCurrentLongitude();
@@ -1399,6 +1428,7 @@ var vueInfo = new Vue({
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&language='+currentLanguage;
           axios.get(url).then(response => {
 	         this.nearestStation = response.data; 
+                 this.updateStationLayer(); 
 	      });
 		  this.currEpoch = vueSelect.getCurrentEpoch();
 		  this.currSzenario = vueSelect.getCurrentSzenario();
@@ -1421,6 +1451,7 @@ var vueInfo = new Vue({
 	              url = url + '?latitude='+latitude+'&longitude='+longitude+'&language='+currentLanguage+'&elevmin='+elevMin+'&elevmax='+elevMax;
                       axios.get(url).then(response => {
 	                  this.bestStation = response.data; 
+                          this.updateStationLayer();
 	              });
                     }
 
