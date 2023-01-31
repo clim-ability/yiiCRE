@@ -418,7 +418,7 @@ function md() {
 	 <h2><?php tr('Hazard:Name', 'fd'); ?></h2>
 	 <p><?php tr('Hazard:description', 'fd'); ?></p>
      <p>
-      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedFd.tendency}} {{roundedFd.min}} bis  {{roundedFd.max}} Frosttagen zu rechnen'); ?>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.municipal.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedFd.tendency}} {{roundedFd.min}} bis  {{roundedFd.max}} Frosttagen zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
           <template v-if="nearestStation.name == bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.');  
@@ -449,7 +449,7 @@ function md() {
 	 <h2><?php tr('Hazard:Name', 'sd'); ?></h2>
 	 <p><?php tr('Hazard:description', 'sd'); ?></p>
      <p>
-      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedSd.tendency}} {{roundedSd.min}} bis  {{roundedSd.max}} Sommertagen zu rechnen'); ?>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.municipal.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedSd.tendency}} {{roundedSd.min}} bis  {{roundedSd.max}} Sommertagen zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
   	   <template v-if="nearestStation.name == bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.sd}} Tage pro Jahr.');  
@@ -473,7 +473,7 @@ function md() {
 	 <h2><?php tr('Hazard:Name', 'tr'); ?></h2>
 	 <p><?php tr('Hazard:description', 'tr'); ?></p>
      <p>
-      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedTr.tendency}} {{roundedTr.min}} bis  {{roundedTr.max}} Tropennächten zu rechnen'); ?>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.municipal.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedTr.tendency}} {{roundedTr.min}} bis  {{roundedTr.max}} Tropennächten zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
   	    <template v-if="nearestStation.name == bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.tr}} Nächte pro Jahr.');  
@@ -497,7 +497,7 @@ function md() {
 	 <h2><?php tr('Hazard:Name', 'rr20'); ?></h2>
 	 <p><?php tr('Hazard:description', 'rr20'); ?></p>
      <p>
-      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRr20.tendency}} {{roundedRr20.min}} bis  {{roundedRr20.max}} Starkregentagen zu rechnen'); ?>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.municipal.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRr20.tendency}} {{roundedRr20.min}} bis  {{roundedRr20.max}} Starkregentagen zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
   	  <template v-if="nearestStation.name == bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.rr20}} Tage pro Jahr.');  
@@ -527,7 +527,7 @@ function md() {
 	 <h2><?php tr('Hazard:Name', 'rr_winter'); ?></h2>
 	 <p><?php tr('Hazard:description', 'rr_winter'); ?></p>
      <p>
-      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRw.tendency}} {{roundedRw.min}} bis  {{roundedRw.max}} % an Winterniederschlag zu rechnen'); ?>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.municipal.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRw.tendency}} {{roundedRw.min}} bis  {{roundedRw.max}} % an Winterniederschlag zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
           <template v-if="nearestStation.name == bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.rr_winter}} mm für die Wintermonate.');  
@@ -557,7 +557,7 @@ function md() {
 	 <h2><?php tr('Hazard:Name', 'rr_summer'); ?></h2>
 	 <p><?php tr('Hazard:description', 'rr_summer'); ?></p>
      <p>
-      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.nearest_city.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRs.tendency}} {{roundedRs.min}} bis  {{roundedRs.max}} % an Sommerniederschlag zu rechnen'); ?>
+      <?php tr('hazards', 'In der Nähe der Gemeinde {{ info.municipal.name }} ist im Zeitraum von {{currEpoch}} mit einer {{roundedRs.tendency}} {{roundedRs.min}} bis  {{roundedRs.max}} % an Sommerniederschlag zu rechnen'); ?>
 	  <?php tr('hazards', '(Vorhersage nach dem Szenario {{currSzenario}}).'); ?>
           <template v-if="nearestStation.name == bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation (und die Referenzstation in aehnlicher Hoehenlage) {{nearestStation.name}} {{nearestStation.rr_summer}} mm für die Sommermonate.');  
