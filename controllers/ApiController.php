@@ -107,7 +107,7 @@ class ApiController extends Controller
 	 return $result;
    }
  
-   public function actionInqRelatedInfoByRisk($risk) {
+   public function actionInqRelatedInfoByRisk($risk, $language='en') {
 	$zones = []; 
 	$countries = [];
 	$landscapes = [];
@@ -115,6 +115,11 @@ class ApiController extends Controller
 		$riskModel = Risk::findBy($risk);
 		if($riskModel) {
 			$zones = $riskModel->inqRelatedZones();
+	                $zones = array_map(function($e) use ($language) { 
+		           $e->label = \Yii::t('Zone:name', $e->name, [], $language);
+		           return $e; 
+		        } ,$zones); 
+
 			$countries = $riskModel->inqRelatedCountries();
 			$landscapes = $riskModel->inqRelatedLandscapes();
 		}
@@ -166,7 +171,7 @@ class ApiController extends Controller
 	 return $result;
    }
 
-   public function actionInqRelatedInfoByAdaption($adaption) {
+   public function actionInqRelatedInfoByAdaption($adaption, $language='en') {
 	$zones = []; 
 	$countries = [];
 	$landscapes = [];
@@ -174,6 +179,11 @@ class ApiController extends Controller
 		$adaptionModel = Adaption::findBy($adaption);
 		if($adaptionModel) {
 			$zones = $adaptionModel->inqRelatedZones();
+	                $zones = array_map(function($e) use ($language) { 
+		           $e->label = \Yii::t('Zone:name', $e->name, [], $language);
+		           return $e; 
+		        },$zones); 
+
 			$countries = $adaptionModel->inqRelatedCountries();
 			$landscapes = $adaptionModel->inqRelatedLandscapes();
 		}

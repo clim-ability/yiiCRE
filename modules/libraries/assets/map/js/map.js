@@ -1012,6 +1012,7 @@ var vueImpacts = new Vue({
 	  },
 	  inqImpactRelations(id) {
 		var url = apiBaseUrl+'/api/inq-related-info-by-risk?risk='+id;
+                url += '&language='+currentLanguage;
 		axios
 		.get(url)
 		.then(response => { 
@@ -1273,6 +1274,7 @@ var vueAdaptions = new Vue({
 	  },
 	  inqAdaptionRelations(id) {
 		var url = apiBaseUrl+'/api/inq-related-info-by-adaption?adaption='+id;
+                url += '&language='+currentLanguage;  
 		axios
 		.get(url)
 		.then(response => { 
