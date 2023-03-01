@@ -87,7 +87,7 @@ function selectCategory() {
         url:  baseUrl + '/index.php/translation/language/translate?'
                  +'&lang='+currentLanguage
                  +'&category='+selectedCategory
-                 +'&message='+encodeURI(selectedMessage),
+                 +'&message='+encodeURIComponent(selectedMessage),
         success: function(result) {
             $('#common-modal .modal-body').html(result);
             $('#common-modal').modal();
@@ -129,10 +129,10 @@ function addTranslation() {
         url: baseUrl + '/index.php/translation/language/add-translation?'
                  +'&lang='+translatedLanguage
                  +'&id='+idMessage
-                 +'&translation='+encodeURI(translatedMessage),
+                 +'&translation='+encodeURIComponent(translatedMessage),
          data: { lang: translatedLanguage, 
                  id:   idMessage,
-                 translation: translatedMessage,
+                 translation: encodeURIComponent(translatedMessage),
                  YII_CSRF_TOKEN: csrfToken},
          dataType: "json",
          success: function(result) {
