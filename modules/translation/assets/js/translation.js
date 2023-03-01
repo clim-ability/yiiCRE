@@ -59,7 +59,7 @@ function clickTranslation() {
         url: baseUrl + '/index.php/translation/language/translate?'
                  +'&lang='+currentLanguage
                  +'&category='+selectedCategory
-                 +'&message='+selectedMessage,     
+                 +'&message='+encodeURIComponent(selectedMessage),     
         success: function(result) {
             
             $('#common-modal .modal-body').html(result);
