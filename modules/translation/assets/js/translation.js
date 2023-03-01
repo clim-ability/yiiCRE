@@ -87,7 +87,7 @@ function selectCategory() {
         url:  baseUrl + '/index.php/translation/language/translate?'
                  +'&lang='+currentLanguage
                  +'&category='+selectedCategory
-                 +'&message='+encodeURIComponent(selectedMessage),
+                 +'&message='+encodeURI(selectedMessage),
         success: function(result) {
             $('#common-modal .modal-body').html(result);
             $('#common-modal').modal();
@@ -129,7 +129,7 @@ function addTranslation() {
         url: baseUrl + '/index.php/translation/language/add-translation?'
                  +'&lang='+translatedLanguage
                  +'&id='+idMessage
-                 +'&translation='+translatedMessage,
+                 +'&translation='+encodeURI(translatedMessage),
          data: { lang: translatedLanguage, 
                  id:   idMessage,
                  translation: translatedMessage,
