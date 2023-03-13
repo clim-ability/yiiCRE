@@ -121,7 +121,15 @@ class ApiController extends Controller
 		        } ,$zones); 
 
 			$countries = $riskModel->inqRelatedCountries();
+	                $countries = array_map(function($e) use ($language) { 
+		           $e->label = \Yii::t('Country:name', $e->name, [], $language);
+		           return $e; 
+		        } ,$countries); 
 			$landscapes = $riskModel->inqRelatedLandscapes();
+	                $landscapes = array_map(function($e) use ($language) { 
+		           $e->label = \Yii::t('Landscape:name', $e->name, [], $language);
+		           return $e; 
+		        } ,$landscapes); 
 		}
 	}
 	$result = ['zones'=>$zones, 'countries'=>$countries, 'landscapes'=>$landscapes];
@@ -185,7 +193,15 @@ class ApiController extends Controller
 		        },$zones); 
 
 			$countries = $adaptionModel->inqRelatedCountries();
+	                $countries = array_map(function($e) use ($language) { 
+		           $e->label = \Yii::t('Country:name', $e->name, [], $language);
+		           return $e; 
+		        } ,$countries); 
 			$landscapes = $adaptionModel->inqRelatedLandscapes();
+	                $landscapes = array_map(function($e) use ($language) { 
+		           $e->label = \Yii::t('Landscape:name', $e->name, [], $language);
+		           return $e; 
+		        } ,$landscapes); 
 		}
 	}
 	$result = ['zones'=>$zones, 'countries'=>$countries, 'landscapes'=>$landscapes];

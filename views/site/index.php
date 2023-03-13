@@ -318,7 +318,7 @@ function md() {
 	   <td><img src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/images/marker-icon.png' /> 
 	       <?php tr('main', 'GEmeinde'); ?>:</td><td>{{ info.municipal.name }}</td>
 	   <td><?php tr('main', 'Elevation'); ?>:</td><td>{{ roundedElevation }} m </td>
-	   <td> {{ info.landscape.name }} </td>
+	   <td> {{ info.landscape.label }} </td>
 	   </tr>
 	  <tr v-if="nearestStation.name == bestStation.name">   
 	     <td><div class="leaflet-marker-icon extra-marker extra-marker-square-yellow leaflet-zoom-animated leaflet-clickable" tabindex="0" style="position: relative; display: inline-block;"><i v-bind:number="nearestStation.abbreviation" style="color: black" class=" fa fa-number"></i></div>
@@ -426,7 +426,7 @@ function md() {
   	  <template v-if="nearestStation.name !== bestStation.name"><?php  
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.fd}} Tage pro Jahr.');
             echo "&nbsp;";
-            tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.fd}} Tage pro Jahr.'); 
+            tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.label }}) beträgt er {{bestStation.fd}} Tage pro Jahr.'); 
           ?></template>
      </p>
 	 <p><?php 
@@ -456,7 +456,7 @@ function md() {
           ?></template>
   	  <template v-if="nearestStation.name !== bestStation.name"><?php 
            tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.sd}} Tage pro Jahr.'); ?>
-  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.sd}} Tage pro Jahr.'); ?>
+  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.label }}) beträgt er {{bestStation.sd}} Tage pro Jahr.'); ?>
          </template>
 	</p>
 	 <p><?php
@@ -480,7 +480,7 @@ function md() {
           ?></template>
   	  <template v-if="nearestStation.name !== bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.tr}} Nächte pro Jahr.'); ?>
-  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.tr}} Nächte pro Jahr.'); ?>
+  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.label }}) beträgt er {{bestStation.tr}} Nächte pro Jahr.'); ?>
          </template>
      </p>
 	 <p><?php 
@@ -504,7 +504,7 @@ function md() {
           ?></template>
   	  <template v-if="nearestStation.name !== bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr20}} Tage pro Jahr.'); ?>
-  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.rr20}} Tage pro Jahr.'); ?>
+  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.label }}) beträgt er {{bestStation.rr20}} Tage pro Jahr.'); ?>
          </template>
      </p>
 	 <p><?php 
@@ -534,7 +534,7 @@ function md() {
           ?></template>
   	  <template v-if="nearestStation.name !== bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_winter}} mm für die Wintermonate.'); ?>
-  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.rr_winter}} mm für die Wintermonate.'); ?>
+  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.label }}) beträgt er {{bestStation.rr_winter}} mm für die Wintermonate.'); ?>
          </template>
      </p>
 	 <p>
@@ -564,7 +564,7 @@ function md() {
           ?></template>
   	  <template v-if="nearestStation.name !== bestStation.name"><?php 
             tr('hazards', 'Der Referenzwert für den Zeitraum 1971-2000 beträgt für die nächstgelegene Wetterstation {{nearestStation.name}} {{nearestStation.rr_summer}} mm für die Sommermonate.'); ?>
-  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.name }}) beträgt er {{bestStation.rr_summer}} mm für die Sommermonate.'); ?>
+  	  <?php tr('hazards', 'Für die Referenz-Wetterstation {{bestStation.name}} in ähnlicher Höhenlage ({{ info.landscape.label }}) beträgt er {{bestStation.rr_summer}} mm für die Sommermonate.'); ?>
          </template>
 	</p>
 	 <p><?php 

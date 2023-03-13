@@ -107,7 +107,7 @@ class Landscape extends ActiveRecord
 	}	
 
 
-    public static function findByElevation($elevation)
+    public static function findByElevation($elevation, $language)
     {
       $result = null;
       $landscapes = Landscape::inqAllLandscapes();
@@ -116,6 +116,8 @@ class Landscape extends ActiveRecord
         if(($landscape->elevation_min <= $elevation) && ($landscape->elevation_max >= $elevation))
         {
             $result = $landscape;
+            ##$result->label = \Yii::t('Landscape:name', $result->name, [], $language);
+
         } 
       }  
       return $result;

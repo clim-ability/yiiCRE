@@ -3,6 +3,7 @@
 addCategoryToTranslationPool('hazards');
 addCategoryToTranslationPool('Hazard:name');
 addCategoryToTranslationPool('Hazard:description');
+addCategoryToTranslationPool('Landscape:name');
 
 function htmlEncode(str) {
 	str = str.replace('&','%26');
@@ -88,7 +89,7 @@ function roundedValue(value, digits) {
 
     legend.onAdd = function (map) {
 	// Create Div Element and Populate it with HTML
-	 var climateParameters = tr('hazards', 'Climate Parameters');
+	 var climateParameters = tr('Hazard:name', 'Climate Parameters');
 	 var div = L.DomUtil.create('div', 'legend');	
 	 if('off' !== hazard) {
 	  div.innerHTML += '<b>'+climateParameters+'</b><br />';
@@ -1439,6 +1440,7 @@ var vueInfo = new Vue({
 	      url = url + '?latitude='+latitude+'&longitude='+longitude+'&epoch='+this.currEpoch+'&scenario='+this.currSzenario;
           axios.get(url).then(response => {
 	         this.info = response.data; 
+                 this.info.landscape.label = tr('Landscape:name', this.info.landscape.name);  
 	         this.infoVisible = true;
              vueEventBus.$emit('updatedInfo', this);
 		    var latitude = getCurrentLatitude();
