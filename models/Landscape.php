@@ -107,7 +107,7 @@ class Landscape extends ActiveRecord
 	}	
 
 
-    public static function findByElevation($elevation, $language)
+    public static function findByElevation($elevation, $language=null)
     {
       $result = null;
       $landscapes = Landscape::inqAllLandscapes();
