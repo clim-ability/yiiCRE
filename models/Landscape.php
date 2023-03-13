@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
+use app\modules\translation\models\Language;
 
 
 class Landscape extends ActiveRecord 
@@ -65,14 +66,19 @@ class Landscape extends ActiveRecord
 	
 
 
-	public static function inqAllLandscapes( $inclInvisible = false ) {
+	public static function inqAllLandscapes( $inclInvisible = false, $language=null ) {
 	    $landscapes = Landscape::find();
 		if(!$inclInvisible) {
 		   $landscapes = $landscapes->where(['visible' => true]);	
 		}
 		$landscapes = $landscapes->limit(-1);
         $landscapes = $landscapes->orderBy(['elevation_min'=>SORT_ASC]);
-        return $landscapes->all();
+        $result = $landscapes->all();
+	$result = array_map(function($e) use ($language) { 
+		           $e->label = \Yii::t('Landscape:name', $e->name, [], $language);
+		           return $e; 
+	} ,$result); 
+        return $result;
 	}
 	
 	public static function findById($id)

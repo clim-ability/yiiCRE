@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\data\ActiveDataProvider;
-
+use app\modules\translation\models\Language;
 
 class Country extends ActiveRecord 
 {
@@ -63,14 +63,20 @@ class Country extends ActiveRecord
 	
 
 
-	public static function inqAllCountries( $inclInvisible = false ) {
+	public static function inqAllCountries( $inclInvisible = false, $language=null ) {
 	    $countries = Country::find();
 		if(!$inclInvisible) {
 		   $countries = $countries->where(['visible' => true]);	
 		}
 		$countries = $countries->limit(-1);
         $countries = $countries->orderBy(['short'=>SORT_ASC]);
-        return $countries->all();
+        $result = $countries->all();
+	$result = array_map(function($e) use ($language) { 
+		           $e->label = \Yii::t('Country:name', $e->name, [], $language);
+		           return $e; 
+	} ,$result); 
+        return $result;
+
 	}
 	
 	public static function findById($id)

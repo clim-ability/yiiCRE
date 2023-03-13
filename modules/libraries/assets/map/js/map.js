@@ -929,7 +929,7 @@ var vueImpacts = new Vue({
 	  },
 	  // getCurrentSector() {return this.sector; },
 	  inqLandscapes() {
-		axios.get(apiBaseUrl+'/api/landscapes').then(response => { 
+		axios.get(apiBaseUrl+'/api/landscapes?language='+currentLanguage).then(response => { 
 		  this.landscapes = response.data; 
 		  });
 	  },
@@ -945,7 +945,7 @@ var vueImpacts = new Vue({
 		return cssClass;
 	  },	  
 	  inqCountries() {
-		axios.get(apiBaseUrl+'/api/countries').then(response => { 
+		axios.get(apiBaseUrl+'/api/countries?language='+currentLanguage).then(response => { 
 		  this.allCountries = response.data; 
 		  });
 	  },
@@ -1196,7 +1196,7 @@ var vueAdaptions = new Vue({
 	  },
 	  // getCurrentSector() {return this.sector; },
 	  inqLandscapes() {
-		axios.get(apiBaseUrl+'/api/landscapes').then(response => { 
+		axios.get(apiBaseUrl+'/api/landscapes?language='+currentLanguage).then(response => { 
 		  this.landscapes = response.data; 
 		  });
 	  },
@@ -1212,7 +1212,7 @@ var vueAdaptions = new Vue({
 		return cssClass;
 	  },
 	  inqCountries() {
-		axios.get(apiBaseUrl+'/api/countries').then(response => { 
+		axios.get(apiBaseUrl+'/api/countries?language='+currentLanguage).then(response => { 
 		  this.allCountries = response.data; 
 		  });
 	  },
