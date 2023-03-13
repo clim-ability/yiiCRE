@@ -2,6 +2,7 @@
 
 addCategoryToTranslationPool('hazards');
 addCategoryToTranslationPool('Hazard:name');
+addCategoryToTranslationPool('Hazard:plural');
 addCategoryToTranslationPool('Hazard:description');
 addCategoryToTranslationPool('Landscape:name');
 
@@ -102,7 +103,7 @@ function roundedValue(value, digits) {
 		  }
         }
 	  } else {
-		var hazardTranslation = tr('Hazard:name', hazard);
+		var hazardTranslation = tr('Hazard:plural', hazard);
 		var upto = tr('hazards', 'to');
 		div.innerHTML += hazardTranslation + '<br />';
 		var digits = (getDigitsGlobal()>1.2)?0:1;

@@ -102,8 +102,8 @@ function tr($c, $m, $p = []) {
       <li>
 	  <?php tr('about', 'DIe {Klimakarten} beziehen sich jeweils auf den ausgewählten Parameter und zeigen die prognostizierten Änderungssignale im Vergleich zur Periode 1971-2000.', 
 	    ['Klimakarten' => '<strong>'.yii::t('about', 'KLimakarten').'</strong>']); ?> 
-      <?php tr('about', 'DIe Referenzwerte helfen dabei, das Ausmaß der klimatischen Änderungen einzuschätzen.'); ?>
-      <?php tr('about', 'NAch Positionierung in der Karte werden die Aenderungssignale des gewaehlten Parameters fuer die jeweilige Position angezeigt.'); ?>	  
+      <?php tr('about', 'NACh Positionierung in der Karte werden die Aenderungssignale des gewaehlten Parameters fuer die jeweilige Position angezeigt.'); ?>
+      <?php tr('about', 'EIN kurzer Erklaerungstext erleichtert die Interpretation der Klimadaten.'); ?>	  
 	  </li>
 	  <li>
 	  <?php tr('about', '{Referenzwerte} VOn mehreren Messstation in der Region ermöglichen zudem einen Vergleich mit Klima während des Zeitraums 1971-2000, das von den meisten Menschen als „normal“ eingeschätzt wird.', 
